@@ -1,0 +1,166 @@
+﻿@model CourseProject.Models.Schedule
+
+@{
+    ViewBag.Title = "Create";
+}
+@{
+    
+    SelectList list = new SelectList(new[] {"2015","2016","2017","2018","2019","2020"});
+    }
+<h2>Create</h2>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Schedule</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.EnrollmentYear)            
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("EnrollmentYear", list, String.Empty)         
+            @Html.ValidationMessageFor(model => model.EnrollmentYear)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Subject_ID, "Subject")            
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("Subject_ID", String.Empty)            
+            @Html.ValidationMessageFor(model => model.Subject_ID)
+        </div>
+        
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Teacher_ID, "Teacher")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("Teacher_ID", String.Empty)
+            @Html.ValidationMessageFor(model => model.Teacher_ID)
+        </div>
+
+         <div class="editor-label">
+            @Html.LabelFor(model => model.Group_ID, "Group")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("Group_ID", String.Empty)
+            @Html.ValidationMessageFor(model => model.Group_ID)
+        </div>        
+        
+        <div id="newfields">
+        <div class="editor-label">
+            
+           @Html.LabelFor(model => model.Room_ID, "Classroom")
+        </div>
+        <div class="editor-field" >            
+            @Html.DropDownList("Room_ID", String.Empty)
+            @Html.ValidationMessageFor(model => model.Room_ID)           
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Lesson_ID, "LessonType")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("Lesson_ID", String.Empty)
+            @Html.ValidationMessageFor(model => model.Lesson_ID)
+           
+        </div>
+
+        <div class="editor-label"> 
+            @Html.LabelFor(model => model.Date)            
+        </div>         
+             </div>
+        <div class="editor-field">
+                                             
+            @Html.EditorFor(model => model.DateList[0])           
+            @Html.ValidationMessageFor(model => model.DateList[0])
+            <input style="color:green" type="button" id="btnAdd" value="+"/>  
+             
+        </div>
+        
+        <div id="addfields">
+
+        </div>                         
+              
+        <div>
+            
+            @Html.CheckBox("different", false) Different pairs
+        </div>
+         <p>
+            <input type="submit" value="Create" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    
+    @Scripts.Render("~/bundles/jqueryval")
+   <
+    
+
+    <script type="text/javascript">    
+        //function running datepicker
+            function picker() {
+            $(".text-box.single-line").datepicker({
+                dateFormat: "yy-mm-dd",
+                changeYear: true,
+                showOn: "button"
+            }).css("display", "inline-block")
+                .next("button").button({
+                    icons: { primary: "ui-icon-calendar" },
+                    label: "Select a date",
+                    text: false
+                });
+        }                   
+        
+
+        var d = 1;
+        //function adding new fields (date, room, lessonType)
+        function addDate() {
+            var newDate = '<div> <input class="text-box single-line" data-val="true" id="DateList_1_" name="DateList[1]" type="datetime" value="" style="display: inline-block;"><div/>'.replace('_1_', '[' + d + ']').replace('[1]', '[' + d + ']');            
+            
+            var newItems = $("#newfields").clone(true);     
+            var checkBox = document.getElementById("different");
+            var divElement = document.getElementById("addfields");    
+
+            if (checkBox.checked) {
+                divElement.style = "border: 4px double aqua";
+                $(divElement).append(newItems);
+                $(divElement).append(newDate);
+                picker();
+                d++;
+            }
+            else {
+                divElement.style = "border: none";
+                $(divElement).append(newDate);
+                picker();
+                d++;
+            }
+        }
+
+        function changeCheckBox()
+        {
+            
+            var divElement = $("#addfields");            
+            divElement.empty();
+            divElement.css("border", "none");
+        }
+
+        picker();
+
+        var butAddDate = document.getElementById("btnAdd");
+        butAddDate.onclick = addDate;//action running if click on button #btnAdd
+
+        var checkBox = document.getElementById("different");
+        checkBox.onclick = changeCheckBox;//action running if change CheckBox #different
+        
+       
+    </script>
+
+    
+    
+}

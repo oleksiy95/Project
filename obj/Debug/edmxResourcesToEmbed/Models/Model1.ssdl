@@ -1,0 +1,179 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Хранилище ScheduleModel" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="Хранилище ScheduleModelContainer">
+    <EntitySet Name="Classroom" EntityType="Хранилище ScheduleModel.Classroom" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Group" EntityType="Хранилище ScheduleModel.Group" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="LessonType" EntityType="Хранилище ScheduleModel.LessonType" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Schedule" EntityType="Хранилище ScheduleModel.Schedule" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Student" EntityType="Хранилище ScheduleModel.Student" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Subject" EntityType="Хранилище ScheduleModel.Subject" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="sysdiagrams" EntityType="Хранилище ScheduleModel.sysdiagrams" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Teacher" EntityType="Хранилище ScheduleModel.Teacher" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="FK_Schedule_Classroom" Association="Хранилище ScheduleModel.FK_Schedule_Classroom">
+      <End Role="Classroom" EntitySet="Classroom" />
+      <End Role="Schedule" EntitySet="Schedule" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Schedule_Group" Association="Хранилище ScheduleModel.FK_Schedule_Group">
+      <End Role="Group" EntitySet="Group" />
+      <End Role="Schedule" EntitySet="Schedule" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Schedule_LessonType" Association="Хранилище ScheduleModel.FK_Schedule_LessonType">
+      <End Role="LessonType" EntitySet="LessonType" />
+      <End Role="Schedule" EntitySet="Schedule" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Schedule_Subject" Association="Хранилище ScheduleModel.FK_Schedule_Subject">
+      <End Role="Subject" EntitySet="Subject" />
+      <End Role="Schedule" EntitySet="Schedule" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Schedule_Teacher" Association="Хранилище ScheduleModel.FK_Schedule_Teacher">
+      <End Role="Teacher" EntitySet="Teacher" />
+      <End Role="Schedule" EntitySet="Schedule" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Student_Group" Association="Хранилище ScheduleModel.FK_Student_Group">
+      <End Role="Group" EntitySet="Group" />
+      <End Role="Student" EntitySet="Student" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Classroom">
+    <Key>
+      <PropertyRef Name="Room_ID" />
+    </Key>
+    <Property Name="Room_ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Number" Type="nvarchar" Nullable="false" MaxLength="6" />
+  </EntityType>
+  <EntityType Name="Group">
+    <Key>
+      <PropertyRef Name="Group_ID" />
+    </Key>
+    <Property Name="Group_ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="10" />
+  </EntityType>
+  <EntityType Name="LessonType">
+    <Key>
+      <PropertyRef Name="Lesson_ID" />
+    </Key>
+    <Property Name="Lesson_ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Type" Type="nvarchar" Nullable="false" MaxLength="15" />
+  </EntityType>
+  <EntityType Name="Schedule">
+    <Key>
+      <PropertyRef Name="Schedule_ID" />
+    </Key>
+    <Property Name="Schedule_ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Subject_ID" Type="int" Nullable="false" />
+    <Property Name="Room_ID" Type="int" Nullable="false" />
+    <Property Name="Lesson_ID" Type="int" Nullable="false" />
+    <Property Name="Date" Type="date" Nullable="false" />
+    <Property Name="Group_ID" Type="int" Nullable="false" />
+    <Property Name="Teacher_ID" Type="int" Nullable="false" />
+    <Property Name="EnrollmentYear" Type="nvarchar" Nullable="false" MaxLength="10" />
+  </EntityType>
+  <EntityType Name="Student">
+    <Key>
+      <PropertyRef Name="Student_ID" />
+    </Key>
+    <Property Name="Student_ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="20" />
+    <Property Name="Surname" Type="nvarchar" Nullable="false" MaxLength="20" />
+    <Property Name="LastName" Type="nvarchar" Nullable="false" MaxLength="20" />
+    <Property Name="Group_ID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Subject">
+    <Key>
+      <PropertyRef Name="Subject_ID" />
+    </Key>
+    <Property Name="Subject_ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="20" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" Nullable="false" MaxLength="128" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <EntityType Name="Teacher">
+    <Key>
+      <PropertyRef Name="Teacher_ID" />
+    </Key>
+    <Property Name="Teacher_ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="20" />
+    <Property Name="Surname" Type="nvarchar" Nullable="false" MaxLength="20" />
+    <Property Name="LastName" Type="nvarchar" Nullable="false" MaxLength="20" />
+  </EntityType>
+  <Association Name="FK_Schedule_Classroom">
+    <End Role="Classroom" Type="Хранилище ScheduleModel.Classroom" Multiplicity="1" />
+    <End Role="Schedule" Type="Хранилище ScheduleModel.Schedule" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Classroom">
+        <PropertyRef Name="Room_ID" />
+      </Principal>
+      <Dependent Role="Schedule">
+        <PropertyRef Name="Room_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Schedule_Group">
+    <End Role="Group" Type="Хранилище ScheduleModel.Group" Multiplicity="1" />
+    <End Role="Schedule" Type="Хранилище ScheduleModel.Schedule" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Group">
+        <PropertyRef Name="Group_ID" />
+      </Principal>
+      <Dependent Role="Schedule">
+        <PropertyRef Name="Group_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Schedule_LessonType">
+    <End Role="LessonType" Type="Хранилище ScheduleModel.LessonType" Multiplicity="1" />
+    <End Role="Schedule" Type="Хранилище ScheduleModel.Schedule" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="LessonType">
+        <PropertyRef Name="Lesson_ID" />
+      </Principal>
+      <Dependent Role="Schedule">
+        <PropertyRef Name="Lesson_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Schedule_Subject">
+    <End Role="Subject" Type="Хранилище ScheduleModel.Subject" Multiplicity="1" />
+    <End Role="Schedule" Type="Хранилище ScheduleModel.Schedule" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Subject">
+        <PropertyRef Name="Subject_ID" />
+      </Principal>
+      <Dependent Role="Schedule">
+        <PropertyRef Name="Subject_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Schedule_Teacher">
+    <End Role="Teacher" Type="Хранилище ScheduleModel.Teacher" Multiplicity="1" />
+    <End Role="Schedule" Type="Хранилище ScheduleModel.Schedule" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Teacher">
+        <PropertyRef Name="Teacher_ID" />
+      </Principal>
+      <Dependent Role="Schedule">
+        <PropertyRef Name="Teacher_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Student_Group">
+    <End Role="Group" Type="Хранилище ScheduleModel.Group" Multiplicity="1" />
+    <End Role="Student" Type="Хранилище ScheduleModel.Student" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Group">
+        <PropertyRef Name="Group_ID" />
+      </Principal>
+      <Dependent Role="Student">
+        <PropertyRef Name="Group_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

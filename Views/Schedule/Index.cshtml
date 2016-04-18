@@ -1,0 +1,203 @@
+﻿@model IEnumerable<CourseProject.Models.Schedule>
+
+@{
+    ViewBag.Title = "Index";
+
+    var options = new AjaxOptions()
+    {
+        UpdateTargetId = "scheduledata",
+        Url = Url.Action("ScheduleData"),
+        LoadingElementId = "loadingIndicator",
+        
+
+    };
+}
+
+<h2>Index</h2>
+
+@using (Ajax.BeginForm(options))
+{
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Subject)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Classroom)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LessonType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Group)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Teacher)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EnrollmentYear)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    
+    <tbody id="scheduledata">
+    @foreach (var item in Model) {
+        <tr>
+           <td>
+                @Html.DisplayFor(modelItem => item.Subject.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Classroom.Number)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LessonType.Type)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Group.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Teacher.Name)
+                @Html.DisplayFor(modelItem => item.Teacher.Surname)
+                @Html.DisplayFor(modelItem => item.Teacher.LastName)            
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EnrollmentYear)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id=item.Schedule_ID }) |
+                @Html.ActionLink("Details", "Details", new { id=item.Schedule_ID }) |
+                @Html.ActionLink("Delete", "Delete", new { id=item.Schedule_ID })
+            </td>
+        </tr>
+    }   
+
+    </tbody>
+
+</table>
+    <input type="submit" name="update" value="Update Data" />
+    <img id="loadingIndicator" style="display:none;" src="@Url.Content("~/Content/loading.gif")" />
+}
+
+<h3>Schedule Upload</h3>
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+        
+     <input type="file" name="Files" id="Files" />
+     <br />
+     <input type="submit" name="submit" value="Upload" />
+ 
+}
+
+@*@using (Ajax.BeginForm("YourAction", "Schedule", new AjaxOptions() { HttpMethod = "POST" }, new { enctype = "multipart/form-data"}))
+{
+    @Html.AntiForgeryToken()
+    <input type="file" name="file"><br>
+    <input type="submit" value="Upload File to Server">
+}*@
+
+@*<div class="progress progress-striped">
+        <div class="progress-bar progress-bar-success">0%</div>
+    </div>
+
+<div id="status"></div>*@
+
+@*<form id="uploader">
+    <input id="fileInput" type="file" multiple>
+    <input type="submit" value="Upload file" />
+</form>*@
+@if (ViewBag.Feedback == "Upload complete")
+{
+<p style="color:lightgreen">@ViewBag.Feedback</p>
+}
+else
+{
+<p style="color:red">@ViewBag.Feedback</p>    
+}
+
+
+@section scripts
+{
+    @*Ненавязивый JavaScript для выполнения запроса на сервер без полного обновления страницы*@
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+
+    @*<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script>*@
+@*<script src="http://malsup.github.com/jquery.form.js"></script>
+
+<script>
+    (function () {
+
+        var bar = $('.progress-bar');
+        var percent = $('.progress-bar');
+        var status = $('#status');
+
+        $('form').ajaxForm({
+            beforeSend: function () {
+                status.empty();
+                var percentVal = '0%';
+                bar.width(percentVal)
+                percent.html(percentVal);
+            },
+            uploadProgress: function (event, position, total, percentComplete) {
+                var percentVal = percentComplete + '%';
+                bar.width(percentVal)
+                percent.html(percentVal);
+            },
+            success: function () {
+                var percentVal = '100%';
+                bar.width(percentVal)
+                percent.html(percentVal);
+            },
+            complete: function (xhr) {
+                status.html(xhr.responseText);
+            }
+        });
+
+    })();
+</script>*@
+    
+   @* <script type="text/javascript">  
+    window.onload = function () {
+    document.getElementById('uploader').onsubmit = function () {
+        var formdata = new FormData(); //FormData object
+        var fileInput = document.getElementById('fileInput');
+        //Iterating through each files selected in fileInput
+        for (i = 0; i < fileInput.files.length; i++) {
+            //Appending each file to FormData object
+            formdata.append(fileInput.files[i].name, fileInput.files[i]);
+        }
+       
+        //Creating an XMLHttpRequest and sending
+        var xhr = new XMLHttpRequest();
+        xhr.onloadstart = function () {
+            
+            $("#loadingIndicator").css("display", "inline");
+        }
+        xhr.onloadend = function () {
+
+            $("#loadingIndicator").css("display", "none");
+        }
+        xhr.open('POST', '/Schedule/Upload');
+        xhr.send(formdata);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                //alert(xhr.responseText);
+
+            }
+        }
+        return false;
+    }
+    }
+        </script>*@
+}

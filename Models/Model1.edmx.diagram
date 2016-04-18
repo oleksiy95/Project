@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="2c2871130abc4e5aa06cf06c97d13fbb" Name="Диаграмма1">
+        <EntityTypeShape EntityType="ScheduleModel.Classroom" Width="1.5" PointX="0.75" PointY="6.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ScheduleModel.Group" Width="1.5" PointX="0.75" PointY="3.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ScheduleModel.LessonType" Width="1.5" PointX="0.75" PointY="9" IsExpanded="true" />
+        <EntityTypeShape EntityType="ScheduleModel.Schedule" Width="1.5" PointX="3" PointY="2.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ScheduleModel.Student" Width="1.5" PointX="3" PointY="7.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ScheduleModel.Subject" Width="1.5" PointX="0.75" PointY="11.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ScheduleModel.sysdiagram" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ScheduleModel.Teacher" Width="1.5" PointX="0.75" PointY="13.625" IsExpanded="true" />
+        <AssociationConnector Association="ScheduleModel.FK_Schedule_Classroom" ManuallyRouted="false" />
+        <AssociationConnector Association="ScheduleModel.FK_Schedule_Group" ManuallyRouted="false" />
+        <AssociationConnector Association="ScheduleModel.FK_Student_Group" ManuallyRouted="false" />
+        <AssociationConnector Association="ScheduleModel.FK_Schedule_LessonType" ManuallyRouted="false" />
+        <AssociationConnector Association="ScheduleModel.FK_Schedule_Subject" ManuallyRouted="false" />
+        <AssociationConnector Association="ScheduleModel.FK_Schedule_Teacher" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

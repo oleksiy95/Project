@@ -1,0 +1,191 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ScheduleModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="ScheduleEntities" p1:LazyLoadingEnabled="true">
+    <EntitySet Name="Classrooms" EntityType="ScheduleModel.Classroom" />
+    <EntitySet Name="Groups" EntityType="ScheduleModel.Group" />
+    <EntitySet Name="LessonTypes" EntityType="ScheduleModel.LessonType" />
+    <EntitySet Name="Schedules" EntityType="ScheduleModel.Schedule" />
+    <EntitySet Name="Students" EntityType="ScheduleModel.Student" />
+    <EntitySet Name="Subjects" EntityType="ScheduleModel.Subject" />
+    <EntitySet Name="sysdiagrams" EntityType="ScheduleModel.sysdiagram" />
+    <EntitySet Name="Teachers" EntityType="ScheduleModel.Teacher" />
+    <AssociationSet Name="FK_Schedule_Classroom" Association="ScheduleModel.FK_Schedule_Classroom">
+      <End Role="Classroom" EntitySet="Classrooms" />
+      <End Role="Schedule" EntitySet="Schedules" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Schedule_Group" Association="ScheduleModel.FK_Schedule_Group">
+      <End Role="Group" EntitySet="Groups" />
+      <End Role="Schedule" EntitySet="Schedules" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Student_Group" Association="ScheduleModel.FK_Student_Group">
+      <End Role="Group" EntitySet="Groups" />
+      <End Role="Student" EntitySet="Students" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Schedule_LessonType" Association="ScheduleModel.FK_Schedule_LessonType">
+      <End Role="LessonType" EntitySet="LessonTypes" />
+      <End Role="Schedule" EntitySet="Schedules" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Schedule_Subject" Association="ScheduleModel.FK_Schedule_Subject">
+      <End Role="Subject" EntitySet="Subjects" />
+      <End Role="Schedule" EntitySet="Schedules" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Schedule_Teacher" Association="ScheduleModel.FK_Schedule_Teacher">
+      <End Role="Teacher" EntitySet="Teachers" />
+      <End Role="Schedule" EntitySet="Schedules" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Classroom">
+    <Key>
+      <PropertyRef Name="Room_ID" />
+    </Key>
+    <Property Name="Room_ID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="Number" Type="String" Nullable="false" MaxLength="6" Unicode="true" FixedLength="false" />
+    <NavigationProperty Name="Schedules" Relationship="ScheduleModel.FK_Schedule_Classroom" FromRole="Classroom" ToRole="Schedule" />
+  </EntityType>
+  <EntityType Name="Group">
+    <Key>
+      <PropertyRef Name="Group_ID" />
+    </Key>
+    <Property Name="Group_ID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="10" Unicode="true" FixedLength="false" />
+    <NavigationProperty Name="Schedules" Relationship="ScheduleModel.FK_Schedule_Group" FromRole="Group" ToRole="Schedule" />
+    <NavigationProperty Name="Students" Relationship="ScheduleModel.FK_Student_Group" FromRole="Group" ToRole="Student" />
+  </EntityType>
+  <EntityType Name="LessonType">
+    <Key>
+      <PropertyRef Name="Lesson_ID" />
+    </Key>
+    <Property Name="Lesson_ID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="Type" Type="String" Nullable="false" MaxLength="15" Unicode="true" FixedLength="false" />
+    <NavigationProperty Name="Schedules" Relationship="ScheduleModel.FK_Schedule_LessonType" FromRole="LessonType" ToRole="Schedule" />
+  </EntityType>
+  <EntityType Name="Schedule">
+    <Key>
+      <PropertyRef Name="Schedule_ID" />
+    </Key>
+    <Property Name="Schedule_ID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="Subject_ID" Type="Int32" Nullable="false" />
+    <Property Name="Room_ID" Type="Int32" Nullable="false" />
+    <Property Name="Lesson_ID" Type="Int32" Nullable="false" />
+    <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="Group_ID" Type="Int32" Nullable="false" />
+    <Property Name="Teacher_ID" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Classroom" Relationship="ScheduleModel.FK_Schedule_Classroom" FromRole="Schedule" ToRole="Classroom" />
+    <NavigationProperty Name="Group" Relationship="ScheduleModel.FK_Schedule_Group" FromRole="Schedule" ToRole="Group" />
+    <NavigationProperty Name="LessonType" Relationship="ScheduleModel.FK_Schedule_LessonType" FromRole="Schedule" ToRole="LessonType" />
+    <NavigationProperty Name="Subject" Relationship="ScheduleModel.FK_Schedule_Subject" FromRole="Schedule" ToRole="Subject" />
+    <NavigationProperty Name="Teacher" Relationship="ScheduleModel.FK_Schedule_Teacher" FromRole="Schedule" ToRole="Teacher" />
+    <Property Type="String" Name="EnrollmentYear" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="Student">
+    <Key>
+      <PropertyRef Name="Student_ID" />
+    </Key>
+    <Property Name="Student_ID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="20" Unicode="true" FixedLength="false" />
+    <Property Name="Surname" Type="String" Nullable="false" MaxLength="20" Unicode="true" FixedLength="false" />
+    <Property Name="LastName" Type="String" Nullable="false" MaxLength="20" Unicode="true" FixedLength="false" />
+    <Property Name="Group_ID" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Group" Relationship="ScheduleModel.FK_Student_Group" FromRole="Student" ToRole="Group" />
+  </EntityType>
+  <EntityType Name="Subject">
+    <Key>
+      <PropertyRef Name="Subject_ID" />
+    </Key>
+    <Property Name="Subject_ID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="20" Unicode="true" FixedLength="false" />
+    <NavigationProperty Name="Schedules" Relationship="ScheduleModel.FK_Schedule_Subject" FromRole="Subject" ToRole="Schedule" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" Nullable="false" MaxLength="128" Unicode="true" FixedLength="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="Teacher">
+    <Key>
+      <PropertyRef Name="Teacher_ID" />
+    </Key>
+    <Property Name="Teacher_ID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="20" Unicode="true" FixedLength="false" />
+    <Property Name="Surname" Type="String" Nullable="false" MaxLength="20" Unicode="true" FixedLength="false" />
+    <Property Name="LastName" Type="String" Nullable="false" MaxLength="20" Unicode="true" FixedLength="false" />
+    <NavigationProperty Name="Schedules" Relationship="ScheduleModel.FK_Schedule_Teacher" FromRole="Teacher" ToRole="Schedule" />
+  </EntityType>
+  <Association Name="FK_Schedule_Classroom">
+    <End Role="Classroom" Type="ScheduleModel.Classroom" Multiplicity="1" />
+    <End Role="Schedule" Type="ScheduleModel.Schedule" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Classroom">
+        <PropertyRef Name="Room_ID" />
+      </Principal>
+      <Dependent Role="Schedule">
+        <PropertyRef Name="Room_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Schedule_Group">
+    <End Role="Group" Type="ScheduleModel.Group" Multiplicity="1" />
+    <End Role="Schedule" Type="ScheduleModel.Schedule" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Group">
+        <PropertyRef Name="Group_ID" />
+      </Principal>
+      <Dependent Role="Schedule">
+        <PropertyRef Name="Group_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Student_Group">
+    <End Role="Group" Type="ScheduleModel.Group" Multiplicity="1" />
+    <End Role="Student" Type="ScheduleModel.Student" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Group">
+        <PropertyRef Name="Group_ID" />
+      </Principal>
+      <Dependent Role="Student">
+        <PropertyRef Name="Group_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Schedule_LessonType">
+    <End Role="LessonType" Type="ScheduleModel.LessonType" Multiplicity="1" />
+    <End Role="Schedule" Type="ScheduleModel.Schedule" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="LessonType">
+        <PropertyRef Name="Lesson_ID" />
+      </Principal>
+      <Dependent Role="Schedule">
+        <PropertyRef Name="Lesson_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Schedule_Subject">
+    <End Role="Subject" Type="ScheduleModel.Subject" Multiplicity="1" />
+    <End Role="Schedule" Type="ScheduleModel.Schedule" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Subject">
+        <PropertyRef Name="Subject_ID" />
+      </Principal>
+      <Dependent Role="Schedule">
+        <PropertyRef Name="Subject_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Schedule_Teacher">
+    <End Role="Teacher" Type="ScheduleModel.Teacher" Multiplicity="1" />
+    <End Role="Schedule" Type="ScheduleModel.Schedule" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Teacher">
+        <PropertyRef Name="Teacher_ID" />
+      </Principal>
+      <Dependent Role="Schedule">
+        <PropertyRef Name="Teacher_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>
