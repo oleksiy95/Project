@@ -45,7 +45,9 @@ namespace CourseProject.Controllers
         public ActionResult Create()
         {
             ViewBag.Room_ID = new SelectList(db.Classrooms, "Room_ID", "Number");
-            ViewBag.Group_ID = new SelectList(db.Groups, "Group_ID", "Name");
+            ViewBag.Group_ID = new SelectList((from s in db.Groups
+                                                  select new {Group_ID = s.Group_ID,
+                                                      FullGroup = s.Name + " " + s.EnrollmentYear}), "Group_ID", "FullGroup");
             ViewBag.Lesson_ID = new SelectList(db.LessonTypes, "Lesson_ID", "Type");
             ViewBag.Subject_ID = new SelectList(db.Subjects, "Subject_ID", "Name");
             ViewBag.Teacher_ID = new SelectList((from s in db.Teachers
@@ -88,7 +90,12 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
             }
 
             ViewBag.Room_ID = new SelectList(db.Classrooms, "Room_ID", "Number", schedule.Room_ID);
-            ViewBag.Group_ID = new SelectList(db.Groups, "Group_ID", "Name", schedule.Group_ID);
+            ViewBag.Group_ID = new SelectList((from s in db.Groups
+                                               select new
+                                               {
+                                                   Group_ID = s.Group_ID,
+                                                   FullGroup = s.Name + " " + s.EnrollmentYear
+                                               }), "Group_ID", "Name", schedule.Group_ID);
             ViewBag.Lesson_ID = new SelectList(db.LessonTypes, "Lesson_ID", "Type", schedule.Lesson_ID);
             ViewBag.Subject_ID = new SelectList(db.Subjects, "Subject_ID", "Name", schedule.Subject_ID);
             ViewBag.Teacher_ID = new SelectList((from s in db.Teachers
@@ -112,7 +119,12 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
                 return HttpNotFound();
             }
             ViewBag.Room_ID = new SelectList(db.Classrooms, "Room_ID", "Number", schedule.Room_ID);
-            ViewBag.Group_ID = new SelectList(db.Groups, "Group_ID", "Name", schedule.Group_ID);
+            ViewBag.Group_ID = new SelectList((from s in db.Groups
+                                               select new
+                                               {
+                                                   Group_ID = s.Group_ID,
+                                                   FullGroup = s.Name + " " + s.EnrollmentYear
+                                               }), "Group_ID", "Name", schedule.Group_ID);
             ViewBag.Lesson_ID = new SelectList(db.LessonTypes, "Lesson_ID", "Type", schedule.Lesson_ID);
             ViewBag.Subject_ID = new SelectList(db.Subjects, "Subject_ID", "Name", schedule.Subject_ID);
             ViewBag.Teacher_ID = new SelectList((from s in db.Teachers
@@ -134,7 +146,12 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
                 return RedirectToAction("Index");
             }
             ViewBag.Room_ID = new SelectList(db.Classrooms, "Room_ID", "Number", schedule.Room_ID);
-            ViewBag.Group_ID = new SelectList(db.Groups, "Group_ID", "Name", schedule.Group_ID);
+            ViewBag.Group_ID = new SelectList((from s in db.Groups
+                                               select new
+                                               {
+                                                   Group_ID = s.Group_ID,
+                                                   FullGroup = s.Name + " " + s.EnrollmentYear
+                                               }), "Group_ID", "Name", schedule.Group_ID);
             ViewBag.Lesson_ID = new SelectList(db.LessonTypes, "Lesson_ID", "Type", schedule.Lesson_ID);
             ViewBag.Subject_ID = new SelectList(db.Subjects, "Subject_ID", "Name", schedule.Subject_ID);
             ViewBag.Teacher_ID = new SelectList((from s in db.Teachers
