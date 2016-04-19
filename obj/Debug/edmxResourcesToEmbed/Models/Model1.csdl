@@ -50,6 +50,7 @@
     <Property Name="Name" Type="String" Nullable="false" MaxLength="10" Unicode="true" FixedLength="false" />
     <NavigationProperty Name="Schedules" Relationship="ScheduleModel.FK_Schedule_Group" FromRole="Group" ToRole="Schedule" />
     <NavigationProperty Name="Students" Relationship="ScheduleModel.FK_Student_Group" FromRole="Group" ToRole="Student" />
+    <Property Type="String" Name="EnrollmentYear" Nullable="false" MaxLength="4" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="LessonType">
     <Key>

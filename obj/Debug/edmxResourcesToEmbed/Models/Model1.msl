@@ -12,6 +12,7 @@
     <EntitySetMapping Name="Groups">
       <EntityTypeMapping TypeName="ScheduleModel.Group">
         <MappingFragment StoreEntitySet="Group">
+          <ScalarProperty Name="EnrollmentYear" ColumnName="EnrollmentYear" />
           <ScalarProperty Name="Group_ID" ColumnName="Group_ID" />
           <ScalarProperty Name="Name" ColumnName="Name" />
         </MappingFragment>

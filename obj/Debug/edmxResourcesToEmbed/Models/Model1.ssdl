@@ -47,6 +47,7 @@
     </Key>
     <Property Name="Group_ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
     <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="10" />
+    <Property Name="EnrollmentYear" Type="nvarchar" Nullable="false" MaxLength="4" />
   </EntityType>
   <EntityType Name="LessonType">
     <Key>

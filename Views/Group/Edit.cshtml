@@ -3,7 +3,10 @@
 @{
     ViewBag.Title = "Edit";
 }
-
+@{
+    
+    SelectList list = new SelectList(new[] {"2011","2012","2013","2014","2015","2016","2017","2018","2019","2020"});
+    }
 <h2>Edit</h2>
 
 @using (Html.BeginForm()) {
@@ -23,7 +26,13 @@
             @Html.EditorFor(model => model.Name)
             @Html.ValidationMessageFor(model => model.Name)
         </div>
-
+        <div class="editor-label">
+            @Html.LabelFor(model => model.EnrollmentYear)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("EnrollmentYear", list, String.Empty)
+            @Html.ValidationMessageFor(model => model.Name)
+        </div>
         <p>
             <input type="submit" value="Save" />
         </p>

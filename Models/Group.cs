@@ -22,6 +22,7 @@ namespace CourseProject.Models
     
         public int Group_ID { get; set; }
         public string Name { get; set; }
+        public string EnrollmentYear { get; set; }
     
         public virtual ICollection<Schedule> Schedules { get; set; }
         public virtual ICollection<Student> Students { get; set; }
