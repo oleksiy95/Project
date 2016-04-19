@@ -1,0 +1,40 @@
+﻿@model CourseProject.Models.Schedule
+
+@{
+    ViewBag.Title = "Copy";
+}
+
+<h2>Copy</h2>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Schedule</legend>
+                
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Teacher_ID, "Teacher")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("Teacher_ID", String.Empty)
+            @Html.ValidationMessageFor(model => model.Teacher_ID)
+        </div>
+
+         <div class="editor-label">
+            @Html.LabelFor(model => model.Group_ID, "Group")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("Group_ID", String.Empty)
+            @Html.ValidationMessageFor(model => model.Group_ID)
+        </div>             
+        
+         <p>
+            <input type="submit" value="Copy Schedule" />
+        </p>
+        <p style="color:red">@ViewBag.NotFounded</p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
