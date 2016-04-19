@@ -95,7 +95,7 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
                                                {
                                                    Group_ID = s.Group_ID,
                                                    FullGroup = s.Name + " " + s.EnrollmentYear
-                                               }), "Group_ID", "Name", schedule.Group_ID);
+                                               }), "Group_ID", "FullGroup", schedule.Group_ID);
             ViewBag.Lesson_ID = new SelectList(db.LessonTypes, "Lesson_ID", "Type", schedule.Lesson_ID);
             ViewBag.Subject_ID = new SelectList(db.Subjects, "Subject_ID", "Name", schedule.Subject_ID);
             ViewBag.Teacher_ID = new SelectList((from s in db.Teachers
@@ -107,7 +107,117 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
             
         }
 
+
+        //
+        // GET: /Schedule/Copy
+
+        public ActionResult Copy()
+        {
+
+            return AddFuctionForCopy();
+        }
        
+        //
+        // POST: /Schedule/Copy
+
+        [HttpPost]
+        public ActionResult Copy(Schedule schedulePar, int? Teacher_ID, int? Group_ID)
+        {
+            if (ModelState.IsValid)
+            {
+                if (Teacher_ID != null && Group_ID != null)
+                {
+                    //search records in the database with conditios
+                    var schedule = from s in db.Schedules
+                                   where s.Teacher_ID == Teacher_ID && s.Group_ID == Group_ID
+                                   select s;
+
+                    bool notHaveRecords = true;
+                 
+                    foreach (var one in schedule)
+                    {
+                        //check if schedule have such records
+                        notHaveRecords = false;
+
+                        //change EnrollmentYear for the next year
+                        one.EnrollmentYear = (Convert.ToInt32(one.EnrollmentYear) + 1).ToString();
+
+                        //change date for the next year to the same day of week(intercalary year)
+                        if ((one.Date.Value.Year + 1) % 4 == 0)
+                        {
+                            one.Date = one.Date.Value.AddYears(1);
+                            one.Date = one.Date.Value.AddDays(-2.0);
+
+                        }
+                        
+                        //change date for the next year to the same day of week
+                        else
+                        {
+                            one.Date = one.Date.Value.AddYears(1);
+                            one.Date = one.Date.Value.AddDays(-1.0);
+                        }
+                        //EnrollmentYear, which new Group must have
+                        int enrYear = Convert.ToInt32(one.Group.EnrollmentYear) + 1;
+                       
+                        //ID of old Group
+                        int gr_id = one.Group_ID;
+                        
+                        //Search Group with the same Name but new EnrollmentYear
+                        foreach (var year in db.Groups)
+                        {
+                            if (enrYear == Convert.ToInt32(year.EnrollmentYear) && one.Group.Name == year.Name)
+                                one.Group_ID = year.Group_ID;
+                        }
+                        
+                        //if ID changed - we have founded Group with the same Name and new EnrollmentYear
+                        if (one.Group_ID != gr_id)
+                        {
+                            db.Schedules.Add(one);
+                        }
+                        //if ID didn't change - show message.
+                        else
+                        {
+                            ViewBag.NotFounded = "Group " + one.Group.Name + " with EnrollmentYear " + enrYear + " is not founded. Create it to copy.";
+                            return AddFuctionForCopy();
+                        }
+                        
+                    }
+                    //if we don't find records to copy - show message
+                    if (notHaveRecords)
+                    {
+                        ViewBag.NotFounded = "Schedule doesn't have such records";
+                        return AddFuctionForCopy();
+                    }
+                    db.SaveChanges();
+                }
+                return RedirectToAction("Index");
+            }
+
+            return AddFuctionForCopy();
+        }
+        
+        //return method
+        public ActionResult AddFuctionForCopy()
+        {
+
+            ViewBag.Group_ID = new SelectList((from s in db.Groups
+                                               select new
+                                               {
+                                                   Group_ID = s.Group_ID,
+                                                   FullGroup = s.Name + " " + s.EnrollmentYear
+                                               }), "Group_ID", "FullGroup");
+
+            ViewBag.Teacher_ID = new SelectList((from s in db.Teachers
+                                                 select new
+                                                 {
+                                                     Teacher_ID = s.Teacher_ID,
+                                                     FullName = s.Name + " " + s.Surname + " " + s.LastName
+                                                 }), "Teacher_ID", "FullName");
+
+
+            return View("Copy");
+        }
+
         //
         // GET: /Schedule/Edit/5
 
@@ -124,7 +234,7 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
                                                {
                                                    Group_ID = s.Group_ID,
                                                    FullGroup = s.Name + " " + s.EnrollmentYear
-                                               }), "Group_ID", "Name", schedule.Group_ID);
+                                               }), "Group_ID", "FullGroup", schedule.Group_ID);
             ViewBag.Lesson_ID = new SelectList(db.LessonTypes, "Lesson_ID", "Type", schedule.Lesson_ID);
             ViewBag.Subject_ID = new SelectList(db.Subjects, "Subject_ID", "Name", schedule.Subject_ID);
             ViewBag.Teacher_ID = new SelectList((from s in db.Teachers
@@ -151,7 +261,7 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
                                                {
                                                    Group_ID = s.Group_ID,
                                                    FullGroup = s.Name + " " + s.EnrollmentYear
-                                               }), "Group_ID", "Name", schedule.Group_ID);
+                                               }), "Group_ID", "FullGroup", schedule.Group_ID);
             ViewBag.Lesson_ID = new SelectList(db.LessonTypes, "Lesson_ID", "Type", schedule.Lesson_ID);
             ViewBag.Subject_ID = new SelectList(db.Subjects, "Subject_ID", "Name", schedule.Subject_ID);
             ViewBag.Teacher_ID = new SelectList((from s in db.Teachers
@@ -197,55 +307,13 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
             return PartialView(schedules.ToList());
         }
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult YourAction(HttpPostedFileBase file)
-        //{
-        //    //if (files != null)
-        //    //{
-        //      //  foreach (var file in files)
-        //        //{
-        //            // Verify that the user selected a file
-        //            if (file != null && file.ContentLength > 0)
-        //            {
-        //                // extract only the fielname
-        //                var fileName = Path.GetFileName(file.FileName);
-        //                // TODO: need to define destination
-        //                var path = Path.Combine(Server.MapPath("~/Content/csv"), fileName);
-        //                file.SaveAs(path);
-        //            }
-        //            return View();
-        //        //}
-        //    }
         
-               
-        //[HttpPost]
-        //public ActionResult Upload()
-        //{
-        //    for (int i = 0; i < Request.Files.Count; i++)
-        //    {
-        //        HttpPostedFileBase file = Request.Files[i]; //Uploaded file
-        //        //Use the following properties to get file's name, size and MIMEType
-        //        int fileSize = file.ContentLength;
-        //        string fileName = file.FileName;
-        //        string mimeType = file.ContentType;
-        //        System.IO.Stream fileContent = file.InputStream;
-        //        //To save file, use SaveAs method
-        //        file.SaveAs(Server.MapPath("~/Content/csv/")+fileName); //File will be saved in application root
-        //    }
-
-        //    var schedules = db.Schedules.Include(s => s.Classroom).Include(s => s.Group).Include(s => s.LessonType).Include(s => s.Subject).Include(s => s.Teacher);
-        //    return PartialView(schedules.ToList());
-        //    //return Json("Uploaded " + Request.Files.Count + " files");
-        //}
-
         [HttpPost]
         public ActionResult Index(HttpPostedFileBase Files)
         {
             DataTable dt = new DataTable();
             ViewBag.Complete = false;
-            //foreach (var file in schedule.Files)
-            //{
+            
 
             if (Files != null || Files.ContentLength > 0)
             {
@@ -322,7 +390,7 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
                 //add our current value to our data row
                 row.ItemArray = r.Split(line);
                 
-                //
+                //search coincidence by name and replace it for IDs values
                 foreach (var name in db.Subjects.ToList())
                 {
                     if (row.ItemArray[1].ToString() == name.Name)

@@ -362,6 +362,7 @@
     <Content Include="Views\Teacher\Delete.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Date.cshtml" />
     <Content Include="Views\Schedule\ScheduleData.cshtml" />
+    <Content Include="Views\Schedule\Copy.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
