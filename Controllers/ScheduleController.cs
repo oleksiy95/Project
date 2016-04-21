@@ -10,6 +10,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Configuration;
 using System.Data.SqlClient;
+using System.Text;
 
 namespace CourseProject.Controllers
 {
@@ -307,11 +308,21 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
             return PartialView(schedules.ToList());
         }
 
-        
+        public ActionResult DownloadFile()
+        {
+            string filename = Server.MapPath("/Content/csv/ErrorsLine.csv");
+            string contentType = "text/csv";
+            string downloadName = "CSV File.csv";
+
+            return File(filename, contentType, downloadName);
+        }
+
         [HttpPost]
         public ActionResult Index(HttpPostedFileBase Files)
         {
             DataTable dt = new DataTable();
+            DataTable dtErrors = new DataTable();
+            
             ViewBag.Complete = false;
             
 
@@ -326,9 +337,29 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
                         {
                             Files.SaveAs(path);
                             dt = ProcessCSV(path)[0];
+                            dtErrors = ProcessCSV(path)[1];
 
+                            //if file exists - delete it
+                            if (System.IO.File.Exists(Path.Combine(Server.MapPath("~/Content/csv"), "ErrorsLine.csv")))
+                            {
+                                System.IO.File.Delete(Path.Combine(Server.MapPath("~/Content/csv"), "ErrorsLine.csv"));
+                            }
+                                                        
+                            StringBuilder sb = new StringBuilder();
+                            sb.AppendLine("subject;class;lesson;date;group;teacher;enrollment");//first line for csv file
+                            foreach (DataRow line in dtErrors.Rows)//add record with errors in csv file
+                            {                                
+                                    sb.AppendLine(string.Format("{0};{1};{2};{3};{4};{5};{6}", line.ItemArray[1], line.ItemArray[2], line.ItemArray[3], line.ItemArray[4], line.ItemArray[5], line.ItemArray[6], line.ItemArray[7]));                                
+                            }
+
+                            System.IO.File.AppendAllText(Path.Combine(Server.MapPath("~/Content/csv"), "ErrorsLine.csv"), sb.ToString());//save csv file
+                            
                             ViewBag.Feedback = ProcessBulkCopy(dt);
                             ViewBag.ErrorMassage = ErrorMassageForBulkCopy;
+                            if (ErrorMassageForBulkCopy.Length > 1)
+                            {
+                                ViewBag.ErrorsInCSV = "true";
+                            }
                             
                         }
                         catch (Exception ex)
@@ -461,6 +492,7 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
                         break;
                     }
                 }
+                //Date and Enrollment year don't have the IDs
                 data_id[4] = row.ItemArray[4];
                 data_id[7] = row.ItemArray[7];
 
@@ -477,26 +509,30 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
                     //row.ItemArray = data_id;
                     dtErrors.Rows.Add(rowErrors);
 
+                    //record only first 5 errors
                     if (errorNumber < 6)
                     {
-                        if (!teachers) Feedback = "Error in line " + lineNumber + ": " + row.ItemArray[6].ToString() + " isn't founded;<br/>";
-                        if (!groups) Feedback = "Error in line " + lineNumber + ": " + row.ItemArray[5].ToString() + " isn't founded;<br/>";
-                        if (!lessontypes) Feedback = "Error in line " + lineNumber + ": " + row.ItemArray[3].ToString() + " isn't founded;<br/>";
-                        if (!classrooms) Feedback = "Error in line " + lineNumber + ": " + row.ItemArray[2].ToString() + " isn't founded;<br/>";
-                        if (!subjects) Feedback = "Error in line " + lineNumber + ": " + row.ItemArray[1].ToString() + " isn't founded;<br/>";
+                        if (!teachers) Feedback = "Error in line " + lineNumber + ": teacher " + row.ItemArray[6].ToString() + " isn't founded;<br/>";
+                        if (!groups) Feedback = "Error in line " + lineNumber + ": group " + row.ItemArray[5].ToString() + " isn't founded;<br/>";
+                        if (!lessontypes) Feedback = "Error in line " + lineNumber + ": lesson's type " + row.ItemArray[3].ToString() + " isn't founded;<br/>";
+                        if (!classrooms) Feedback = "Error in line " + lineNumber + ": room " + row.ItemArray[2].ToString() + " isn't founded;<br/>";
+                        if (!subjects) Feedback = "Error in line " + lineNumber + ": subject " + row.ItemArray[1].ToString() + " isn't founded;<br/>";
                         ErrorMassage = ErrorMassage + Feedback;
                     }
                 }
             }
+            
+            //if number of errors are less than 5
             if (errorNumber < 5)
             {
+                if (errorNumber == 0) ErrorMassage = string.Empty;
                 ErrorMassage = "Show " + errorNumber + " errors:<br/>" + ErrorMassage;
             }
-            else
+            else//if number of errors are 5 and more
             {
                 ErrorMassage = "Show 5 of " + errorNumber + " errors:<br/>" + ErrorMassage;
             } 
-            ErrorMassageForBulkCopy = ErrorMassage;
+            ErrorMassageForBulkCopy = ErrorMassage;//record error's message to global field
                                   
             //Tidy Streameader up
             sr.Dispose();

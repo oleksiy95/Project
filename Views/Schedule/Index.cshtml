@@ -111,6 +111,10 @@ else
 }
 <p style="color:red">@Html.Raw(ViewBag.ErrorMassage)</p>  
 
+@if (ViewBag.ErrorsInCSV == "true")
+{
+    @Html.ActionLink("Download file with wrong data", "DownloadFile");
+}
 
 @section scripts
 {
