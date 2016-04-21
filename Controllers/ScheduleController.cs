@@ -325,9 +325,10 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
                         try
                         {
                             Files.SaveAs(path);
-                            dt = ProcessCSV(path);
+                            dt = ProcessCSV(path)[0];
 
                             ViewBag.Feedback = ProcessBulkCopy(dt);
+                            ViewBag.ErrorMassage = ErrorMassageForBulkCopy;
                             
                         }
                         catch (Exception ex)
@@ -352,15 +353,23 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
             //return RedirectToAction("Index");
         }
 
-        private DataTable ProcessCSV(string fileName)
+        private string ErrorMassageForBulkCopy;
+        private List<DataTable> ProcessCSV(string fileName)
         {
             //Set up our variables
             string Feedback = string.Empty;
+            string ErrorMassage = string.Empty;
             string line = string.Empty;
             string[] strArray;
             DataTable dt = new DataTable();
-            
+            DataTable dtErrors = new DataTable();
+            List<DataTable> dtList = new List<DataTable>();
+            bool subjects, classrooms, lessontypes, groups, teachers;
+            int lineNumber = 1;
+            int errorNumber = 0;
+
             DataRow row;
+            DataRow rowErrors;
             
             object[] data_id = new object[8];
             
@@ -378,24 +387,36 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
             
             //For each item in the new split array, dynamically builds our Data columns. Save us having to worry about it.
             Array.ForEach(strArray, s => dt.Columns.Add(new DataColumn()));
+            Array.ForEach(strArray, s => dtErrors.Columns.Add(new DataColumn()));
+
+            
 
             //Read each line in the CVS file until it’s empty
             while ((line = sr.ReadLine()) != null)
             {
+                subjects = false;
+                classrooms = false;
+                lessontypes = false;
+                groups = false;
+                teachers = false;
+                
                 //ID values
                 line = " ;" + line;
                 row = dt.NewRow();
+                rowErrors = dtErrors.NewRow();
                 
 
                 //add our current value to our data row
                 row.ItemArray = r.Split(line);
+                rowErrors.ItemArray = r.Split(line);
                 
-                //search coincidence by name and replace it for IDs values
+                //search coincidence by name and replace it for IDs values and checking if it is founded
                 foreach (var name in db.Subjects.ToList())
                 {
                     if (row.ItemArray[1].ToString() == name.Name)
                     {
                         data_id[1] = name.Subject_ID;
+                        subjects = true;
                         break;
                     }
                 }
@@ -405,6 +426,7 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
                     if (row.ItemArray[2].ToString() == name.Number)
                     {
                         data_id[2] = name.Room_ID;
+                        classrooms = true;
                         break;
                     }
                 }
@@ -414,6 +436,7 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
                     if (row.ItemArray[3].ToString() == name.Type)
                     {
                         data_id[3] = name.Lesson_ID;
+                        lessontypes = true;
                         break;
                     }
                 }
@@ -423,6 +446,7 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
                     if (row.ItemArray[5].ToString() == name.Name)
                     {
                         data_id[5] = name.Group_ID;
+                        groups = true;
                         break;
                     }
                 }
@@ -433,24 +457,57 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
                     if (row.ItemArray[6].ToString() == teacherName)
                     {
                         data_id[6] = name.Teacher_ID;
+                        teachers = true;
                         break;
                     }
                 }
                 data_id[4] = row.ItemArray[4];
                 data_id[7] = row.ItemArray[7];
-                row.ItemArray = data_id;
-                dt.Rows.Add(row);
+
+                lineNumber++;
+                //if all names are founded, add row in dt, else add row in dtErrors
+                if (teachers && groups && lessontypes && classrooms && subjects)
+                {
+                    row.ItemArray = data_id;
+                    dt.Rows.Add(row);
+                }
+                else 
+                {
+                    errorNumber++;
+                    //row.ItemArray = data_id;
+                    dtErrors.Rows.Add(rowErrors);
+
+                    if (errorNumber < 6)
+                    {
+                        if (!teachers) Feedback = "Error in line " + lineNumber + ": " + row.ItemArray[6].ToString() + " isn't founded;<br/>";
+                        if (!groups) Feedback = "Error in line " + lineNumber + ": " + row.ItemArray[5].ToString() + " isn't founded;<br/>";
+                        if (!lessontypes) Feedback = "Error in line " + lineNumber + ": " + row.ItemArray[3].ToString() + " isn't founded;<br/>";
+                        if (!classrooms) Feedback = "Error in line " + lineNumber + ": " + row.ItemArray[2].ToString() + " isn't founded;<br/>";
+                        if (!subjects) Feedback = "Error in line " + lineNumber + ": " + row.ItemArray[1].ToString() + " isn't founded;<br/>";
+                        ErrorMassage = ErrorMassage + Feedback;
+                    }
+                }
             }
-            
-            
+            if (errorNumber < 5)
+            {
+                ErrorMassage = "Show " + errorNumber + " errors:<br/>" + ErrorMassage;
+            }
+            else
+            {
+                ErrorMassage = "Show 5 of " + errorNumber + " errors:<br/>" + ErrorMassage;
+            } 
+            ErrorMassageForBulkCopy = ErrorMassage;
+                                  
             //Tidy Streameader up
             sr.Dispose();
-
+            dtList.Add(dt);
+            dtList.Add(dtErrors);
             //return a the new DataTable
-            return dt;
+            return dtList;
 
         }
 
+        
         private static String ProcessBulkCopy(DataTable dt)
         {
             string Feedback = string.Empty;
