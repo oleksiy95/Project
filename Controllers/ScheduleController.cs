@@ -339,24 +339,11 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
                             dt = ProcessCSV(path)[0];
                             dtErrors = ProcessCSV(path)[1];
 
-                            //if file exists - delete it
-                            if (System.IO.File.Exists(Path.Combine(Server.MapPath("~/Content/csv"), "ErrorsLine.csv")))
-                            {
-                                System.IO.File.Delete(Path.Combine(Server.MapPath("~/Content/csv"), "ErrorsLine.csv"));
-                            }
-                                                        
-                            StringBuilder sb = new StringBuilder();
-                            sb.AppendLine("subject;class;lesson;date;group;teacher;enrollment");//first line for csv file
-                            foreach (DataRow line in dtErrors.Rows)//add record with errors in csv file
-                            {                                
-                                    sb.AppendLine(string.Format("{0};{1};{2};{3};{4};{5};{6}", line.ItemArray[1], line.ItemArray[2], line.ItemArray[3], line.ItemArray[4], line.ItemArray[5], line.ItemArray[6], line.ItemArray[7]));                                
-                            }
+                            CreateCSVwithErrors(dtErrors);
 
-                            System.IO.File.AppendAllText(Path.Combine(Server.MapPath("~/Content/csv"), "ErrorsLine.csv"), sb.ToString());//save csv file
-                            
                             ViewBag.Feedback = ProcessBulkCopy(dt);
                             ViewBag.ErrorMassage = ErrorMassageForBulkCopy;
-                            if (ErrorMassageForBulkCopy.Length > 1)
+                            if (ErrorMassageForBulkCopy.Length > 0)
                             {
                                 ViewBag.ErrorsInCSV = "true";
                             }
@@ -384,7 +371,26 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
             //return RedirectToAction("Index");
         }
 
+        private void CreateCSVwithErrors(DataTable dtErrors)
+        {
+            //if file exists - delete it
+            if (System.IO.File.Exists(Path.Combine(Server.MapPath("~/Content/csv"), "ErrorsLine.csv")))
+            {
+                System.IO.File.Delete(Path.Combine(Server.MapPath("~/Content/csv"), "ErrorsLine.csv"));
+            }
+
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("subject;class;lesson;date;group;teacher;enrollment");//first line for csv file
+            foreach (DataRow line in dtErrors.Rows)//add records with errors in csv file
+            {
+                sb.AppendLine(string.Format("{0};{1};{2};{3};{4};{5};{6}", line.ItemArray[1], line.ItemArray[2], line.ItemArray[3], line.ItemArray[4], line.ItemArray[5], line.ItemArray[6], line.ItemArray[7]));
+            }
+
+            System.IO.File.AppendAllText(Path.Combine(Server.MapPath("~/Content/csv"), "ErrorsLine.csv"), sb.ToString());//save csv file
+        }
+        
         private string ErrorMassageForBulkCopy;
+        
         private List<DataTable> ProcessCSV(string fileName)
         {
             //Set up our variables
