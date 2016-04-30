@@ -371,6 +371,7 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
             //return RedirectToAction("Index");
         }
 
+        //creation csv file with wrong data
         private void CreateCSVwithErrors(DataTable dtErrors)
         {
             //if file exists - delete it
@@ -480,7 +481,8 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
 
                 foreach (var name in db.Groups.ToList())
                 {
-                    if (row.ItemArray[5].ToString() == name.Name)
+                    string groupName = name.Name + " " + name.EnrollmentYear;
+                    if (row.ItemArray[5].ToString() == groupName)
                     {
                         data_id[5] = name.Group_ID;
                         groups = true;
@@ -518,11 +520,13 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
                     //record only first 5 errors
                     if (errorNumber < 6)
                     {
-                        if (!teachers) Feedback = "Error in line " + lineNumber + ": teacher " + row.ItemArray[6].ToString() + " isn't founded;<br/>";
-                        if (!groups) Feedback = "Error in line " + lineNumber + ": group " + row.ItemArray[5].ToString() + " isn't founded;<br/>";
-                        if (!lessontypes) Feedback = "Error in line " + lineNumber + ": lesson's type " + row.ItemArray[3].ToString() + " isn't founded;<br/>";
-                        if (!classrooms) Feedback = "Error in line " + lineNumber + ": room " + row.ItemArray[2].ToString() + " isn't founded;<br/>";
-                        if (!subjects) Feedback = "Error in line " + lineNumber + ": subject " + row.ItemArray[1].ToString() + " isn't founded;<br/>";
+                        Feedback = "Error in line " + lineNumber + ":";
+                        if (!teachers) Feedback = Feedback + " teacher " + row.ItemArray[6].ToString() + " isn't founded;";
+                        if (!groups) Feedback = Feedback + " group " + row.ItemArray[5].ToString() + " isn't founded;";
+                        if (!lessontypes) Feedback = Feedback + " lesson's type " + row.ItemArray[3].ToString() + " isn't founded;";
+                        if (!classrooms) Feedback = Feedback + " room " + row.ItemArray[2].ToString() + " isn't founded;";
+                        if (!subjects) Feedback = Feedback + " subject " + row.ItemArray[1].ToString() + " isn't founded;";
+                        Feedback = Feedback + "<br/>";
                         ErrorMassage = ErrorMassage + Feedback;
                     }
                 }
@@ -585,6 +589,5 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
         }
        
     }
-
 
 }
