@@ -1,0 +1,90 @@
+﻿@model CourseProject.Models.Schedule
+@{
+    
+    SelectList list = new SelectList(new[] {"2015","2016","2017","2018","2019","2020"});
+    var options = new AjaxOptions()
+    {
+        UpdateTargetId = "scheduledata",
+        Url = Url.Action("CorrectRecordPost"),
+        LoadingElementId = "loadingIndicator",
+        OnSuccess = "SuccessCorrect"
+        
+
+    };
+    }
+
+@using (Ajax.BeginForm(options))
+{
+    @Html.ValidationSummary(true)
+<fieldset>
+        <legend>Schedule</legend>
+
+        <div class="editor-field">
+            @Html.HiddenFor(model => model.Schedule_ID)         
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Subject_ID, "Subject")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("Subject_ID", String.Empty)
+            @Html.ValidationMessageFor(model => model.Subject_ID)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Room_ID, "Classroom")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("Room_ID", String.Empty)
+            @Html.ValidationMessageFor(model => model.Room_ID)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Lesson_ID, "LessonType")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("Lesson_ID", String.Empty)
+            @Html.ValidationMessageFor(model => model.Lesson_ID)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Date)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.Date, new { id = "Date" + ViewBag.numberID })
+            @Html.ValidationMessageFor(model => model.Date)            
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Group_ID, "Group")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("Group_ID", String.Empty)
+            @Html.ValidationMessageFor(model => model.Group_ID)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Teacher_ID, "Teacher")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("Teacher_ID", String.Empty)            
+            @Html.ValidationMessageFor(model => model.Teacher_ID)            
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.EnrollmentYear)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("EnrollmentYear", list, String.Empty)
+            @Html.ValidationMessageFor(model => model.EnrollmentYear)
+        </div>
+
+        <p>
+            <input type="submit" value="Save" />
+        </p>
+    </fieldset>
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+   
+}

@@ -270,6 +270,145 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
 FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullName", schedule.Teacher_ID);
             return View(schedule);
         }
+
+        //
+        //GET: /Schedule/Index/_CorrectRecord
+        //public ActionResult CorrectRecord()
+        //{
+        //    Schedule schedule = new Schedule();
+        //    ViewBag.Room_ID = new SelectList(db.Classrooms, "Room_ID", "Number", 4);
+        //    ViewBag.Group_ID = new SelectList((from s in db.Groups
+        //                                       select new
+        //                                       {
+        //                                           Group_ID = s.Group_ID,
+        //                                           FullGroup = s.Name + " " + s.EnrollmentYear
+        //                                       }), "Group_ID", "FullGroup");
+        //    ViewBag.Lesson_ID = new SelectList(db.LessonTypes, "Lesson_ID", "Type", 2);
+        //    ViewBag.Subject_ID = new SelectList(db.Subjects, "Subject_ID", "Name", 2);
+        //    ViewBag.Teacher_ID = new SelectList((from s in db.Teachers
+        //                                         select new
+        //                                         {
+        //                                             Teacher_ID = s.Teacher_ID,
+        //                                             FullName = s.Name + " " + s.Surname + " " + s.LastName
+        //                                         }), "Teacher_ID", "FullName");     
+            
+        //    return PartialView("_CorrectRecord",schedule);
+        //}
+
+        public ActionResult CorrectRecord1()
+        {
+            ViewBag.numberID = "1";
+            return GeneralCorrectRecord(0);
+            
+        }
+
+        public ActionResult CorrectRecord2()
+        {
+            ViewBag.numberID = "2";
+            return GeneralCorrectRecord(1);
+        }
+
+        public ActionResult CorrectRecord3()
+        {
+            ViewBag.numberID = "3";
+            return GeneralCorrectRecord(2);
+        }
+
+        public ActionResult CorrectRecord4()
+        {
+            ViewBag.numberID = "4";
+            return GeneralCorrectRecord(3);
+        }
+        
+        public ActionResult CorrectRecord5()
+        {
+            ViewBag.numberID = "5";
+            return GeneralCorrectRecord(4);
+        }
+       
+
+        private ActionResult GeneralCorrectRecord(int lineNumber)
+        {
+
+            DataTable dataErrors = MethodForCorrection();
+            Schedule schedule = new Schedule();
+            if (dataErrors.Rows.Count > lineNumber)
+            {
+                
+                ViewBag.Room_ID = new SelectList(db.Classrooms, "Room_ID", "Number", dataErrors.Rows[lineNumber].ItemArray[1]);
+                ViewBag.Group_ID = new SelectList((from s in db.Groups
+                                                   select new
+                                                   {
+                                                       Group_ID = s.Group_ID,
+                                                       FullGroup = s.Name + " " + s.EnrollmentYear
+                                                   }), "Group_ID", "FullGroup", dataErrors.Rows[lineNumber].ItemArray[4]);
+                ViewBag.Lesson_ID = new SelectList(db.LessonTypes, "Lesson_ID", "Type", dataErrors.Rows[lineNumber].ItemArray[2]);
+                ViewBag.Subject_ID = new SelectList(db.Subjects, "Subject_ID", "Name", dataErrors.Rows[lineNumber].ItemArray[0]);
+                ViewBag.Teacher_ID = new SelectList((from s in db.Teachers
+                                                     select new
+                                                     {
+                                                         Teacher_ID = s.Teacher_ID,
+                                                         FullName = s.Name + " " + s.Surname + " " + s.LastName
+                                                     }), "Teacher_ID", "FullName", dataErrors.Rows[lineNumber].ItemArray[5]);
+                ViewBag.Date = dataErrors.Rows[lineNumber].ItemArray[3];
+                ViewBag.EnrollmentYear = dataErrors.Rows[lineNumber].ItemArray[6];
+            }
+            
+            return PartialView("_CorrectRecord",schedule);
+        }
+        
+
+        //method which read CSV file with errors for modal window
+        private DataTable MethodForCorrection()
+        {
+            //Set up our variables
+            
+            string line = string.Empty;
+            string[] strArray;
+            DataTable dt = new DataTable();
+              
+            DataRow row;      
+
+            // work out where we should split on comma, but not in a sentence
+            Regex r = new Regex(";(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))");
+            //Set the filename in to our stream
+            StreamReader sr = new StreamReader((Path.Combine(Server.MapPath("~/Content/csv"), "Errors.csv")));
+
+            //Read the first line and split the string at , with our regular expression in to an array
+            line = sr.ReadLine();
+            //Column for ID            
+
+            strArray = r.Split(line);
+
+            //For each item in the new split array, dynamically builds our Data columns. Save us having to worry about it.
+            Array.ForEach(strArray, s => dt.Columns.Add(new DataColumn()));
+            
+            //Read each line in the CVS file until it’s empty
+            while ((line = sr.ReadLine()) != null)
+            {
+                row = dt.NewRow();
+
+                //add our current value to our data row
+                row.ItemArray = r.Split(line);
+                
+                dt.Rows.Add(row);
+            }              
+
+            //Tidy Streameader up
+            sr.Dispose();
+            
+            return dt;
+        }
+
+        //POST: /Schedule/Index/CorrectRecord
+        [HttpPost]
+        public ActionResult CorrectRecordPost(Schedule schedule)
+        {
+            db.Schedules.Add(schedule);
+            db.SaveChanges();    
+            return ScheduleData();           
+        }
+
         
         //
         // GET: /Schedule/Delete/5
@@ -302,12 +441,14 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
             base.Dispose(disposing);
         }
 
+        //method for update data on Index page
         public ActionResult ScheduleData()
         {
             var schedules = db.Schedules.Include(s => s.Classroom).Include(s => s.Group).Include(s => s.LessonType).Include(s => s.Subject).Include(s => s.Teacher);
-            return PartialView(schedules.ToList());
+            return PartialView("ScheduleData",schedules.ToList());
         }
 
+        //GET: for downoload CSV file with wrong records
         public ActionResult DownloadFile()
         {
             string filename = Server.MapPath("/Content/csv/ErrorsLine.csv");
@@ -317,16 +458,19 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
             return File(filename, contentType, downloadName);
         }
 
+        //POST: for upload CSV file with data
         [HttpPost]
         public ActionResult Index(HttpPostedFileBase Files)
         {
             DataTable dt = new DataTable();
             DataTable dtErrors = new DataTable();
+            DataTable dataErrors = new DataTable();
+            List<DataTable> list = new List<DataTable>();
             
             ViewBag.Complete = false;
             
 
-            if (Files != null || Files.ContentLength > 0)
+            if (Files != null && Files.ContentLength > 0)
             {
                 
                     if (Files.FileName.EndsWith(".csv"))
@@ -336,13 +480,19 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
                         try
                         {
                             Files.SaveAs(path);
-                            dt = ProcessCSV(path)[0];
-                            dtErrors = ProcessCSV(path)[1];
+                            list = ProcessCSV(path);
+                            dt = list[0];
+                            dtErrors = list[1];
+                            dataErrors = list[2];
 
-                            CreateCSVwithErrors(dtErrors);
+
+                            CreateCSVwithErrors(dtErrors, "ErrorsLine.csv");
+                            CreateCSVwithErrors(dataErrors, "Errors.csv");
+
 
                             ViewBag.Feedback = ProcessBulkCopy(dt);
                             ViewBag.ErrorMassage = ErrorMassageForBulkCopy;
+                            ViewBag.ErrorNumber = NumberOfErrorMassage;
                             if (ErrorMassageForBulkCopy.Length > 0)
                             {
                                 ViewBag.ErrorsInCSV = "true";
@@ -372,25 +522,27 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
         }
 
         //creation csv file with wrong data
-        private void CreateCSVwithErrors(DataTable dtErrors)
+        private void CreateCSVwithErrors(DataTable dtErrors, string name)
         {
             //if file exists - delete it
-            if (System.IO.File.Exists(Path.Combine(Server.MapPath("~/Content/csv"), "ErrorsLine.csv")))
+            if (System.IO.File.Exists(Path.Combine(Server.MapPath("~/Content/csv"), name)))
             {
-                System.IO.File.Delete(Path.Combine(Server.MapPath("~/Content/csv"), "ErrorsLine.csv"));
+                System.IO.File.Delete(Path.Combine(Server.MapPath("~/Content/csv"), name));
             }
 
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("subject;class;lesson;date;group;teacher;enrollment");//first line for csv file
+                       
             foreach (DataRow line in dtErrors.Rows)//add records with errors in csv file
             {
                 sb.AppendLine(string.Format("{0};{1};{2};{3};{4};{5};{6}", line.ItemArray[1], line.ItemArray[2], line.ItemArray[3], line.ItemArray[4], line.ItemArray[5], line.ItemArray[6], line.ItemArray[7]));
             }
 
-            System.IO.File.AppendAllText(Path.Combine(Server.MapPath("~/Content/csv"), "ErrorsLine.csv"), sb.ToString());//save csv file
+            System.IO.File.AppendAllText(Path.Combine(Server.MapPath("~/Content/csv"), name), sb.ToString());//save csv file
         }
         
         private string ErrorMassageForBulkCopy;
+        private int NumberOfErrorMassage;
         
         private List<DataTable> ProcessCSV(string fileName)
         {
@@ -401,6 +553,8 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
             string[] strArray;
             DataTable dt = new DataTable();
             DataTable dtErrors = new DataTable();
+            DataTable dtErrorsName = new DataTable();
+            
             List<DataTable> dtList = new List<DataTable>();
             bool subjects, classrooms, lessontypes, groups, teachers;
             int lineNumber = 1;
@@ -408,6 +562,7 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
 
             DataRow row;
             DataRow rowErrors;
+            DataRow rowDataErrors;
             
             object[] data_id = new object[8];
             
@@ -426,6 +581,7 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
             //For each item in the new split array, dynamically builds our Data columns. Save us having to worry about it.
             Array.ForEach(strArray, s => dt.Columns.Add(new DataColumn()));
             Array.ForEach(strArray, s => dtErrors.Columns.Add(new DataColumn()));
+            Array.ForEach(strArray, s => dtErrorsName.Columns.Add(new DataColumn()));
 
             
 
@@ -442,11 +598,13 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
                 line = " ;" + line;
                 row = dt.NewRow();
                 rowErrors = dtErrors.NewRow();
+                rowDataErrors = dtErrorsName.NewRow();
                 
 
                 //add our current value to our data row
                 row.ItemArray = r.Split(line);
                 rowErrors.ItemArray = r.Split(line);
+                rowDataErrors.ItemArray = r.Split(line);
                 
                 //search coincidence by name and replace it for IDs values and checking if it is founded
                 foreach (var name in db.Subjects.ToList())
@@ -517,6 +675,9 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
                     //row.ItemArray = data_id;
                     dtErrors.Rows.Add(rowErrors);
 
+                    rowDataErrors.ItemArray = data_id;
+                    dtErrorsName.Rows.Add(rowDataErrors);
+
                     //record only first 5 errors
                     if (errorNumber < 6)
                     {
@@ -526,7 +687,7 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
                         if (!lessontypes) Feedback = Feedback + " lesson's type " + row.ItemArray[3].ToString() + " isn't founded;";
                         if (!classrooms) Feedback = Feedback + " room " + row.ItemArray[2].ToString() + " isn't founded;";
                         if (!subjects) Feedback = Feedback + " subject " + row.ItemArray[1].ToString() + " isn't founded;";
-                        Feedback = Feedback + "<br/>";
+                        Feedback = Feedback + "<button class='correct' id='modal-opener"+errorNumber+"'>Edit and save</button> <br/>";
                         ErrorMassage = ErrorMassage + Feedback;
                     }
                 }
@@ -536,18 +697,19 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
             if (errorNumber < 5)
             {
                 if (errorNumber == 0) ErrorMassage = string.Empty;
-                ErrorMassage = "Show " + errorNumber + " errors:<br/>" + ErrorMassage;
+                else ErrorMassage = "Show " + errorNumber + " errors:<br/>" + ErrorMassage;
             }
             else//if number of errors are 5 and more
             {
                 ErrorMassage = "Show 5 of " + errorNumber + " errors:<br/>" + ErrorMassage;
             } 
             ErrorMassageForBulkCopy = ErrorMassage;//record error's message to global field
-                                  
+            NumberOfErrorMassage = errorNumber;
             //Tidy Streameader up
             sr.Dispose();
             dtList.Add(dt);
             dtList.Add(dtErrors);
+            dtList.Add(dtErrorsName);
             //return a the new DataTable
             return dtList;
 

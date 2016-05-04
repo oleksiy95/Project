@@ -100,6 +100,8 @@
      <input type="submit" name="submit" value="Upload" />
  
 }
+
+
 @* Error message *@
 @if (ViewBag.Feedback == "Upload complete")
 {
@@ -109,7 +111,44 @@ else
 {
 <p style="color:red">@ViewBag.Feedback</p>    
 }
-<p style="color:red">@Html.Raw(ViewBag.ErrorMassage)</p>  
+<p style="color:red">@Html.Raw(ViewBag.ErrorMassage)</p>
+
+
+@*<div class="modal" id="dialog-modal" title="Correct record">
+    @Html.Action("CorrectRecord")
+</div>*@  
+
+@* modal window for correction wrong records *@
+@if (ViewBag.ErrorsInCSV == "true")
+{
+    if(ViewBag.ErrorNumber > 0) {
+    <div class="modal" id="dialog1" title="Correct record">
+    @Html.Action("CorrectRecord1")
+    </div>  }
+    
+    if(ViewBag.ErrorNumber > 1) {
+    <div class="modal" id="dialog2" title="Correct record">
+    @Html.Action("CorrectRecord2")
+    </div>  }
+    
+    if(ViewBag.ErrorNumber > 2) {
+    <div class="modal" id="dialog3" title="Correct record">
+    @Html.Action("CorrectRecord3")
+    </div>  }
+    
+    if(ViewBag.ErrorNumber > 3) {
+    <div class="modal" id="dialog4" title="Correct record">
+    @Html.Action("CorrectRecord4")
+    </div>  }
+    
+    if(ViewBag.ErrorNumber > 4) {
+    <div class="modal" id="dialog5" title="Correct record">
+    @Html.Action("CorrectRecord5")
+    </div>  }
+} 
+
+@*<button id="modal-opener">Open modal</button>*@
+
 
 @if (ViewBag.ErrorsInCSV == "true")
 {
@@ -118,8 +157,68 @@ else
 
 @section scripts
 {
-    @*Ненавязивый JavaScript для выполнения запроса на сервер без полного обновления страницы*@
-    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    @* script for modal window to correct wrong records *@
+    <script>
+        $(function () {
+            $("input[type='text']").datepicker({
+                dateFormat: "yy-mm-dd",
+                changeYear: true,
+                showOn: "button"
+            }).css("display", "inline-block")
+                .next("button").button({
+                    icons: { primary: "ui-icon-calendar" },
+                    label: "Select a date",
+                    text: false
+                });
+        });
+
+            $(function () {
+                $(".modal").dialog({
+                    autoOpen: false,
+                    width: 450,
+                    height: 600,
+                    show: {
+                        effect: "blind",
+                        duration: 1000
+                    },
+                    hide: {
+                        effect: "explode",
+                        duration: 1000
+                    }
+                });
+
+                //$("#modal-opener").click(function () {
+                //    $("#dialog-modal").dialog("open");
+                //});
+
+                $("#modal-opener1").click(function () {
+                    $("#dialog1").dialog("open");
+                });
+
+                $("#modal-opener2").click(function () {
+                    $("#dialog2").dialog("open");
+                });
+
+                $("#modal-opener3").click(function () {
+                    $("#dialog3").dialog("open");
+                });
+
+                $("#modal-opener4").click(function () {
+                    $("#dialog4").dialog("open");
+                });
+
+                $("#modal-opener5").click(function () {
+                    $("#dialog5").dialog("open");
+                });
+            });
+
+            function SuccessCorrect()
+            {
+                $(".modal").dialog("close");
+            }
+    </script>
+
+    
 
    
 }
