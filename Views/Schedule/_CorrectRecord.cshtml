@@ -51,7 +51,8 @@
             @Html.LabelFor(model => model.Date)
         </div>
         <div class="editor-field">
-            @Html.TextBoxFor(model => model.Date, new { id = "Date" + ViewBag.numberID })
+           
+            @Html.TextBox("Date", Model.Date, new { id = "Date" + ViewBag.numberID })
             @Html.ValidationMessageFor(model => model.Date)            
         </div>
 
@@ -74,7 +75,7 @@
             @Html.LabelFor(model => model.EnrollmentYear)
         </div>
         <div class="editor-field">
-            @Html.DropDownList("EnrollmentYear", list, String.Empty)
+            @Html.DropDownList("EnrollmentYear", list, String.Empty)            
             @Html.ValidationMessageFor(model => model.EnrollmentYear)
         </div>
 

@@ -273,31 +273,11 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
 
         //
         //GET: /Schedule/Index/_CorrectRecord
-        //public ActionResult CorrectRecord()
-        //{
-        //    Schedule schedule = new Schedule();
-        //    ViewBag.Room_ID = new SelectList(db.Classrooms, "Room_ID", "Number", 4);
-        //    ViewBag.Group_ID = new SelectList((from s in db.Groups
-        //                                       select new
-        //                                       {
-        //                                           Group_ID = s.Group_ID,
-        //                                           FullGroup = s.Name + " " + s.EnrollmentYear
-        //                                       }), "Group_ID", "FullGroup");
-        //    ViewBag.Lesson_ID = new SelectList(db.LessonTypes, "Lesson_ID", "Type", 2);
-        //    ViewBag.Subject_ID = new SelectList(db.Subjects, "Subject_ID", "Name", 2);
-        //    ViewBag.Teacher_ID = new SelectList((from s in db.Teachers
-        //                                         select new
-        //                                         {
-        //                                             Teacher_ID = s.Teacher_ID,
-        //                                             FullName = s.Name + " " + s.Surname + " " + s.LastName
-        //                                         }), "Teacher_ID", "FullName");     
-            
-        //    return PartialView("_CorrectRecord",schedule);
-        //}
-
+        
+        //methods for edition wrong records on page with modal window
         public ActionResult CorrectRecord1()
         {
-            ViewBag.numberID = "1";
+            ViewBag.numberID = "1";//id for field with Date(in order to datepicker works)
             return GeneralCorrectRecord(0);
             
         }
@@ -326,7 +306,7 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
             return GeneralCorrectRecord(4);
         }
        
-
+        //method which fill in fields in modal window
         private ActionResult GeneralCorrectRecord(int lineNumber)
         {
 
@@ -350,6 +330,8 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
                                                          Teacher_ID = s.Teacher_ID,
                                                          FullName = s.Name + " " + s.Surname + " " + s.LastName
                                                      }), "Teacher_ID", "FullName", dataErrors.Rows[lineNumber].ItemArray[5]);
+                
+
                 ViewBag.Date = dataErrors.Rows[lineNumber].ItemArray[3];
                 ViewBag.EnrollmentYear = dataErrors.Rows[lineNumber].ItemArray[6];
             }
@@ -486,8 +468,8 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
                             dataErrors = list[2];
 
 
-                            CreateCSVwithErrors(dtErrors, "ErrorsLine.csv");
-                            CreateCSVwithErrors(dataErrors, "Errors.csv");
+                            CreateCSVwithErrors(dtErrors, "ErrorsLine.csv");//csv with wrong records for user's upload
+                            CreateCSVwithErrors(dataErrors, "Errors.csv");//csv with wrong records for edition in modal window
 
 
                             ViewBag.Feedback = ProcessBulkCopy(dt);
