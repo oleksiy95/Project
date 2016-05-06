@@ -40,7 +40,12 @@ namespace CourseProject.Controllers
 
         public ActionResult Create()
         {
-            ViewBag.Group_ID = new SelectList(db.Groups, "Group_ID", "Name");
+            ViewBag.Group_ID = new SelectList((from s in db.Groups
+                                               select new
+                                               {
+                                                   Group_ID = s.Group_ID,
+                                                   FullGroup = s.Name + " " + s.EnrollmentYear
+                                               }), "Group_ID", "FullGroup");
             return View();
         }
 

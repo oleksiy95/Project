@@ -334,6 +334,7 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
 
                 ViewBag.Date = dataErrors.Rows[lineNumber].ItemArray[3];
                 ViewBag.EnrollmentYear = dataErrors.Rows[lineNumber].ItemArray[6];
+                ViewBag.LessonNumber = dataErrors.Rows[lineNumber].ItemArray[7];
             }
             
             return PartialView("_CorrectRecord",schedule);
@@ -513,11 +514,11 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
             }
 
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine("subject;class;lesson;date;group;teacher;enrollment");//first line for csv file
+            sb.AppendLine("subject;class;lesson;date;group;teacher;enrollment;number");//first line for csv file
                        
             foreach (DataRow line in dtErrors.Rows)//add records with errors in csv file
             {
-                sb.AppendLine(string.Format("{0};{1};{2};{3};{4};{5};{6}", line.ItemArray[1], line.ItemArray[2], line.ItemArray[3], line.ItemArray[4], line.ItemArray[5], line.ItemArray[6], line.ItemArray[7]));
+                sb.AppendLine(string.Format("{0};{1};{2};{3};{4};{5};{6};{7}", line.ItemArray[1], line.ItemArray[2], line.ItemArray[3], line.ItemArray[4], line.ItemArray[5], line.ItemArray[6], line.ItemArray[7], line.ItemArray[8]));
             }
 
             System.IO.File.AppendAllText(Path.Combine(Server.MapPath("~/Content/csv"), name), sb.ToString());//save csv file
@@ -546,7 +547,7 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
             DataRow rowErrors;
             DataRow rowDataErrors;
             
-            object[] data_id = new object[8];
+            object[] data_id = new object[9];
             
             // work out where we should split on comma, but not in a sentence
             Regex r = new Regex(";(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))");
@@ -640,9 +641,10 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
                         break;
                     }
                 }
-                //Date and Enrollment year don't have the IDs
+                //Date, Enrollment year and LessonNumber don't have the IDs
                 data_id[4] = row.ItemArray[4];
                 data_id[7] = row.ItemArray[7];
+                data_id[8] = row.ItemArray[8];
 
                 lineNumber++;
                 //if all names are founded, add row in dt, else add row in dtErrors

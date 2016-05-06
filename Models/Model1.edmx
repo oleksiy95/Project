@@ -73,6 +73,7 @@
           <Property Name="Group_ID" Type="int" Nullable="false" />
           <Property Name="Teacher_ID" Type="int" Nullable="false" />
           <Property Name="EnrollmentYear" Type="nvarchar" Nullable="false" MaxLength="10" />
+          <Property Name="LessonNumber" Type="nvarchar" Nullable="false" MaxLength="1" />
         </EntityType>
         <EntityType Name="Student">
           <Key>
@@ -263,6 +264,7 @@
           <NavigationProperty Name="Subject" Relationship="ScheduleModel.FK_Schedule_Subject" FromRole="Schedule" ToRole="Subject" />
           <NavigationProperty Name="Teacher" Relationship="ScheduleModel.FK_Schedule_Teacher" FromRole="Schedule" ToRole="Teacher" />
           <Property Type="String" Name="EnrollmentYear" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="LessonNumber" Nullable="false" MaxLength="1" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Student">
           <Key>
@@ -409,6 +411,7 @@
           <EntitySetMapping Name="Schedules">
             <EntityTypeMapping TypeName="ScheduleModel.Schedule">
               <MappingFragment StoreEntitySet="Schedule">
+                <ScalarProperty Name="LessonNumber" ColumnName="LessonNumber" />
                 <ScalarProperty Name="EnrollmentYear" ColumnName="EnrollmentYear" />
                 <ScalarProperty Name="Schedule_ID" ColumnName="Schedule_ID" />
                 <ScalarProperty Name="Subject_ID" ColumnName="Subject_ID" />

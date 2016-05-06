@@ -77,6 +77,7 @@
     <NavigationProperty Name="Subject" Relationship="ScheduleModel.FK_Schedule_Subject" FromRole="Schedule" ToRole="Subject" />
     <NavigationProperty Name="Teacher" Relationship="ScheduleModel.FK_Schedule_Teacher" FromRole="Schedule" ToRole="Teacher" />
     <Property Type="String" Name="EnrollmentYear" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="LessonNumber" Nullable="false" MaxLength="1" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="Student">
     <Key>

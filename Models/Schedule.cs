@@ -47,6 +47,7 @@ namespace CourseProject.Models
         public virtual Subject Subject { get; set; }
         public virtual Teacher Teacher { get; set; }
         public string EnrollmentYear { get; set; }
+        public string LessonNumber { get; set; }
 
         
     }

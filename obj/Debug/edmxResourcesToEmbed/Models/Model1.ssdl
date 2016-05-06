@@ -68,6 +68,7 @@
     <Property Name="Group_ID" Type="int" Nullable="false" />
     <Property Name="Teacher_ID" Type="int" Nullable="false" />
     <Property Name="EnrollmentYear" Type="nvarchar" Nullable="false" MaxLength="10" />
+    <Property Name="LessonNumber" Type="nvarchar" Nullable="false" MaxLength="1" />
   </EntityType>
   <EntityType Name="Student">
     <Key>

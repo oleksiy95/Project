@@ -29,6 +29,7 @@
     <EntitySetMapping Name="Schedules">
       <EntityTypeMapping TypeName="ScheduleModel.Schedule">
         <MappingFragment StoreEntitySet="Schedule">
+          <ScalarProperty Name="LessonNumber" ColumnName="LessonNumber" />
           <ScalarProperty Name="EnrollmentYear" ColumnName="EnrollmentYear" />
           <ScalarProperty Name="Schedule_ID" ColumnName="Schedule_ID" />
           <ScalarProperty Name="Subject_ID" ColumnName="Subject_ID" />

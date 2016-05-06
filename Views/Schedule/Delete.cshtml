@@ -67,6 +67,13 @@
     <div class="display-field">
         @Html.DisplayFor(model => model.EnrollmentYear)
     </div>
+
+    <div class="display-label">
+         <h3>@Html.DisplayNameFor(model => model.LessonNumber)</h3>
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.LessonNumber)
+    </div>
 </fieldset>
 @using (Html.BeginForm()) {
     <p>

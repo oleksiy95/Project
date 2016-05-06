@@ -26,6 +26,9 @@
                 @Html.DisplayFor(modelItem => item.EnrollmentYear)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.LessonNumber)
+            </td>
+            <td>
                 @Html.ActionLink("Edit", "Edit", new { id=item.Schedule_ID }) |
                 @Html.ActionLink("Details", "Details", new { id=item.Schedule_ID }) |
                 @Html.ActionLink("Delete", "Delete", new { id=item.Schedule_ID })
