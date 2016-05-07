@@ -95,16 +95,20 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
                                 foreach (var room in db.Classrooms.ToList())
                                 {
                                     if (room.Room_ID == schedule.Room_ID)
-                                        roomNumber = room.Number;
+                                    {
+                                        roomNumber = room.Number;//search number of room by id
+                                        break;
+                                    }
                                 }
                                 DateTime date = new DateTime();
                                 date = Convert.ToDateTime(schedule.Date);
                                 
                                 roomFree = false;
+                                //write message about occupied;
                                 roomNotFreeMessage = roomNotFreeMessage + "Classroom " + roomNumber + " is occupied on " + date.ToString("yyyy-MM-dd") + " in the " + schedule.LessonNumber + " lesson<br/>";
                             }
                         }
-
+                        //if classroom is free - add record
                         if (roomFree)
                         {
                             db.Schedules.Add(schedule);
@@ -112,7 +116,7 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
                         }
                     }
                 }
-
+                //if we have message about occupied - go to create page again and show message
                 if (roomNotFreeMessage != String.Empty)
                     goto leaveOnCreate;
                 
@@ -573,7 +577,7 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
             DataTable dtErrorsName = new DataTable();
             
             List<DataTable> dtList = new List<DataTable>();
-            bool subjects, classrooms, lessontypes, groups, teachers;
+            bool subjects, classrooms, lessontypes, groups, teachers, roomFree;
             int lineNumber = 1;
             int errorNumber = 0;
 
@@ -610,6 +614,7 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
                 lessontypes = false;
                 groups = false;
                 teachers = false;
+                roomFree = true;
                 
                 //ID values
                 line = " ;" + line;
@@ -680,9 +685,18 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
                 data_id[7] = row.ItemArray[7];
                 data_id[8] = row.ItemArray[8];
 
+                //checking if classroom is occupied
+                foreach (var checkRoom in db.Schedules.ToList())
+                {
+                    if (checkRoom.Room_ID == Convert.ToInt32(data_id[2]) && checkRoom.LessonNumber == data_id[8].ToString() && checkRoom.Date == Convert.ToDateTime(data_id[4]))
+                    {
+                        roomFree = false;                                              
+                    }
+                }
+
                 lineNumber++;
                 //if all names are founded, add row in dt, else add row in dtErrors
-                if (teachers && groups && lessontypes && classrooms && subjects)
+                if (teachers && groups && lessontypes && classrooms && subjects && roomFree)
                 {
                     row.ItemArray = data_id;
                     dt.Rows.Add(row);
@@ -705,6 +719,7 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
                         if (!lessontypes) Feedback = Feedback + " lesson's type " + row.ItemArray[3].ToString() + " isn't founded;";
                         if (!classrooms) Feedback = Feedback + " room " + row.ItemArray[2].ToString() + " isn't founded;";
                         if (!subjects) Feedback = Feedback + " subject " + row.ItemArray[1].ToString() + " isn't founded;";
+                        if (!roomFree) Feedback = Feedback + " classroom " + row.ItemArray[2].ToString() + " is occupied on " + row.ItemArray[4].ToString() + " in the " + row.ItemArray[8].ToString() + " lesson";
                         Feedback = Feedback + "<button class='correct' id='modal-opener"+errorNumber+"'>Edit and save</button> <br/>";
                         ErrorMassage = ErrorMassage + Feedback;
                     }
