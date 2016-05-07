@@ -90,6 +90,7 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
                         //check if classroom is free
                         foreach (var checkRoom in db.Schedules.ToList())
                         {
+                            
                             if (checkRoom.Room_ID == schedule.Room_ID && checkRoom.LessonNumber == schedule.LessonNumber && checkRoom.Date == schedule.Date)
                             {
                                 foreach (var room in db.Classrooms.ToList())
@@ -425,9 +426,39 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
         [HttpPost]
         public ActionResult CorrectRecordPost(Schedule schedule)
         {
-            db.Schedules.Add(schedule);
-            db.SaveChanges();    
-            return ScheduleData();           
+            string roomNumber = String.Empty;
+            bool roomFree = true;
+            string roomNotFreeMessage = String.Empty;
+            //check if classroom is free
+            foreach (var checkRoom in db.Schedules.ToList())
+            {
+                if (checkRoom.Room_ID == schedule.Room_ID && checkRoom.LessonNumber == schedule.LessonNumber && checkRoom.Date == schedule.Date)
+                {
+                    foreach (var room in db.Classrooms.ToList())
+                    {
+                        if (room.Room_ID == schedule.Room_ID)
+                        {
+                            roomNumber = room.Number;//search number of room by id
+                            break;
+                        }
+                    }
+                    DateTime date = new DateTime();
+                    date = Convert.ToDateTime(schedule.Date);
+
+                    roomFree = false;
+                    //write message about occupied;
+                    roomNotFreeMessage = roomNotFreeMessage + "Classroom " + roomNumber + " is occupied on " + date.ToString("yyyy-MM-dd") + " in the " + schedule.LessonNumber + " lesson<br/>";
+                }
+            }
+
+            if (roomFree)
+            {
+                db.Schedules.Add(schedule);
+                db.SaveChanges();
+            }
+            ViewBag.roomNotFreeMessage = roomNotFreeMessage;
+                return ScheduleData();
+            
         }
 
         
@@ -615,6 +646,7 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
                 groups = false;
                 teachers = false;
                 roomFree = true;
+                data_id = new object[9];
                 
                 //ID values
                 line = " ;" + line;
@@ -690,7 +722,7 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
                 {
                     if (checkRoom.Room_ID == Convert.ToInt32(data_id[2]) && checkRoom.LessonNumber == data_id[8].ToString() && checkRoom.Date == Convert.ToDateTime(data_id[4]))
                     {
-                        roomFree = false;                                              
+                        roomFree = false;
                     }
                 }
 
