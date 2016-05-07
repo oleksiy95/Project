@@ -67,6 +67,10 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
         [HttpPost]
         public ActionResult Create(Schedule schedule, int[] Lesson_ID, int[] Room_ID)
         {
+            bool roomFree = true;
+            string roomNotFreeMessage = String.Empty;
+            string roomNumber = String.Empty;
+
             if (ModelState.IsValid)
             {
                 if (schedule.DateList != null)
@@ -80,16 +84,46 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
                             schedule.Room_ID = Room_ID[i];
                         }                        
                         schedule.Date = schedule.DateList[i];
-                        db.Schedules.Add(schedule);
-                        db.SaveChanges();
+
+                        roomFree = true;
+
+                        //check if classroom is free
+                        foreach (var checkRoom in db.Schedules.ToList())
+                        {
+                            if (checkRoom.Room_ID == schedule.Room_ID && checkRoom.LessonNumber == schedule.LessonNumber && checkRoom.Date == schedule.Date)
+                            {
+                                foreach (var room in db.Classrooms.ToList())
+                                {
+                                    if (room.Room_ID == schedule.Room_ID)
+                                        roomNumber = room.Number;
+                                }
+                                DateTime date = new DateTime();
+                                date = Convert.ToDateTime(schedule.Date);
+                                
+                                roomFree = false;
+                                roomNotFreeMessage = roomNotFreeMessage + "Classroom " + roomNumber + " is occupied on " + date.ToString("yyyy-MM-dd") + " in the " + schedule.LessonNumber + " lesson<br/>";
+                            }
+                        }
+
+                        if (roomFree)
+                        {
+                            db.Schedules.Add(schedule);
+                            db.SaveChanges();
+                        }
                     }
                 }
 
+                if (roomNotFreeMessage != String.Empty)
+                    goto leaveOnCreate;
+                
                 //db.Schedules.Add(schedule);
                 //db.SaveChanges();
                 return RedirectToAction("Index");
+                
             }
-
+            
+            leaveOnCreate:
+            ViewBag.roomNotFreeMessage = roomNotFreeMessage;
             ViewBag.Room_ID = new SelectList(db.Classrooms, "Room_ID", "Number", schedule.Room_ID);
             ViewBag.Group_ID = new SelectList((from s in db.Groups
                                                select new
