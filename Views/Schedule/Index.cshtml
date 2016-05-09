@@ -96,15 +96,15 @@
     <img id="loadingIndicator" style="display:none;" src="@Url.Content("~/Content/loading.gif")" />
 }
 
+@* message about occupied classroom *@
+
 <h3>Schedule Upload</h3>
 
 @using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data" }))
-{
-        
+{        
      <input type="file" name="Files" id="Files" />
      <br />
-     <input type="submit" name="submit" value="Upload" />
- 
+     <input type="submit" name="submit" value="Upload" /> 
 }
 
 
@@ -119,10 +119,6 @@ else
 }
 <p style="color:red">@Html.Raw(ViewBag.ErrorMassage)</p>
 
-
-@*<div class="modal" id="dialog-modal" title="Correct record">
-    @Html.Action("CorrectRecord")
-</div>*@  
 
 @* modal window for correction wrong records *@
 @if (ViewBag.ErrorsInCSV == "true")
@@ -152,9 +148,6 @@ else
     @Html.Action("CorrectRecord5")
     </div>  }
 } 
-
-@*<button id="modal-opener">Open modal</button>*@
-
 
 @if (ViewBag.ErrorsInCSV == "true")
 {
@@ -223,8 +216,4 @@ else
                 $(".modal").dialog("close");
             }
     </script>
-
-    
-
-   
-}
+    }

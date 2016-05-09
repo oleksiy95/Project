@@ -65,7 +65,7 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
         // POST: /Schedule/Create
 
         [HttpPost]
-        public ActionResult Create(Schedule schedule, int[] Lesson_ID, int[] Room_ID)
+        public ActionResult Create(Schedule schedule, DateTime[] Date, int[] Lesson_ID, int[] Room_ID)
         {
             bool roomFree = true;
             string roomNotFreeMessage = String.Empty;
@@ -73,17 +73,17 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
 
             if (ModelState.IsValid)
             {
-                if (schedule.DateList != null)
+                if (Date != null)
                 {                   
 
-                    for (int i = 0; i < schedule.DateList.Count; i++)
+                    for (int i = 0; i < Date.Length; i++)
                     {
                         if (Lesson_ID.Length > 1 && Room_ID.Length > 1)
                         {
                             schedule.Lesson_ID = Lesson_ID[i];
                             schedule.Room_ID = Room_ID[i];
                         }                        
-                        schedule.Date = schedule.DateList[i];
+                        schedule.Date = Date[i];
 
                         roomFree = true;
 
@@ -456,8 +456,8 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
                 db.Schedules.Add(schedule);
                 db.SaveChanges();
             }
-            ViewBag.roomNotFreeMessage = roomNotFreeMessage;
-                return ScheduleData();
+            
+            return ScheduleData(roomNotFreeMessage);
             
         }
 
@@ -494,8 +494,9 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
         }
 
         //method for update data on Index page
-        public ActionResult ScheduleData()
+        public ActionResult ScheduleData(string message = "")
         {
+            ViewBag.roomNotFree = message;
             var schedules = db.Schedules.Include(s => s.Classroom).Include(s => s.Group).Include(s => s.LessonType).Include(s => s.Subject).Include(s => s.Teacher);
             return PartialView("ScheduleData",schedules.ToList());
         }

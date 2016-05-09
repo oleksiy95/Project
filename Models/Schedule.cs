@@ -34,12 +34,7 @@ namespace CourseProject.Models
         
         public int Group_ID { get; set; }
         public int Teacher_ID { get; set; }
-        
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString =
-           "{0:yyyy-MM-dd}",
-            ApplyFormatInEditMode = true)]
-        public List<System.DateTime?> DateList { get; set; }        
+                       
     
         public virtual Classroom Classroom { get; set; }
         public virtual Group Group { get; set; }
