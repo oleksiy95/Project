@@ -17,81 +17,14 @@
 
 @using (Ajax.BeginForm(options))
 {
-<p>
-    @Html.ActionLink("Create New", "Create")
-    @Html.ActionLink("Copy Schedule", "Copy")
-</p>
-<table>
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Subject)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Classroom)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LessonType)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Date)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Group)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Teacher)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EnrollmentYear)
-            </th>
-            <th>
-                @Html.DisplayName("Number")
-            </th>
-            <th></th>
-        </tr>
-    </thead>
+    <p>
+        @Html.ActionLink("Create New", "Create")
+        @Html.ActionLink("Copy Schedule", "Copy")
+    </p>
     
-    <tbody id="scheduledata">
-    @foreach (var item in Model) {
-        <tr>
-           <td>
-                @Html.DisplayFor(modelItem => item.Subject.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Classroom.Number)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LessonType.Type)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Date)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Group.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Teacher.Name)
-                @Html.DisplayFor(modelItem => item.Teacher.Surname)
-                @Html.DisplayFor(modelItem => item.Teacher.LastName)            
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EnrollmentYear)
-            </td>
-             <td>
-                @Html.DisplayFor(modelItem => item.LessonNumber)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id=item.Schedule_ID }) |
-                @Html.ActionLink("Details", "Details", new { id=item.Schedule_ID }) |
-                @Html.ActionLink("Delete", "Delete", new { id=item.Schedule_ID })
-            </td>
-        </tr>
-    }   
-
-    </tbody>
-
-</table>
+    <div id="scheduledata">
+        @Html.Action("ScheduleData")
+    </div>
     <input type="submit" name="update" value="Update Data" />
     <img id="loadingIndicator" style="display:none;" src="@Url.Content("~/Content/loading.gif")" />
 }
@@ -158,6 +91,11 @@ else
 {
     @* script for modal window to correct wrong records *@
     <script>
+        $(function () {
+            $('select').attr("required", "required");
+            $('input[type="text"]').attr("required", "required");
+        });
+
         $(function () {
             $("input[type='text']").datepicker({
                 dateFormat: "yy-mm-dd",

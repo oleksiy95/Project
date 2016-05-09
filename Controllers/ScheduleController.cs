@@ -47,18 +47,24 @@ namespace CourseProject.Controllers
         {
             ViewBag.Room_ID = new SelectList(db.Classrooms, "Room_ID", "Number");
             ViewBag.Group_ID = new SelectList((from s in db.Groups
-                                                  select new {Group_ID = s.Group_ID,
-                                                      FullGroup = s.Name + " " + s.EnrollmentYear}), "Group_ID", "FullGroup");
+                                               select new
+                                               {
+                                                   Group_ID = s.Group_ID,
+                                                   FullGroup = s.Name + " " + s.EnrollmentYear
+                                               }), "Group_ID", "FullGroup");
             ViewBag.Lesson_ID = new SelectList(db.LessonTypes, "Lesson_ID", "Type");
             ViewBag.Subject_ID = new SelectList(db.Subjects, "Subject_ID", "Name");
             ViewBag.Teacher_ID = new SelectList((from s in db.Teachers
-                                                 select new { Teacher_ID = s.Teacher_ID,
-FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullName");
-            
-            
+                                                 select new
+                                                 {
+                                                     Teacher_ID = s.Teacher_ID,
+                                                     FullName = s.Name + " " + s.Surname + " " + s.LastName
+                                                 }), "Teacher_ID", "FullName");
+
+
             return View();
 
-             
+
         }
 
         //
@@ -70,64 +76,72 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
             bool roomFree = true;
             string roomNotFreeMessage = String.Empty;
             string roomNumber = String.Empty;
-
+            Schedule sch = new Schedule();//new oject
             if (ModelState.IsValid)
             {
                 if (Date != null)
-                {                   
-
+                {
                     for (int i = 0; i < Date.Length; i++)
                     {
                         if (Lesson_ID.Length > 1 && Room_ID.Length > 1)
                         {
                             schedule.Lesson_ID = Lesson_ID[i];
                             schedule.Room_ID = Room_ID[i];
-                        }                        
+                        }
                         schedule.Date = Date[i];
-
+                        
+                        sch.Group_ID = schedule.Group_ID; 
+                        sch.Lesson_ID = schedule.Lesson_ID; 
+                        sch.Room_ID = schedule.Room_ID; 
+                        sch.Subject_ID = schedule.Subject_ID; 
+                        sch.Teacher_ID = schedule.Teacher_ID;
+                        sch.Date = schedule.Date;
+                        sch.EnrollmentYear = schedule.EnrollmentYear;
+                        sch.LessonNumber = schedule.LessonNumber;
+                        
                         roomFree = true;
 
                         //check if classroom is free
                         foreach (var checkRoom in db.Schedules.ToList())
                         {
-                            
-                            if (checkRoom.Room_ID == schedule.Room_ID && checkRoom.LessonNumber == schedule.LessonNumber && checkRoom.Date == schedule.Date)
+                            if (checkRoom.Room_ID == sch.Room_ID && checkRoom.LessonNumber == sch.LessonNumber && checkRoom.Date == sch.Date)
                             {
                                 foreach (var room in db.Classrooms.ToList())
                                 {
-                                    if (room.Room_ID == schedule.Room_ID)
+                                    if (room.Room_ID == sch.Room_ID)
                                     {
                                         roomNumber = room.Number;//search number of room by id
                                         break;
                                     }
                                 }
                                 DateTime date = new DateTime();
-                                date = Convert.ToDateTime(schedule.Date);
-                                
+                                date = Convert.ToDateTime(sch.Date);
+
                                 roomFree = false;
                                 //write message about occupied;
-                                roomNotFreeMessage = roomNotFreeMessage + "Classroom " + roomNumber + " is occupied on " + date.ToString("yyyy-MM-dd") + " in the " + schedule.LessonNumber + " lesson<br/>";
+                                roomNotFreeMessage = roomNotFreeMessage + "Classroom " + roomNumber + " is occupied on " + date.ToString("yyyy-MM-dd") + " in the " + sch.LessonNumber + " lesson<br/>";
                             }
                         }
                         //if classroom is free - add record
                         if (roomFree)
                         {
-                            db.Schedules.Add(schedule);
+                            db.Schedules.Add(sch);
                             db.SaveChanges();
                         }
+                        sch = new Schedule();
                     }
                 }
                 //if we have message about occupied - go to create page again and show message
                 if (roomNotFreeMessage != String.Empty)
                     goto leaveOnCreate;
-                
+
                 //db.Schedules.Add(schedule);
                 //db.SaveChanges();
                 return RedirectToAction("Index");
-                
+
             }
-            
-            leaveOnCreate:
+
+        leaveOnCreate:
             ViewBag.roomNotFreeMessage = roomNotFreeMessage;
             ViewBag.Room_ID = new SelectList(db.Classrooms, "Room_ID", "Number", schedule.Room_ID);
             ViewBag.Group_ID = new SelectList((from s in db.Groups
@@ -139,12 +153,15 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
             ViewBag.Lesson_ID = new SelectList(db.LessonTypes, "Lesson_ID", "Type", schedule.Lesson_ID);
             ViewBag.Subject_ID = new SelectList(db.Subjects, "Subject_ID", "Name", schedule.Subject_ID);
             ViewBag.Teacher_ID = new SelectList((from s in db.Teachers
-                                                 select new { Teacher_ID = s.Teacher_ID,
-FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullName", schedule.Teacher_ID);
+                                                 select new
+                                                 {
+                                                     Teacher_ID = s.Teacher_ID,
+                                                     FullName = s.Name + " " + s.Surname + " " + s.LastName
+                                                 }), "Teacher_ID", "FullName", schedule.Teacher_ID);
 
-            
+
             return View(schedule);
-            
+
         }
 
 
@@ -173,7 +190,7 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
                                    select s;
 
                     bool notHaveRecords = true;
-                 
+
                     foreach (var one in schedule)
                     {
                         //check if schedule have such records
@@ -189,7 +206,7 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
                             one.Date = one.Date.Value.AddDays(-2.0);
 
                         }
-                        
+
                         //change date for the next year to the same day of week
                         else
                         {
@@ -198,17 +215,17 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
                         }
                         //EnrollmentYear, which new Group must have
                         int enrYear = Convert.ToInt32(one.Group.EnrollmentYear) + 1;
-                       
+
                         //ID of old Group
                         int gr_id = one.Group_ID;
-                        
+
                         //Search Group with the same Name but new EnrollmentYear
                         foreach (var year in db.Groups)
                         {
                             if (enrYear == Convert.ToInt32(year.EnrollmentYear) && one.Group.Name == year.Name)
                                 one.Group_ID = year.Group_ID;
                         }
-                        
+
                         //if ID changed - we have founded Group with the same Name and new EnrollmentYear
                         if (one.Group_ID != gr_id)
                         {
@@ -220,7 +237,7 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
                             ViewBag.NotFounded = "Group " + one.Group.Name + " with EnrollmentYear " + enrYear + " is not founded. Create it to copy.";
                             return AddFuctionForCopy();
                         }
-                        
+
                     }
                     //if we don't find records to copy - show message
                     if (notHaveRecords)
@@ -426,37 +443,42 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
         [HttpPost]
         public ActionResult CorrectRecordPost(Schedule schedule)
         {
+
+
             string roomNumber = String.Empty;
             bool roomFree = true;
             string roomNotFreeMessage = String.Empty;
             //check if classroom is free
-            foreach (var checkRoom in db.Schedules.ToList())
+            if (ModelState.IsValid)
             {
-                if (checkRoom.Room_ID == schedule.Room_ID && checkRoom.LessonNumber == schedule.LessonNumber && checkRoom.Date == schedule.Date)
+                foreach (var checkRoom in db.Schedules.ToList())
                 {
-                    foreach (var room in db.Classrooms.ToList())
+                    if (checkRoom.Room_ID == schedule.Room_ID && checkRoom.LessonNumber == schedule.LessonNumber && checkRoom.Date == schedule.Date)
                     {
-                        if (room.Room_ID == schedule.Room_ID)
+                        foreach (var room in db.Classrooms.ToList())
                         {
-                            roomNumber = room.Number;//search number of room by id
-                            break;
+                            if (room.Room_ID == schedule.Room_ID)
+                            {
+                                roomNumber = room.Number;//search number of room by id
+                                break;
+                            }
                         }
-                    }
-                    DateTime date = new DateTime();
-                    date = Convert.ToDateTime(schedule.Date);
+                        DateTime date = new DateTime();
+                        date = Convert.ToDateTime(schedule.Date);
 
-                    roomFree = false;
-                    //write message about occupied;
-                    roomNotFreeMessage = roomNotFreeMessage + "Classroom " + roomNumber + " is occupied on " + date.ToString("yyyy-MM-dd") + " in the " + schedule.LessonNumber + " lesson<br/>";
+                        roomFree = false;
+                        //write message about occupied;
+                        roomNotFreeMessage = roomNotFreeMessage + "Classroom " + roomNumber + " is occupied on " + date.ToString("yyyy-MM-dd") + " in the " + schedule.LessonNumber + " lesson<br/>";
+                    }
+                }
+
+                if (roomFree)
+                {
+                    db.Schedules.Add(schedule);
+                    db.SaveChanges();
                 }
             }
-
-            if (roomFree)
-            {
-                db.Schedules.Add(schedule);
-                db.SaveChanges();
-            }
-            
+            else { roomNotFreeMessage = "Form is not correct"; }
             return ScheduleData(roomNotFreeMessage);
             
         }

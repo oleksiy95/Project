@@ -1,6 +1,38 @@
 ﻿@model IEnumerable<CourseProject.Models.Schedule>
 
-@foreach (var item in Model) {
+<table>
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Subject)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Classroom)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LessonType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Group)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Teacher)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EnrollmentYear)
+            </th>
+            <th>
+                @Html.DisplayName("Number")
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    
+    <tbody>
+    @foreach (var item in Model) {
         <tr>
            <td>
                 @Html.DisplayFor(modelItem => item.Subject.Name)
@@ -25,7 +57,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.EnrollmentYear)
             </td>
-            <td>
+             <td>
                 @Html.DisplayFor(modelItem => item.LessonNumber)
             </td>
             <td>
@@ -34,7 +66,11 @@
                 @Html.ActionLink("Delete", "Delete", new { id=item.Schedule_ID })
             </td>
         </tr>
-}
+    }
+        
+    </tbody>
+</table>
+<p style="color:red">@Html.Raw(ViewBag.roomNotFree)</p>
 
 
 

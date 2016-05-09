@@ -10,6 +10,7 @@
     }
 <h2>Create</h2>
 @* message about occupied classroom *@
+
 <p style="color:red">@Html.Raw(ViewBag.roomNotFreeMessage)</p>
 
 @using (Html.BeginForm()) {
@@ -86,7 +87,6 @@
             @Html.EditorFor(model => model.Date)        
             @Html.ValidationMessageFor(model => model.Date)
             <input style="color:green" type="button" id="btnAdd" value="+"/>  
-             
         </div>
         
         <div id="addfields">
@@ -108,11 +108,16 @@
     @Html.ActionLink("Back to List", "Index")
 </div>
 
-@section Scripts {    
+@section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-    <script type="text/javascript">    
+    <script type="text/javascript">
+        $(function () {
+            $('select').attr("required", "required");
+            $('input[type="text"]').attr("required", "required");
+        });
+
         //function running datepicker
-            function picker() {
+        function picker() {
             $(".text-box.single-line").datepicker({
                 dateFormat: "yy-mm-dd",
                 changeYear: true,
@@ -123,52 +128,44 @@
                     label: "Select a date",
                     text: false
                 });
-            }
+        }
 
         var d = 1;
         //function adding new fields (date, room, lessonType)
         function addDate() {
-            //var newDate = '<div> <input class="text-box single-line" data-val="true" id="DateList_1_" name="DateList[1]" type="datetime" value="" style="display: inline-block;"><div/>'.replace('_1_', '[' + d + ']').replace('[1]', '[' + d + ']');            
 
             var newItems = $("#newfields").clone(true);
             var checkBox = document.getElementById("different");
-            var divElement = document.getElementById("addfields");    
+            var divElement = document.getElementById("addfields");
 
             if (checkBox.checked) {
                 divElement.style = "border: 4px double aqua";
                 $(divElement).append(newItems);
-                $(divElement).append("<div><input type='datetime' class='text-box single-line' name='Date'><div/>");
+                $(divElement).append("<div class='editor-field'><input type='datetime' required='required' class='text-box single-line' name='Date'> <span class='field-validation-valid' data-valmsg-for='Date' data-valmsg-replace='true'></span> </div>");
                 picker();
                 d++;
             }
             else {
                 divElement.style = "border: none";
-                //$(divElement).append(newDate);
-                $(divElement).append("<div><input type='datetime' class='text-box single-line' name='Date'><div/>");
+                $(divElement).append("<div class='editor-field'><input type='datetime' required='required' class='text-box single-line' name='Date'> <span class='field-validation-valid' data-valmsg-for='Date' data-valmsg-replace='true'></span> </div>");
                 picker();
                 d++;
             }
         }
 
-        function changeCheckBox()
-        {
+        function changeCheckBox() {
             d = 1;
-            var divElement = $("#addfields");            
+            var divElement = $("#addfields");
             divElement.empty();
             divElement.css("border", "none");
         }
-
-        //picker();
 
         var butAddDate = document.getElementById("btnAdd");
         butAddDate.onclick = addDate;//action running if click on button #btnAdd
 
         var checkBox = document.getElementById("different");
-        checkBox.onclick = changeCheckBox;//action running if change CheckBox #different
-        
-       
+        checkBox.onclick = changeCheckBox;//action running if change CheckBox #different        
+
     </script>
 
-    
-    
 }
