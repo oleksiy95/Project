@@ -74,8 +74,12 @@ namespace CourseProject.Controllers
         public ActionResult Create(Schedule schedule, DateTime[] Date, int[] Lesson_ID, int[] Room_ID)
         {
             bool roomFree = true;
+            bool alternative1 = true;
+            bool alternative2 = true;
             string roomNotFreeMessage = String.Empty;
             string roomNumber = String.Empty;
+            string alternativeLessonNumber1 = String.Empty;
+            string alternativeLessonNumber2 = String.Empty;
             Schedule sch = new Schedule();//new oject
             if (ModelState.IsValid)
             {
@@ -106,6 +110,9 @@ namespace CourseProject.Controllers
                         {
                             if (checkRoom.Room_ID == sch.Room_ID && checkRoom.LessonNumber == sch.LessonNumber && checkRoom.Date == sch.Date)
                             {
+                                alternative1 = true;
+                                alternative2 = true;
+
                                 foreach (var room in db.Classrooms.ToList())
                                 {
                                     if (room.Room_ID == sch.Room_ID)
@@ -120,6 +127,41 @@ namespace CourseProject.Controllers
                                 roomFree = false;
                                 //write message about occupied;
                                 roomNotFreeMessage = roomNotFreeMessage + "Classroom " + roomNumber + " is occupied on " + date.ToString("yyyy-MM-dd") + " in the " + sch.LessonNumber + " lesson<br/>";
+
+                                //propose another lessonNumber
+                                foreach (var alternativeRoom in db.Schedules.ToList())
+                                {
+                                    
+
+                                    if (sch.LessonNumber == "1")
+                                    {
+                                        alternativeLessonNumber1 = "2"; alternativeLessonNumber2 = "3";
+                                    }
+                                    else if (sch.LessonNumber == "6")
+                                    {
+                                        alternativeLessonNumber1 = "5"; alternativeLessonNumber2 = "4";
+                                    }
+                                    else if (Convert.ToInt32(sch.LessonNumber) > 1 && Convert.ToInt32(sch.LessonNumber) < 6)
+                                    {
+                                        alternativeLessonNumber1 = (Convert.ToInt32(sch.LessonNumber) - 1).ToString();
+                                        alternativeLessonNumber2 = (Convert.ToInt32(sch.LessonNumber) + 1).ToString();
+                                    }
+
+                                    if (alternativeRoom.Room_ID == sch.Room_ID && alternativeRoom.LessonNumber == alternativeLessonNumber1 && alternativeRoom.Date == sch.Date)
+                                    {
+                                        alternative1 = false;
+                                    }
+
+                                    if (alternativeRoom.Room_ID == sch.Room_ID && alternativeRoom.LessonNumber == alternativeLessonNumber2 && alternativeRoom.Date == sch.Date)
+                                    {
+                                        alternative2 = false;
+                                    }
+                                }
+                                    
+                                if (alternative1) roomNotFreeMessage = roomNotFreeMessage + "Classroom " + roomNumber + " is free on " + date.ToString("yyyy-MM-dd") + " in the " + alternativeLessonNumber1 + " lesson<br/>";
+                                if (alternative2) roomNotFreeMessage = roomNotFreeMessage + "Classroom " + roomNumber + " is free on " + date.ToString("yyyy-MM-dd") + " in the " + alternativeLessonNumber2 + " lesson<br/>";
+
+                                
                             }
                         }
                         //if classroom is free - add record
@@ -443,8 +485,10 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
         [HttpPost]
         public ActionResult CorrectRecordPost(Schedule schedule)
         {
-
-
+            bool alternative1 = true;
+            bool alternative2 = true;
+            string alternativeLessonNumber1 = String.Empty;
+            string alternativeLessonNumber2 = String.Empty;
             string roomNumber = String.Empty;
             bool roomFree = true;
             string roomNotFreeMessage = String.Empty;
@@ -455,6 +499,9 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
                 {
                     if (checkRoom.Room_ID == schedule.Room_ID && checkRoom.LessonNumber == schedule.LessonNumber && checkRoom.Date == schedule.Date)
                     {
+                        alternative1 = true;
+                        alternative2 = true;
+
                         foreach (var room in db.Classrooms.ToList())
                         {
                             if (room.Room_ID == schedule.Room_ID)
@@ -469,6 +516,40 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
                         roomFree = false;
                         //write message about occupied;
                         roomNotFreeMessage = roomNotFreeMessage + "Classroom " + roomNumber + " is occupied on " + date.ToString("yyyy-MM-dd") + " in the " + schedule.LessonNumber + " lesson<br/>";
+
+                        //propose another lessonNumber
+                        foreach (var alternativeRoom in db.Schedules.ToList())
+                        {
+
+
+                            if (schedule.LessonNumber == "1")
+                            {
+                                alternativeLessonNumber1 = "2"; alternativeLessonNumber2 = "3";
+                            }
+                            else if (schedule.LessonNumber == "6")
+                            {
+                                alternativeLessonNumber1 = "5"; alternativeLessonNumber2 = "4";
+                            }
+                            else if (Convert.ToInt32(schedule.LessonNumber) > 1 && Convert.ToInt32(schedule.LessonNumber) < 6)
+                            {
+                                alternativeLessonNumber1 = (Convert.ToInt32(schedule.LessonNumber) - 1).ToString();
+                                alternativeLessonNumber2 = (Convert.ToInt32(schedule.LessonNumber) + 1).ToString();
+                            }
+
+                            if (alternativeRoom.Room_ID == schedule.Room_ID && alternativeRoom.LessonNumber == alternativeLessonNumber1 && alternativeRoom.Date == schedule.Date)
+                            {
+                                alternative1 = false;
+                            }
+
+                            if (alternativeRoom.Room_ID == schedule.Room_ID && alternativeRoom.LessonNumber == alternativeLessonNumber2 && alternativeRoom.Date == schedule.Date)
+                            {
+                                alternative2 = false;
+                            }
+                        }
+
+                        if (alternative1) roomNotFreeMessage = roomNotFreeMessage + "Classroom " + roomNumber + " is free on " + date.ToString("yyyy-MM-dd") + " in the " + alternativeLessonNumber1 + " lesson<br/>";
+                        if (alternative2) roomNotFreeMessage = roomNotFreeMessage + "Classroom " + roomNumber + " is free on " + date.ToString("yyyy-MM-dd") + " in the " + alternativeLessonNumber2 + " lesson<br/>";
+                                    
                     }
                 }
 
