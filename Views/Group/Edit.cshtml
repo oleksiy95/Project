@@ -45,4 +45,10 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+<script>
+    $(function () {
+        $('select').attr("required", "required");
+        $('input[type="text"]').attr("required", "required");
+    });
+</script>
 }
