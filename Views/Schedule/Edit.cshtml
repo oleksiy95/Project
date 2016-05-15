@@ -9,6 +9,9 @@
     SelectList listForNumber = new SelectList(new[] { "1", "2", "3", "4", "5", "6" });
     }
 <h2>Edit</h2>
+@* message about occupied classroom *@
+
+<p style="color:red">@Html.Raw(ViewBag.roomNotFreeMessage)</p>
 
 @using (Html.BeginForm()) {
     @Html.ValidationSummary(true)
@@ -95,4 +98,10 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+<script>
+    $(function () {
+        $('select').attr("required", "required");
+        $('input[type="text"]').attr("required", "required");
+    });
+</script>
 }

@@ -348,12 +348,89 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
         [HttpPost]
         public ActionResult Edit(Schedule schedule)
         {
+            bool alternative1 = true;
+            bool alternative2 = true;
+            string alternativeLessonNumber1 = String.Empty;
+            string alternativeLessonNumber2 = String.Empty;
+            string roomNumber = String.Empty;
+            bool roomFree = true;
+            string roomNotFreeMessage = String.Empty;
+
             if (ModelState.IsValid)
             {
-                db.Entry(schedule).State = EntityState.Modified;
-                db.SaveChanges();
+
+                foreach (var checkRoom in db.Schedules.ToList())
+                {
+                    if (checkRoom.Room_ID == schedule.Room_ID && checkRoom.LessonNumber == schedule.LessonNumber && checkRoom.Date == schedule.Date)
+                    {
+                        alternative1 = true;
+                        alternative2 = true;
+
+                        foreach (var room in db.Classrooms.ToList())
+                        {
+                            if (room.Room_ID == schedule.Room_ID)
+                            {
+                                roomNumber = room.Number;//search number of room by id
+                                break;
+                            }
+                        }
+                        DateTime date = new DateTime();
+                        date = Convert.ToDateTime(schedule.Date);
+
+                        roomFree = false;
+                        //write message about occupied;
+                        roomNotFreeMessage = roomNotFreeMessage + "Classroom " + roomNumber + " is occupied on " + date.ToString("yyyy-MM-dd") + " in the " + schedule.LessonNumber + " lesson<br/>";
+
+                        //propose another lessonNumber
+                        foreach (var alternativeRoom in db.Schedules.ToList())
+                        {
+
+
+                            if (schedule.LessonNumber == "1")
+                            {
+                                alternativeLessonNumber1 = "2"; alternativeLessonNumber2 = "3";
+                            }
+                            else if (schedule.LessonNumber == "6")
+                            {
+                                alternativeLessonNumber1 = "5"; alternativeLessonNumber2 = "4";
+                            }
+                            else if (Convert.ToInt32(schedule.LessonNumber) > 1 && Convert.ToInt32(schedule.LessonNumber) < 6)
+                            {
+                                alternativeLessonNumber1 = (Convert.ToInt32(schedule.LessonNumber) - 1).ToString();
+                                alternativeLessonNumber2 = (Convert.ToInt32(schedule.LessonNumber) + 1).ToString();
+                            }
+
+                            if (alternativeRoom.Room_ID == schedule.Room_ID && alternativeRoom.LessonNumber == alternativeLessonNumber1 && alternativeRoom.Date == schedule.Date)
+                            {
+                                alternative1 = false;
+                            }
+
+                            if (alternativeRoom.Room_ID == schedule.Room_ID && alternativeRoom.LessonNumber == alternativeLessonNumber2 && alternativeRoom.Date == schedule.Date)
+                            {
+                                alternative2 = false;
+                            }
+                        }
+
+                        if (alternative1) roomNotFreeMessage = roomNotFreeMessage + "Classroom " + roomNumber + " is free on " + date.ToString("yyyy-MM-dd") + " in the " + alternativeLessonNumber1 + " lesson<br/>";
+                        if (alternative2) roomNotFreeMessage = roomNotFreeMessage + "Classroom " + roomNumber + " is free on " + date.ToString("yyyy-MM-dd") + " in the " + alternativeLessonNumber2 + " lesson<br/>";
+
+                    }
+                }
+
+                if (roomFree)
+                {
+                    db.Entry(schedule).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+
+                if (roomNotFreeMessage != String.Empty)
+                    goto leaveOnCreate;
+
                 return RedirectToAction("Index");
             }
+
+           leaveOnCreate:
+            ViewBag.roomNotFreeMessage = roomNotFreeMessage;
             ViewBag.Room_ID = new SelectList(db.Classrooms, "Room_ID", "Number", schedule.Room_ID);
             ViewBag.Group_ID = new SelectList((from s in db.Groups
                                                select new
