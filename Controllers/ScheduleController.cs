@@ -787,7 +787,7 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
             DataTable dtErrorsName = new DataTable();
             
             List<DataTable> dtList = new List<DataTable>();
-            bool subjects, classrooms, lessontypes, groups, teachers, roomFree;
+            bool subjects, classrooms, lessontypes, groups, teachers, roomFree, date, enrollment, lessonNumber;
             int lineNumber = 1;
             int errorNumber = 0;
 
@@ -824,6 +824,9 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
                 lessontypes = false;
                 groups = false;
                 teachers = false;
+                date = false;
+                enrollment = false;
+                lessonNumber = false;
                 roomFree = true;
                 data_id = new object[9];
                 
@@ -892,14 +895,35 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
                     }
                 }
                 //Date, Enrollment year and LessonNumber don't have the IDs
-                data_id[4] = row.ItemArray[4];
-                data_id[7] = row.ItemArray[7];
-                data_id[8] = row.ItemArray[8];
+
+                DateTime dateToParse;
+                if(DateTime.TryParse(row.ItemArray[4].ToString(), out dateToParse))
+                {
+                    date = true;
+                    data_id[4] = dateToParse;
+                    data_id[4] = row.ItemArray[4];
+                }
+
+                if (Convert.ToInt32(row.ItemArray[7]) > 2014 && Convert.ToInt32(row.ItemArray[7]) < 2020)
+                {
+                    enrollment = true;
+                    data_id[7] = row.ItemArray[7];
+                }
+
+                if (Convert.ToInt32(row.ItemArray[8]) > 0 && Convert.ToInt32(row.ItemArray[8]) < 7)
+                {
+                    lessonNumber = true;
+                    data_id[8] = row.ItemArray[8];
+                }
+
+                //data_id[4] = row.ItemArray[4];
+                //data_id[7] = row.ItemArray[7];
+                //data_id[8] = row.ItemArray[8];
 
                 //checking if classroom is occupied
                 foreach (var checkRoom in db.Schedules.ToList())
                 {
-                    if (checkRoom.Room_ID == Convert.ToInt32(data_id[2]) && checkRoom.LessonNumber == data_id[8].ToString() && checkRoom.Date == Convert.ToDateTime(data_id[4]))
+                    if (checkRoom.Room_ID == Convert.ToInt32(row.ItemArray[2]) && checkRoom.LessonNumber == row.ItemArray[8].ToString() && checkRoom.Date == Convert.ToDateTime(row.ItemArray[4]))
                     {
                         roomFree = false;
                     }
@@ -907,7 +931,7 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
 
                 lineNumber++;
                 //if all names are founded, add row in dt, else add row in dtErrors
-                if (teachers && groups && lessontypes && classrooms && subjects && roomFree)
+                if (teachers && groups && lessontypes && classrooms && subjects && roomFree && date && enrollment && lessonNumber)
                 {
                     row.ItemArray = data_id;
                     dt.Rows.Add(row);
@@ -931,6 +955,9 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
                         if (!classrooms) Feedback = Feedback + " room " + row.ItemArray[2].ToString() + " isn't founded;";
                         if (!subjects) Feedback = Feedback + " subject " + row.ItemArray[1].ToString() + " isn't founded;";
                         if (!roomFree) Feedback = Feedback + " classroom " + row.ItemArray[2].ToString() + " is occupied on " + row.ItemArray[4].ToString() + " in the " + row.ItemArray[8].ToString() + " lesson";
+                        if (!date) Feedback = Feedback + " field Date is not correct;";
+                        if (!enrollment) Feedback = Feedback + " field EnrollmentYear is not correct;";
+                        if (!lessonNumber) Feedback = Feedback + " field LessonNumber is not correct;";
                         Feedback = Feedback + "<button class='correct' id='modal-opener"+errorNumber+"'>Edit and save</button> <br/>";
                         ErrorMassage = ErrorMassage + Feedback;
                     }
