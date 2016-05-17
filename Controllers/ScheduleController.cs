@@ -358,7 +358,7 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
 
             if (ModelState.IsValid)
             {
-
+                //check if classroom is free
                 foreach (var checkRoom in db.Schedules.ToList())
                 {
                     if (checkRoom.Room_ID == schedule.Room_ID && checkRoom.LessonNumber == schedule.LessonNumber && checkRoom.Date == schedule.Date)
@@ -384,8 +384,6 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
                         //propose another lessonNumber
                         foreach (var alternativeRoom in db.Schedules.ToList())
                         {
-
-
                             if (schedule.LessonNumber == "1")
                             {
                                 alternativeLessonNumber1 = "2"; alternativeLessonNumber2 = "3";

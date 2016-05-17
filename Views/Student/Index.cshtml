@@ -41,6 +41,7 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Group.Name)
+            @Html.DisplayFor(modelItem => item.Group.EnrollmentYear)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.Student_ID }) |
@@ -51,3 +52,28 @@
 }
 
 </table>
+
+
+<h3>Student Upload</h3>
+@using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+{        
+     <input type="file" name="Files" id="Files" />
+     <br />
+     <input type="submit" name="submit" value="Upload" /> 
+}
+
+@* Error message *@
+@if (ViewBag.Feedback == "Upload complete")
+{
+<p style="color:green">@ViewBag.Feedback</p>
+}
+else
+{
+<p style="color:red">@ViewBag.Feedback</p>    
+}
+<p style="color:red">@Html.Raw(ViewBag.ErrorMassage)</p>
+
+@if (ViewBag.ErrorsInCSV == "true")
+{
+    @Html.ActionLink("Download file with wrong data", "DownloadFile");
+}
