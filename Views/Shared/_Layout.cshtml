@@ -30,8 +30,59 @@
                             <li>@Html.ActionLink("Домашняя страница", "Index", "Home")</li>
                             <li>@Html.ActionLink("О программе", "About", "Home")</li>
                             <li>@Html.ActionLink("Контакт", "Contact", "Home")</li>
+                        </ul>                       
+                    </nav>
+                </div>
+                
+                <div class="float-left">
+                    <nav id="primary_nav_wrap">
+                        <ul>
+                          <li>@Html.ActionLink("Schedule", "Index", "Schedule")
+                            <ul>
+                              <li>@Html.ActionLink("Main", "Index", "Schedule")</li>
+                              <li>@Html.ActionLink("Create Schedule", "Create", "Schedule")</li>
+                              <li>@Html.ActionLink("Copy Schedule", "Copy", "Schedule")</li>
+                            </ul>
+                          </li>
+                          <li>@Html.ActionLink("Students", "Index", "Student")
+                            <ul>
+                              <li>@Html.ActionLink("Main", "Index", "Student")</li>
+                              <li>@Html.ActionLink("Add Students", "Create", "Student")</li>                              
+                            </ul>
+                          </li>
+                          <li>@Html.ActionLink("Teachers", "Index", "Teacher")
+                            <ul>
+                              <li>@Html.ActionLink("Main", "Index", "Teacher")</li>
+                              <li>@Html.ActionLink("Add Teacher", "Create", "Teacher")</li>                              
+                            </ul>
+                          </li>
+                          <li>@Html.ActionLink("Groups", "Index", "Group")
+                            <ul>
+                              <li>@Html.ActionLink("Main", "Index", "Group")</li>
+                              <li>@Html.ActionLink("Add Group", "Create", "Group")</li>                              
+                            </ul>
+                          </li>
+                          <li>@Html.ActionLink("Classrooms", "Index", "Classroom")
+                            <ul>
+                              <li>@Html.ActionLink("Main", "Index", "Classroom")</li>
+                              <li>@Html.ActionLink("Add Classroom", "Create", "Classroom")</li>                              
+                            </ul>
+                          </li>
+                          <li>@Html.ActionLink("Subjects", "Index", "Subject")
+                            <ul>
+                              <li>@Html.ActionLink("Main", "Index", "Subject")</li>
+                              <li>@Html.ActionLink("Add Subject", "Create", "Subject")</li>                              
+                            </ul>
+                          </li>
+                          <li>@Html.ActionLink("Lesson Types", "Index", "LessonType")
+                            <ul>
+                              <li>@Html.ActionLink("Main", "Index", "LessonType")</li>
+                              <li>@Html.ActionLink("Add Lesson Type", "Create", "LessonType")</li>                              
+                            </ul>
+                          </li>
                         </ul>
                     </nav>
+
                 </div>
             </div>
         </header>
