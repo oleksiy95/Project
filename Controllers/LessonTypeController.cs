@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using CourseProject.Models;
+using System.Data.Entity.Infrastructure;
 
 namespace CourseProject.Controllers
 {
@@ -42,19 +43,42 @@ namespace CourseProject.Controllers
             return View();
         }
 
+        private bool Checking(LessonType type)
+        {
+            bool already = true;
+            foreach (var check in db.LessonTypes.ToList())
+            {
+                if (check.Type == type.Type)
+                {
+                    already = false;
+
+                }
+            }
+            return already;
+        }
+
         //
         // POST: /LessonType/Create
 
         [HttpPost]
         public ActionResult Create(LessonType lessontype)
         {
+            bool already = true;
+            string error = string.Empty;
+
             if (ModelState.IsValid)
             {
-                db.LessonTypes.Add(lessontype);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
+                already = Checking(lessontype);
 
+                if (already)
+                {
+                    db.LessonTypes.Add(lessontype);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+            }
+            error = "Lesson type " + lessontype.Type + " is in data base";
+            ModelState.AddModelError(string.Empty, error);
             return View(lessontype);
         }
 
@@ -77,12 +101,26 @@ namespace CourseProject.Controllers
         [HttpPost]
         public ActionResult Edit(LessonType lessontype)
         {
+            bool already = true;
+            string error = string.Empty;
+
             if (ModelState.IsValid)
             {
-                db.Entry(lessontype).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+
+                already = Checking(lessontype);
+
+                if (already)
+                {
+                    LessonType r = db.LessonTypes.Find(lessontype.Lesson_ID);
+                    ((IObjectContextAdapter)db).ObjectContext.Detach(r);
+
+                    db.Entry(lessontype).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
             }
+            error = "Lesson type " + lessontype.Type + " is in data base";
+            ModelState.AddModelError(string.Empty, error);
             return View(lessontype);
         }
 

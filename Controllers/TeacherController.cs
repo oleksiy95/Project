@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using CourseProject.Models;
+using System.Data.Entity.Infrastructure;
 
 namespace CourseProject.Controllers
 {
@@ -42,19 +43,42 @@ namespace CourseProject.Controllers
             return View();
         }
 
+        private bool Checking(Teacher teacher)
+        {
+            bool already = true;
+            foreach (var check in db.Teachers.ToList())
+            {
+                if (check.Name == teacher.Name && check.Surname == teacher.Surname && check.LastName == teacher.LastName)
+                {
+                    already = false;
+
+                }
+            }
+            return already;
+        }
+
         //
         // POST: /Teacher/Create
 
         [HttpPost]
         public ActionResult Create(Teacher teacher)
         {
+            bool already = false;
+            string error = string.Empty;
+
             if (ModelState.IsValid)
             {
-                db.Teachers.Add(teacher);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
+                already = Checking(teacher);
 
+                if (already)
+                {
+                    db.Teachers.Add(teacher);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+            }
+            error = "Teacher " + teacher.Surname + " " + teacher.Name + " " + teacher.LastName + " is in data base";
+            ModelState.AddModelError(string.Empty, error);
             return View(teacher);
         }
 
@@ -77,12 +101,25 @@ namespace CourseProject.Controllers
         [HttpPost]
         public ActionResult Edit(Teacher teacher)
         {
+            bool already = false;
+            string error = string.Empty;
+
             if (ModelState.IsValid)
             {
-                db.Entry(teacher).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                already = Checking(teacher);
+
+                if (already)
+                {
+                    Teacher r = db.Teachers.Find(teacher.Teacher_ID);
+                    ((IObjectContextAdapter)db).ObjectContext.Detach(r);
+
+                    db.Entry(teacher).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
             }
+            error = "Teacher " + teacher.Surname + " " + teacher.Name + " " + teacher.LastName + " is in data base";
+            ModelState.AddModelError(string.Empty, error);
             return View(teacher);
         }
 

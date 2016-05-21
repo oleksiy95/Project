@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using CourseProject.Models;
+using System.Data.Entity.Infrastructure;
 
 namespace CourseProject.Controllers
 {
@@ -42,19 +43,46 @@ namespace CourseProject.Controllers
             return View();
         }
 
+
+        private bool Checking(Classroom classroom)
+        {
+            bool roomAlready = true;
+            foreach (var checkRoom in db.Classrooms.ToList())
+            {
+                if (classroom.Number == checkRoom.Number)
+                {
+                    roomAlready = false;
+                    break;
+                }
+            }
+            
+            return roomAlready;
+        }
+
         //
         // POST: /Classroom/Create
 
         [HttpPost]
         public ActionResult Create(Classroom classroom)
         {
+            bool roomAlready = true;
+            string errorMessage = String.Empty;
             if (ModelState.IsValid)
             {
-                db.Classrooms.Add(classroom);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
+                //check if such classroom isn't in DB
+                roomAlready = Checking(classroom);      
+               
 
+                if (roomAlready)
+                {
+                    db.Classrooms.Add(classroom);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                
+            }
+            errorMessage = "Classroom " + classroom.Number + " is in data base";
+            ModelState.AddModelError(string.Empty, errorMessage);
             return View(classroom);
         }
 
@@ -77,12 +105,27 @@ namespace CourseProject.Controllers
         [HttpPost]
         public ActionResult Edit(Classroom classroom)
         {
+            bool roomAlready = true;
+            string errorMessage = String.Empty;
+
             if (ModelState.IsValid)
             {
-                db.Entry(classroom).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                //check if such classroom isn't in DB
+                roomAlready = Checking(classroom);
+                     
+                if (roomAlready)
+                {
+                    Classroom r = db.Classrooms.Find(classroom.Room_ID);
+                    ((IObjectContextAdapter)db).ObjectContext.Detach(r);
+                    
+                    db.Entry(classroom).State = EntityState.Modified;                    
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
             }
+              
+            errorMessage = "Classroom " + classroom.Number + " is in data base";
+            ModelState.AddModelError(string.Empty, errorMessage);
             return View(classroom);
         }
 

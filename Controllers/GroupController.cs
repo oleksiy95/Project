@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using CourseProject.Models;
+using System.Data.Entity.Infrastructure;
 
 namespace CourseProject.Controllers
 {
@@ -42,19 +43,44 @@ namespace CourseProject.Controllers
             return View();
         }
 
+        private bool Checking(Group group)
+        {
+            bool already = true;
+            foreach (var checkGroup in db.Groups.ToList())
+            {
+                if (group.Name == checkGroup.Name && group.EnrollmentYear == checkGroup.EnrollmentYear)
+                {
+                    already = false;
+                    
+                }
+            }
+            return already;
+        }
+
         //
         // POST: /Group/Create
 
         [HttpPost]
         public ActionResult Create(Group group)
         {
+            bool groupAlready = true;
+            string errorMessage = String.Empty;
+
+
             if (ModelState.IsValid)
             {
-                db.Groups.Add(group);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                //check if such group isn't in DB
+                groupAlready = Checking(group);
+                
+                if (groupAlready)
+                {
+                    db.Groups.Add(group);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
             }
-
+            errorMessage = "Group " + group.Name + " " + group.EnrollmentYear + " is in data base";
+            ModelState.AddModelError(string.Empty, errorMessage);
             return View(group);
         }
 
@@ -77,12 +103,26 @@ namespace CourseProject.Controllers
         [HttpPost]
         public ActionResult Edit(Group group)
         {
+            bool groupAlready = true;
+            string errorMessage = String.Empty;
+
             if (ModelState.IsValid)
             {
-                db.Entry(group).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+
+                groupAlready = Checking(group);
+                if (groupAlready)
+                {
+                    Group r = db.Groups.Find(group.Group_ID);
+                    ((IObjectContextAdapter)db).ObjectContext.Detach(r);
+
+                    db.Entry(group).State = EntityState.Modified;
+                    
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
             }
+            errorMessage = "Group " + group.Name + " " + group.EnrollmentYear + " is in data base";
+            ModelState.AddModelError(string.Empty, errorMessage);
             return View(group);
         }
 

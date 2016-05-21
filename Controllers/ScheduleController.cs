@@ -11,6 +11,7 @@ using System.Text.RegularExpressions;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Text;
+using System.Data.Entity.Infrastructure;
 
 namespace CourseProject.Controllers
 {
@@ -417,6 +418,9 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
 
                 if (roomFree)
                 {
+                    Schedule r = db.Schedules.Find(schedule.Schedule_ID);
+                    ((IObjectContextAdapter)db).ObjectContext.Detach(r);
+
                     db.Entry(schedule).State = EntityState.Modified;
                     db.SaveChanges();
                 }

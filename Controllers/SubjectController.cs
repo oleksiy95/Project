@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using CourseProject.Models;
+using System.Data.Entity.Infrastructure;
 
 namespace CourseProject.Controllers
 {
@@ -42,19 +43,43 @@ namespace CourseProject.Controllers
             return View();
         }
 
+        private bool Checking(Subject sub)
+        {
+            bool already = true;
+            foreach (var check in db.Subjects.ToList())
+            {
+                if (check.Name == sub.Name)
+                {
+                    already = false;
+
+                }
+            }
+            return already;
+        }
+
         //
         // POST: /Subject/Create
 
         [HttpPost]
         public ActionResult Create(Subject subject)
         {
+            bool already = true;
+            string error = string.Empty;
+
             if (ModelState.IsValid)
             {
-                db.Subjects.Add(subject);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
 
+                already = Checking(subject);
+
+                if (already)
+                {
+                    db.Subjects.Add(subject);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+            }
+            error = "Subject " + subject.Name + " is in data base";
+            ModelState.AddModelError(string.Empty, error);
             return View(subject);
         }
 
@@ -77,12 +102,26 @@ namespace CourseProject.Controllers
         [HttpPost]
         public ActionResult Edit(Subject subject)
         {
+            bool already = true;
+            string error = string.Empty;
+
             if (ModelState.IsValid)
             {
-                db.Entry(subject).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+
+                 already = Checking(subject);
+
+                 if (already)
+                 {
+                     Subject r = db.Subjects.Find(subject.Subject_ID);
+                     ((IObjectContextAdapter)db).ObjectContext.Detach(r);
+
+                     db.Entry(subject).State = EntityState.Modified;
+                     db.SaveChanges();
+                     return RedirectToAction("Index");
+                 }
             }
+            error = "Subject " + subject.Name + " is in data base";
+            ModelState.AddModelError(string.Empty, error);
             return View(subject);
         }
 

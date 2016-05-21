@@ -11,6 +11,7 @@ using System.Text.RegularExpressions;
 using System.Text;
 using System.Configuration;
 using System.Data.SqlClient;
+using System.Data.Entity.Infrastructure;
 
 namespace CourseProject.Controllers
 {
@@ -54,19 +55,42 @@ namespace CourseProject.Controllers
             return View();
         }
 
+        private bool Checking(Student student)
+        {
+            bool already = true;
+            foreach (var check in db.Students.ToList())
+            {
+                if (check.Name == student.Name && check.Surname == student.Surname && check.LastName == student.LastName && check.Group_ID == student.Group_ID)
+                {
+                    already = false;
+
+                }
+            }
+            return already;
+        }
+
         //
         // POST: /Student/Create
 
         [HttpPost]
         public ActionResult Create(Student student)
         {
+            bool already = true;
+            string error = string.Empty;
+
             if (ModelState.IsValid)
             {
-                db.Students.Add(student);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
+                already = Checking(student);
 
+                if (already)
+                {
+                    db.Students.Add(student);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+            }
+            error = "Student " + student.Surname + " " + student.Name + " " + student.LastName + " is in data base";
+            ModelState.AddModelError(string.Empty, error);
             ViewBag.Group_ID = new SelectList(db.Groups, "Group_ID", "Name", student.Group_ID);
             return View(student);
         }
@@ -96,12 +120,25 @@ namespace CourseProject.Controllers
         [HttpPost]
         public ActionResult Edit(Student student)
         {
+            bool already = true;
+            string error = string.Empty;
+
             if (ModelState.IsValid)
             {
-                db.Entry(student).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                already = Checking(student);
+
+                if (already)
+                {
+                    Student r = db.Students.Find(student.Student_ID);
+                    ((IObjectContextAdapter)db).ObjectContext.Detach(r);
+
+                    db.Entry(student).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
             }
+            error = "Student " + student.Surname + " " + student.Name + " " + student.LastName + " is in data base";
+            ModelState.AddModelError(string.Empty, error);
             ViewBag.Group_ID = new SelectList(db.Groups, "Group_ID", "Name", student.Group_ID);
             return View(student);
         }
