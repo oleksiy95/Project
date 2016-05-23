@@ -96,22 +96,24 @@ h5, h6 {
 .content-wrapper {
     margin: 0 auto;
     max-width: 1000px;
+    
 }
 
 #body {
     background-color: #f6f6f6;
     clear: both;
     padding-bottom: 35px;
+    min-height:590px
 }
 
     .main-content {
-        background: url("../Images/accent.png") no-repeat;
+       
         padding-left: 10px;
         padding-top: 30px;
     }
 
     .featured + .main-content {
-        background: url("../Images/heroAccent.png") no-repeat;
+        
     }
 
 header .content-wrapper {
@@ -342,7 +344,7 @@ section.feature {
 /* ordered list */
 ol.round {
     list-style-type: none;
-    padding-left: 0;
+    padding-left: 0;   
 }
 
     ol.round li {
@@ -368,6 +370,7 @@ ol.round {
 
         ol.round li.four {
             background: url("../Images/orderedList4.png") no-repeat;
+            padding-bottom:10px;
         }
 
         ol.round li.five {
@@ -755,7 +758,6 @@ td {
 tr.pager td {
     padding: 0 0.25em 0 0;
 }
-
 
 /********************
 *   Mobile Styles   *
