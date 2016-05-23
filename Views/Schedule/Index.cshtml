@@ -14,13 +14,13 @@
 }
 
 <h2>Schedule</h2>
-
-@using (Ajax.BeginForm(options))
-{
-    <p>
+<p>
         @Html.ActionLink("Create New", "Create")
         @Html.ActionLink("Copy Schedule", "Copy")
     </p>
+@using (Ajax.BeginForm(options))
+{
+   
     
     <div id="scheduledata">
         @Html.Action("ScheduleData")
@@ -31,7 +31,7 @@
 
 @* message about occupied classroom *@
 
-<h3>Schedule Upload</h3>
+<h2>Schedule Upload</h2>
 
 @using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data" }))
 {        
@@ -112,7 +112,7 @@ else
             $(function () {
                 $(".modal").dialog({
                     autoOpen: false,
-                    width: 450,
+                    width: 500,
                     height: 600,
                     show: {
                         effect: "blind",

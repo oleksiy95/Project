@@ -624,10 +624,8 @@ table {
     border-spacing: 0;
     margin-top: 0.75em;
     border: 0 none;
-}
-
-th {
-    
+    margin:10px;
+    padding:30px 30px 30px 30px; background:#eee; border:1px solid #e5e5e5; -moz-border-radius:5px; -webkit-border-radius:5px; border-radius:5px; 
     font-size: 1em;
     text-align: left;
     border: none 0px;
@@ -635,9 +633,14 @@ th {
     
 }
 
+th {
+    padding: 0.25em 0.5em 0.25em 0em;
+}
+
     th a {
         display: block;
         position: relative;
+        padding: 0.25em 0.5em 0.25em 0em;
     }
 
     th a:link, th a:visited, th a:active, th a:hover {
