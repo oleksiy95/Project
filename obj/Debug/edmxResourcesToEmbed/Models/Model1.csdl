@@ -33,6 +33,15 @@
       <End Role="Teacher" EntitySet="Teachers" />
       <End Role="Schedule" EntitySet="Schedules" />
     </AssociationSet>
+    <EntitySet Name="Grade" EntityType="ScheduleModel.Grade" />
+    <AssociationSet Name="FK_Grade_Schedule" Association="ScheduleModel.FK_Grade_Schedule">
+      <End Role="Schedule" EntitySet="Schedules" />
+      <End Role="Grade" EntitySet="Grade" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Grade_Student" Association="ScheduleModel.FK_Grade_Student">
+      <End Role="Student" EntitySet="Students" />
+      <End Role="Grade" EntitySet="Grade" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="Classroom">
     <Key>
@@ -78,6 +87,7 @@
     <NavigationProperty Name="Teacher" Relationship="ScheduleModel.FK_Schedule_Teacher" FromRole="Schedule" ToRole="Teacher" />
     <Property Type="String" Name="EnrollmentYear" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
     <Property Type="String" Name="LessonNumber" Nullable="false" MaxLength="1" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Grade" Relationship="ScheduleModel.FK_Grade_Schedule" FromRole="Schedule" ToRole="Grade" />
   </EntityType>
   <EntityType Name="Student">
     <Key>
@@ -89,6 +99,7 @@
     <Property Name="LastName" Type="String" Nullable="false" MaxLength="20" Unicode="true" FixedLength="false" />
     <Property Name="Group_ID" Type="Int32" Nullable="false" />
     <NavigationProperty Name="Group" Relationship="ScheduleModel.FK_Student_Group" FromRole="Student" ToRole="Group" />
+    <NavigationProperty Name="Grade" Relationship="ScheduleModel.FK_Grade_Student" FromRole="Student" ToRole="Grade" />
   </EntityType>
   <EntityType Name="Subject">
     <Key>
@@ -112,7 +123,7 @@
     <Key>
       <PropertyRef Name="Teacher_ID" />
     </Key>
-    <Property Name="Teacher_ID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="Teacher_ID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Computed" />
     <Property Name="Name" Type="String" Nullable="false" MaxLength="20" Unicode="true" FixedLength="false" />
     <Property Name="Surname" Type="String" Nullable="false" MaxLength="20" Unicode="true" FixedLength="false" />
     <Property Name="LastName" Type="String" Nullable="false" MaxLength="20" Unicode="true" FixedLength="false" />
@@ -187,6 +198,42 @@
       </Principal>
       <Dependent Role="Schedule">
         <PropertyRef Name="Teacher_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="Grade">
+    <Key>
+      <PropertyRef Name="Grade_ID" />
+    </Key>
+    <Property Type="Int32" Name="Grade_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="Int32" Name="Schedule_ID" Nullable="false" />
+    <Property Type="Int32" Name="Student_ID" Nullable="false" />
+    <Property Type="String" Name="Visiting" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="Mark" MaxLength="10" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Schedule" Relationship="ScheduleModel.FK_Grade_Schedule" FromRole="Grade" ToRole="Schedule" />
+    <NavigationProperty Name="Student" Relationship="ScheduleModel.FK_Grade_Student" FromRole="Grade" ToRole="Student" />
+  </EntityType>
+  <Association Name="FK_Grade_Schedule">
+    <End Type="ScheduleModel.Schedule" Role="Schedule" Multiplicity="1" />
+    <End Type="ScheduleModel.Grade" Role="Grade" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Schedule">
+        <PropertyRef Name="Schedule_ID" />
+      </Principal>
+      <Dependent Role="Grade">
+        <PropertyRef Name="Schedule_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Grade_Student">
+    <End Type="ScheduleModel.Student" Role="Student" Multiplicity="1" />
+    <End Type="ScheduleModel.Grade" Role="Grade" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Student">
+        <PropertyRef Name="Student_ID" />
+      </Principal>
+      <Dependent Role="Grade">
+        <PropertyRef Name="Student_ID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

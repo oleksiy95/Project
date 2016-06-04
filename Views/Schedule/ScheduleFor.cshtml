@@ -1,0 +1,67 @@
+﻿@model CourseProject.Models.Schedule
+@{
+    ViewBag.Title = "Розклад";
+    
+    var options = new AjaxOptions()
+    {
+        UpdateTargetId = "scheduledata2",
+        Url = Url.Action("_ScheduleFor"),
+        LoadingElementId = "loadingIndicator",
+        
+
+    };
+}
+
+<h2>Розклад</h2>
+
+@Html.ActionLink("Розклад для студентів", "ScheduleFor", new {scheduleFor = "student"})
+@Html.ActionLink("Розклад для викладачів", "ScheduleFor", new {scheduleFor = "teacher"})
+
+@if(ViewBag.scheduleFor == "student" || ViewBag.scheduleFor == "teacher")
+{
+
+using (Ajax.BeginForm(options))
+{ 
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Schedule</legend>
+                
+        @if(ViewBag.scheduleFor == "teacher")
+        {
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Teacher_ID, "Teacher")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("Teacher_ID", String.Empty)
+            @Html.ValidationMessageFor(model => model.Teacher_ID)
+        </div>
+        }
+
+        @if(ViewBag.scheduleFor == "student")
+        {
+         <div class="editor-label">
+            @Html.LabelFor(model => model.Group_ID, "Group")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("Group_ID", String.Empty)
+            @Html.ValidationMessageFor(model => model.Group_ID)
+        </div>             
+        }
+               
+         <p>
+            <input type="submit" value="Показати" />
+              <img id="loadingIndicator" style="display:none;" src="@Url.Content("~/Content/loading.gif")" />
+        </p>
+        
+    </fieldset>
+
+
+<div id="scheduledata2">
+        @Html.Action("_ScheduleFor")
+    </div>
+}
+
+
+}
+

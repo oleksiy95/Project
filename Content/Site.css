@@ -683,6 +683,84 @@ tr.pager td {
     padding: 0 0.25em 0 0;
 }
 
+#scheduledata2 {
+    height:auto;
+    width:auto;
+    display:block;
+    position:static;
+}
+
+#itdate {
+    width:15%;
+    padding-top:20px;
+    
+}
+#itnumber {
+    width:10%;
+    padding-top:20px;
+}
+#itmain {
+    width:35%;
+    
+}
+#itgroup {
+    width:10%;
+    padding-top:20px;
+}
+
+#itteacher {
+    width:30%;
+    padding-top:20px;
+}
+#schedulehead {
+    background-color:#E6F2FB;
+    border: 2px solid white;
+    border-bottom:0px;
+    border-radius: 4px;
+    position:static;
+    height:60px;    
+}
+#schedule {
+    background-color:#FFF1C8;
+    border: 2px solid white;
+    border-bottom:0px;
+    border-radius: 4px;
+    position:static;
+    height:60px;    
+}
+
+#schedule:hover {
+    background-color:#FFDA6E;
+   
+}
+
+#schedule a {
+        
+    margin:0px;
+    padding:0px;
+    height:0px;
+    width:0px;
+    
+}
+
+    #schedule p, #schedulehead p {
+        margin-bottom:0px;
+    }
+
+    #schedule .scheduleview, #schedulehead .scheduleview {
+        border:2px solid white;
+        float:left; 
+        position:static;
+        box-sizing:border-box;
+        height:100%;
+        text-align:center;
+        
+    }
+
+.modalGrade input {
+    width:100px;
+}
+
 /********************
 *   Mobile Styles   *
 ********************/

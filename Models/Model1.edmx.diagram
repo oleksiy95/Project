@@ -19,6 +19,9 @@
         <AssociationConnector Association="ScheduleModel.FK_Schedule_LessonType" ManuallyRouted="false" />
         <AssociationConnector Association="ScheduleModel.FK_Schedule_Subject" ManuallyRouted="false" />
         <AssociationConnector Association="ScheduleModel.FK_Schedule_Teacher" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="ScheduleModel.Grade" Width="1.5" PointX="3.375" PointY="10.375" />
+        <AssociationConnector Association="ScheduleModel.FK_Grade_Schedule" ManuallyRouted="false" />
+        <AssociationConnector Association="ScheduleModel.FK_Grade_Student" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

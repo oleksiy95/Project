@@ -1,0 +1,50 @@
+﻿@model CourseProject.Models.Grade
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Grade</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Grade_ID)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Grade_ID)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Student.Name)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Student.Name)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Schedule.EnrollmentYear)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Schedule.EnrollmentYear)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Visiting)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Visiting)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Mark)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Mark)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id=Model.PrimaryKey */ }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

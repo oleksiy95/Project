@@ -16,6 +16,11 @@ namespace CourseProject.Models
     
     public partial class Schedule
     {
+         public Schedule()
+        {
+            this.Grade = new HashSet<Grade>();
+         }
+
         //public IEnumerable<HttpPostedFileBase> Files { get; set; }
 
         public int Schedule_ID { get; set; }
@@ -43,6 +48,8 @@ namespace CourseProject.Models
         public virtual Teacher Teacher { get; set; }
         public string EnrollmentYear { get; set; }
         public string LessonNumber { get; set; }
+
+        public virtual ICollection<Grade> Grade { get; set; }
 
         
     }

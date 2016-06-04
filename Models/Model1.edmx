@@ -7,6 +7,7 @@
     <Schema Namespace="Хранилище ScheduleModel" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityContainer Name="Хранилище ScheduleModelContainer">
           <EntitySet Name="Classroom" EntityType="Хранилище ScheduleModel.Classroom" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Grade" EntityType="Хранилище ScheduleModel.Grade" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Group" EntityType="Хранилище ScheduleModel.Group" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="LessonType" EntityType="Хранилище ScheduleModel.LessonType" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Schedule" EntityType="Хранилище ScheduleModel.Schedule" store:Type="Tables" Schema="dbo" />
@@ -14,6 +15,14 @@
           <EntitySet Name="Subject" EntityType="Хранилище ScheduleModel.Subject" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="sysdiagrams" EntityType="Хранилище ScheduleModel.sysdiagrams" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Teacher" EntityType="Хранилище ScheduleModel.Teacher" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_Grade_Schedule" Association="Хранилище ScheduleModel.FK_Grade_Schedule">
+            <End Role="Schedule" EntitySet="Schedule" />
+            <End Role="Grade" EntitySet="Grade" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Grade_Student" Association="Хранилище ScheduleModel.FK_Grade_Student">
+            <End Role="Student" EntitySet="Student" />
+            <End Role="Grade" EntitySet="Grade" />
+          </AssociationSet>
           <AssociationSet Name="FK_Schedule_Classroom" Association="Хранилище ScheduleModel.FK_Schedule_Classroom">
             <End Role="Classroom" EntitySet="Classroom" />
             <End Role="Schedule" EntitySet="Schedule" />
@@ -45,6 +54,16 @@
           </Key>
           <Property Name="Room_ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Number" Type="nvarchar" Nullable="false" MaxLength="6" />
+        </EntityType>
+        <EntityType Name="Grade">
+          <Key>
+            <PropertyRef Name="Grade_ID" />
+          </Key>
+          <Property Name="Grade_ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Schedule_ID" Type="int" Nullable="false" />
+          <Property Name="Student_ID" Type="int" Nullable="false" />
+          <Property Name="Visiting" Type="nvarchar" MaxLength="10" />
+          <Property Name="Mark" Type="nvarchar" MaxLength="10" />
         </EntityType>
         <EntityType Name="Group">
           <Key>
@@ -106,11 +125,35 @@
           <Key>
             <PropertyRef Name="Teacher_ID" />
           </Key>
-          <Property Name="Teacher_ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Teacher_ID" Type="int" Nullable="false" StoreGeneratedPattern="Computed" />
           <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="20" />
           <Property Name="Surname" Type="nvarchar" Nullable="false" MaxLength="20" />
           <Property Name="LastName" Type="nvarchar" Nullable="false" MaxLength="20" />
         </EntityType>
+        <Association Name="FK_Grade_Schedule">
+          <End Role="Schedule" Type="Хранилище ScheduleModel.Schedule" Multiplicity="1" />
+          <End Role="Grade" Type="Хранилище ScheduleModel.Grade" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Schedule">
+              <PropertyRef Name="Schedule_ID" />
+            </Principal>
+            <Dependent Role="Grade">
+              <PropertyRef Name="Schedule_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Grade_Student">
+          <End Role="Student" Type="Хранилище ScheduleModel.Student" Multiplicity="1" />
+          <End Role="Grade" Type="Хранилище ScheduleModel.Grade" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="Student_ID" />
+            </Principal>
+            <Dependent Role="Grade">
+              <PropertyRef Name="Student_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Schedule_Classroom">
           <End Role="Classroom" Type="Хранилище ScheduleModel.Classroom" Multiplicity="1" />
           <End Role="Schedule" Type="Хранилище ScheduleModel.Schedule" Multiplicity="*" />
@@ -220,6 +263,15 @@
             <End Role="Teacher" EntitySet="Teachers" />
             <End Role="Schedule" EntitySet="Schedules" />
           </AssociationSet>
+          <EntitySet Name="Grade" EntityType="ScheduleModel.Grade" />
+          <AssociationSet Name="FK_Grade_Schedule" Association="ScheduleModel.FK_Grade_Schedule">
+            <End Role="Schedule" EntitySet="Schedules" />
+            <End Role="Grade" EntitySet="Grade" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Grade_Student" Association="ScheduleModel.FK_Grade_Student">
+            <End Role="Student" EntitySet="Students" />
+            <End Role="Grade" EntitySet="Grade" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Classroom">
           <Key>
@@ -265,6 +317,7 @@
           <NavigationProperty Name="Teacher" Relationship="ScheduleModel.FK_Schedule_Teacher" FromRole="Schedule" ToRole="Teacher" />
           <Property Type="String" Name="EnrollmentYear" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="LessonNumber" Nullable="false" MaxLength="1" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Grade" Relationship="ScheduleModel.FK_Grade_Schedule" FromRole="Schedule" ToRole="Grade" />
         </EntityType>
         <EntityType Name="Student">
           <Key>
@@ -276,6 +329,7 @@
           <Property Name="LastName" Type="String" Nullable="false" MaxLength="20" Unicode="true" FixedLength="false" />
           <Property Name="Group_ID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Group" Relationship="ScheduleModel.FK_Student_Group" FromRole="Student" ToRole="Group" />
+          <NavigationProperty Name="Grade" Relationship="ScheduleModel.FK_Grade_Student" FromRole="Student" ToRole="Grade" />
         </EntityType>
         <EntityType Name="Subject">
           <Key>
@@ -299,7 +353,7 @@
           <Key>
             <PropertyRef Name="Teacher_ID" />
           </Key>
-          <Property Name="Teacher_ID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="Teacher_ID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Computed" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="20" Unicode="true" FixedLength="false" />
           <Property Name="Surname" Type="String" Nullable="false" MaxLength="20" Unicode="true" FixedLength="false" />
           <Property Name="LastName" Type="String" Nullable="false" MaxLength="20" Unicode="true" FixedLength="false" />
@@ -374,6 +428,42 @@
             </Principal>
             <Dependent Role="Schedule">
               <PropertyRef Name="Teacher_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Grade">
+          <Key>
+            <PropertyRef Name="Grade_ID" />
+          </Key>
+          <Property Type="Int32" Name="Grade_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="Schedule_ID" Nullable="false" />
+          <Property Type="Int32" Name="Student_ID" Nullable="false" />
+          <Property Type="String" Name="Visiting" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Mark" MaxLength="10" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Schedule" Relationship="ScheduleModel.FK_Grade_Schedule" FromRole="Grade" ToRole="Schedule" />
+          <NavigationProperty Name="Student" Relationship="ScheduleModel.FK_Grade_Student" FromRole="Grade" ToRole="Student" />
+        </EntityType>
+        <Association Name="FK_Grade_Schedule">
+          <End Type="ScheduleModel.Schedule" Role="Schedule" Multiplicity="1" />
+          <End Type="ScheduleModel.Grade" Role="Grade" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Schedule">
+              <PropertyRef Name="Schedule_ID" />
+            </Principal>
+            <Dependent Role="Grade">
+              <PropertyRef Name="Schedule_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Grade_Student">
+          <End Type="ScheduleModel.Student" Role="Student" Multiplicity="1" />
+          <End Type="ScheduleModel.Grade" Role="Grade" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="Student_ID" />
+            </Principal>
+            <Dependent Role="Grade">
+              <PropertyRef Name="Student_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -460,6 +550,17 @@
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Surname" ColumnName="Surname" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Grade">
+            <EntityTypeMapping TypeName="ScheduleModel.Grade">
+              <MappingFragment StoreEntitySet="Grade">
+                <ScalarProperty Name="Mark" ColumnName="Mark" />
+                <ScalarProperty Name="Visiting" ColumnName="Visiting" />
+                <ScalarProperty Name="Student_ID" ColumnName="Student_ID" />
+                <ScalarProperty Name="Schedule_ID" ColumnName="Schedule_ID" />
+                <ScalarProperty Name="Grade_ID" ColumnName="Grade_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

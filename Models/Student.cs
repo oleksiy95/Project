@@ -14,6 +14,11 @@ namespace CourseProject.Models
     
     public partial class Student
     {
+         public Student()
+        {
+            this.Grade = new HashSet<Grade>();
+         }
+
         public int Student_ID { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
@@ -21,5 +26,6 @@ namespace CourseProject.Models
         public int Group_ID { get; set; }
     
         public virtual Group Group { get; set; }
+        public virtual ICollection<Grade> Grade { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+﻿    using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -25,8 +25,58 @@ namespace CourseProject.Controllers
         public ActionResult Index()
         {
             var schedules = db.Schedules.Include(s => s.Classroom).Include(s => s.Group).Include(s => s.LessonType).Include(s => s.Subject).Include(s => s.Teacher);
+                    
+            
             return View(schedules.ToList());
         }
+
+        //GET: Schedule/ScheduleFor
+        public ActionResult ScheduleFor(string scheduleFor)
+        {
+            ViewBag.scheduleFor = scheduleFor;
+
+            ViewBag.Group_ID = new SelectList((from s in db.Groups
+                                               select new
+                                               {
+                                                   Group_ID = s.Group_ID,
+                                                   FullGroup = s.Name + " " + s.EnrollmentYear
+                                               }), "Group_ID", "FullGroup");
+
+            ViewBag.Teacher_ID = new SelectList((from s in db.Teachers
+                                                 select new
+                                                 {
+                                                     Teacher_ID = s.Teacher_ID,
+                                                     FullName = s.Name + " " + s.Surname + " " + s.LastName
+                                                 }), "Teacher_ID", "FullName");
+
+            return View();
+        }
+
+        //POST: Schedule/ScheduleFor
+        public PartialViewResult _ScheduleFor(int? Teacher_ID, int? Group_ID)
+        {
+            if (Teacher_ID != null || Group_ID != null)
+                ViewBag.request = "true";
+
+            var schedules = db.Schedules.Include(s => s.Classroom).Include(s => s.Group).Include(s => s.LessonType).Include(s => s.Subject).Include(s => s.Teacher);
+
+            if (Teacher_ID != null)
+            {
+                schedules = schedules.Where(s => s.Teacher_ID == Teacher_ID);
+                            }
+            if (Group_ID != null)
+            {
+                schedules = schedules.Where(s => s.Group_ID == Group_ID);
+            }
+
+            schedules = from s in schedules
+                        orderby s.Date, s.LessonNumber
+                        select s;
+            
+            return PartialView("_ScheduleFor", schedules);
+        }
+
+        
 
         //
         // GET: /Schedule/Details/5
@@ -680,6 +730,7 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
         {
             ViewBag.roomNotFree = message;
             var schedules = db.Schedules.Include(s => s.Classroom).Include(s => s.Group).Include(s => s.LessonType).Include(s => s.Subject).Include(s => s.Teacher);
+
             return PartialView("ScheduleData",schedules.ToList());
         }
 

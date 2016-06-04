@@ -33,5 +33,6 @@ namespace CourseProject.Models
         public DbSet<Subject> Subjects { get; set; }
         public DbSet<sysdiagram> sysdiagrams { get; set; }
         public DbSet<Teacher> Teachers { get; set; }
+        public DbSet<Grade> Grades { get; set; }
     }
 }

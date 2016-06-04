@@ -2,6 +2,7 @@
 <Schema Namespace="Хранилище ScheduleModel" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
   <EntityContainer Name="Хранилище ScheduleModelContainer">
     <EntitySet Name="Classroom" EntityType="Хранилище ScheduleModel.Classroom" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Grade" EntityType="Хранилище ScheduleModel.Grade" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Group" EntityType="Хранилище ScheduleModel.Group" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="LessonType" EntityType="Хранилище ScheduleModel.LessonType" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Schedule" EntityType="Хранилище ScheduleModel.Schedule" store:Type="Tables" Schema="dbo" />
@@ -9,6 +10,14 @@
     <EntitySet Name="Subject" EntityType="Хранилище ScheduleModel.Subject" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="sysdiagrams" EntityType="Хранилище ScheduleModel.sysdiagrams" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Teacher" EntityType="Хранилище ScheduleModel.Teacher" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="FK_Grade_Schedule" Association="Хранилище ScheduleModel.FK_Grade_Schedule">
+      <End Role="Schedule" EntitySet="Schedule" />
+      <End Role="Grade" EntitySet="Grade" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Grade_Student" Association="Хранилище ScheduleModel.FK_Grade_Student">
+      <End Role="Student" EntitySet="Student" />
+      <End Role="Grade" EntitySet="Grade" />
+    </AssociationSet>
     <AssociationSet Name="FK_Schedule_Classroom" Association="Хранилище ScheduleModel.FK_Schedule_Classroom">
       <End Role="Classroom" EntitySet="Classroom" />
       <End Role="Schedule" EntitySet="Schedule" />
@@ -40,6 +49,16 @@
     </Key>
     <Property Name="Room_ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
     <Property Name="Number" Type="nvarchar" Nullable="false" MaxLength="6" />
+  </EntityType>
+  <EntityType Name="Grade">
+    <Key>
+      <PropertyRef Name="Grade_ID" />
+    </Key>
+    <Property Name="Grade_ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Schedule_ID" Type="int" Nullable="false" />
+    <Property Name="Student_ID" Type="int" Nullable="false" />
+    <Property Name="Visiting" Type="nvarchar" MaxLength="10" />
+    <Property Name="Mark" Type="nvarchar" MaxLength="10" />
   </EntityType>
   <EntityType Name="Group">
     <Key>
@@ -101,11 +120,35 @@
     <Key>
       <PropertyRef Name="Teacher_ID" />
     </Key>
-    <Property Name="Teacher_ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Teacher_ID" Type="int" Nullable="false" StoreGeneratedPattern="Computed" />
     <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="20" />
     <Property Name="Surname" Type="nvarchar" Nullable="false" MaxLength="20" />
     <Property Name="LastName" Type="nvarchar" Nullable="false" MaxLength="20" />
   </EntityType>
+  <Association Name="FK_Grade_Schedule">
+    <End Role="Schedule" Type="Хранилище ScheduleModel.Schedule" Multiplicity="1" />
+    <End Role="Grade" Type="Хранилище ScheduleModel.Grade" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Schedule">
+        <PropertyRef Name="Schedule_ID" />
+      </Principal>
+      <Dependent Role="Grade">
+        <PropertyRef Name="Schedule_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Grade_Student">
+    <End Role="Student" Type="Хранилище ScheduleModel.Student" Multiplicity="1" />
+    <End Role="Grade" Type="Хранилище ScheduleModel.Grade" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Student">
+        <PropertyRef Name="Student_ID" />
+      </Principal>
+      <Dependent Role="Grade">
+        <PropertyRef Name="Student_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_Schedule_Classroom">
     <End Role="Classroom" Type="Хранилище ScheduleModel.Classroom" Multiplicity="1" />
     <End Role="Schedule" Type="Хранилище ScheduleModel.Schedule" Multiplicity="*" />

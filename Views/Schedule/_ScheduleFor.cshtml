@@ -1,0 +1,45 @@
+﻿@model IEnumerable<CourseProject.Models.Schedule>
+
+
+
+@if(ViewBag.request == "true")
+{
+    <div id="schedulehead">
+    <div id="itdate" class="scheduleview">Дата</div>
+    <div id="itnumber" class="scheduleview">Номер пари</div>
+    <div id="itmain" class="scheduleview"> 
+        <p>Предмет</p>
+        <p>Тип заняття</p>
+        <p>Аудиторія</p>
+                
+    </div>
+    <div id="itgroup" class="scheduleview">Група</div>
+    <div id="itteacher" class="scheduleview">
+       Викладач
+
+    </div>
+</div>
+    
+foreach (var item in Model) {
+<div id="schedule">
+    <a href="@Url.Action("Index", "Grade", new { groupID = item.Group_ID, scheduleID = item.Schedule_ID })">
+    <div id="itdate" class="scheduleview">@Html.DisplayFor(modelItem => item.Date)</div>
+    <div id="itnumber" class="scheduleview">@Html.DisplayFor(modelItem => item.LessonNumber)</div>
+    <div id="itmain" class="scheduleview"> 
+        <p>@Html.DisplayFor(modelItem => item.Subject.Name)</p>
+        <p>@Html.DisplayFor(modelItem => item.LessonType.Type)</p>
+        <p>@Html.DisplayFor(modelItem => item.Classroom.Number)</p>
+           
+    </div>
+    <div id="itgroup" class="scheduleview">@Html.DisplayFor(modelItem => item.Group.Name)</div>
+    <div id="itteacher" class="scheduleview">
+        @Html.DisplayFor(modelItem => item.Teacher.Name)
+        @Html.DisplayFor(modelItem => item.Teacher.Surname)
+        @Html.DisplayFor(modelItem => item.Teacher.LastName)
+
+    </div>
+        </a>
+</div>
+   
+}
+}

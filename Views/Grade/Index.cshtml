@@ -1,0 +1,223 @@
+﻿@model IEnumerable<CourseProject.Models.Grade>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+
+<table id="scheduledata">
+    <tr>
+       
+        <th>
+            @Html.DisplayNameFor(model => model.Student)
+        </th>
+        
+        <th>
+            @Html.DisplayNameFor(model => model.Visiting)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Mark)
+        </th>
+        <th></th>
+    </tr>
+    
+@foreach (var item in Model) {
+    <tr>
+        
+        <td>
+            @Html.DisplayFor(modelItem => item.Student.Name)
+            @Html.DisplayFor(modelItem => item.Student.Surname)
+            @Html.DisplayFor(modelItem => item.Student.LastName)
+        </td>
+        
+        <td>
+            @Html.DisplayFor(modelItem => item.Visiting)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Mark)
+        </td>
+        <td>
+            <div class="modalGrade" id="dialog" title="Correct record">
+    @Html.Action("_Correct", new { id=item.Grade_ID})
+    </div>  
+            <button class='correct' id='modal-opener'>Edit and save</button>
+                      
+        </td>
+    </tr>
+    
+}
+        
+
+</table>
+<img id="loadingIndicator" style="display:none;" src="@Url.Content("~/Content/loading.gif")" />
+
+
+<script>
+    var corids = document.getElementsByClassName("correct");
+    var modids = document.getElementsByClassName("modalGrade");
+
+    $(function () {
+        $(".modalGrade").dialog({
+            autoOpen: false,
+            width: 300,
+            height: 300,
+            show: {
+                effect: "blind",
+                duration: 1000
+            },
+            hide: {
+                effect: "explode",
+                duration: 1000
+            }
+        })
+    });
+
+    for (var i = 0; i < corids.length; i++) {
+        $(corids[i]).attr("id", "opener" + i);
+        $(modids[i]).attr("id", "dialog" + i);
+    }
+        
+
+    $("#opener0").click(function () {
+        $("#dialog0").dialog("open");
+    });
+
+    $("#opener1").click(function () {
+        $("#dialog1").dialog("open");
+    });
+
+    $("#opener2").click(function () {
+        $("#dialog2").dialog("open");
+    });
+
+    $("#opener3").click(function () {
+        $("#dialog3").dialog("open");
+    });
+
+    $("#opener4").click(function () {
+        $("#dialog4").dialog("open");
+    });
+
+    $("#opener5").click(function () {
+        $("#dialog5").dialog("open");
+    });
+
+    $("#opener6").click(function () {
+        $("#dialog6").dialog("open");
+    });
+
+    $("#opener7").click(function () {
+        $("#dialog7").dialog("open");
+    });
+
+    $("#opener8").click(function () {
+        $("#dialog8").dialog("open");
+    });
+
+    $("#opener9").click(function () {
+        $("#dialog9").dialog("open");
+    });
+
+    $("#opener10").click(function () {
+        $("#dialog10").dialog("open");
+    });
+
+    $("#opener11").click(function () {
+        $("#dialog11").dialog("open");
+    });
+
+    $("#opener12").click(function () {
+        $("#dialog12").dialog("open");
+    });
+
+    $("#opener13").click(function () {
+        $("#dialog13").dialog("open");
+    });
+
+    $("#opener14").click(function () {
+        $("#dialog14").dialog("open");
+    });
+
+    $("#opener15").click(function () {
+        $("#dialog15").dialog("open");
+    });
+
+    $("#opener16").click(function () {
+        $("#dialog16").dialog("open");
+    });
+
+    $("#opener17").click(function () {
+        $("#dialog17").dialog("open");
+    });
+
+    $("#opener18").click(function () {
+        $("#dialog18").dialog("open");
+    });
+
+    $("#opener19").click(function () {
+        $("#dialog19").dialog("open");
+    });
+
+    $("#opener16").click(function () {
+        $("#dialog16").dialog("open");
+    });
+
+    $("#opener20").click(function () {
+        $("#dialog20").dialog("open");
+    });
+
+    $("#opener21").click(function () {
+        $("#dialog21").dialog("open");
+    });
+
+    $("#opener22").click(function () {
+        $("#dialog22").dialog("open");
+    });
+
+    $("#opener23").click(function () {
+        $("#dialog23").dialog("open");
+    });
+
+    $("#opener24").click(function () {
+        $("#dialog24").dialog("open");
+    });
+
+    $("#opener25").click(function () {
+        $("#dialog25").dialog("open");
+    });
+
+    $("#opener26").click(function () {
+        $("#dialog26").dialog("open");
+    });
+
+    $("#opener27").click(function () {
+        $("#dialog27").dialog("open");
+    });
+
+    $("#opener28").click(function () {
+        $("#dialog28").dialog("open");
+    });
+
+    $("#opener29").click(function () {
+        $("#dialog29").dialog("open");
+    });
+
+    $("#opener30").click(function () {
+        $("#dialog30").dialog("open");
+    });
+
+    $("#opener31").click(function () {
+        $("#dialog31").dialog("open");
+    });
+
+    $("#opener32").click(function () {
+        $("#dialog32").dialog("open");
+    });
+
+    function SuccessCorrect() {
+        $(".modalGrade").dialog("close");
+    }
+    
+</script>
