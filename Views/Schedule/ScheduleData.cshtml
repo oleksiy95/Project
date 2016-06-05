@@ -3,29 +3,29 @@
 <table>
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Subject)
+            <th>                
+                <label class="labelForSchedule">Предмет</label>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Classroom)
+                <label class="labelForSchedule">Аудиторія</label>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.LessonType)
+                <label class="labelForSchedule">Тип заняття</label>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Date)
+                <label class="labelForSchedule">Дата</label>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Group)
+                <label class="labelForSchedule">Група</label>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Teacher)
+                <label class="labelForSchedule">Викладач</label>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.EnrollmentYear)
+                <label class="labelForSchedule">Навчальний рік</label>
             </th>
             <th>
-                @Html.DisplayName("Number")
+                <label class="labelForSchedule">№ пари</label>
             </th>
             <th></th>
         </tr>
@@ -62,9 +62,9 @@
                 @Html.DisplayFor(modelItem => item.LessonNumber)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id=item.Schedule_ID }) |
-                @Html.ActionLink("Details", "Details", new { id=item.Schedule_ID }) |
-                @Html.ActionLink("Delete", "Delete", new { id=item.Schedule_ID })
+                @Html.ActionLink("Редагувати", "Edit", new { id=item.Schedule_ID }) |
+                @Html.ActionLink("Деталі", "Details", new { id=item.Schedule_ID }) |
+                @Html.ActionLink("Видалити", "Delete", new { id=item.Schedule_ID })
             </td>
         </tr>
     }

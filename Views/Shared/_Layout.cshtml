@@ -3,7 +3,7 @@
     <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         <meta charset="utf-8" />
-        <title>@ViewBag.Title — приложение ASP.NET MVC</title>
+        <title>@ViewBag.Title</title>
         <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
         <meta name="viewport" content="width=device-width" />
         @Styles.Render("~/Content/css")
@@ -23,21 +23,27 @@
                 <nav>
                   <div id="nav"> <strong>Navigation</strong>
                     <ul>
-                      <li class="active">@Html.ActionLink("Home", "Index", "Home")</li>
-                      <li class="parent"> <a href="#">Database</a> 
+                      <li class="active">@Html.ActionLink("Головна", "Index", "Home")</li>
+                      <li class="parent"> <a href="#">База даних</a> 
                           <ul>
-                            <li> @Html.ActionLink("Schedule", "Index", "Schedule") </li>
-                            <li> @Html.ActionLink("Students", "Index", "Student") </li>
-                            <li> @Html.ActionLink("Groups", "Index", "Group") </li>
-                            <li> @Html.ActionLink("Subjects", "Index", "Subject") </li>
-                            <li> @Html.ActionLink("Teachers", "Index", "Teacher") </li>
-                            <li> @Html.ActionLink("Classrooms", "Index", "Classroom") </li>
-                            <li> @Html.ActionLink("Lesson types", "Index", "LessonType") </li>
+                            <li> @Html.ActionLink("Пари", "Index", "Schedule") </li>
+                            <li> @Html.ActionLink("Студенти", "Index", "Student") </li>
+                            <li> @Html.ActionLink("Групи", "Index", "Group") </li>
+                            <li> @Html.ActionLink("Предмети", "Index", "Subject") </li>
+                            <li> @Html.ActionLink("Викладачі", "Index", "Teacher") </li>
+                            <li> @Html.ActionLink("Аудиторії", "Index", "Classroom") </li>
+                            <li> @Html.ActionLink("Типи занять", "Index", "LessonType") </li>
                         </ul>
                       </li>
-                      <li> @Html.ActionLink("About us", "About", "Home") </li>
-                      <li> @Html.ActionLink("Sign in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
-                      <li> @Html.ActionLink("Contacts", "Contact", "Home") </li>
+                        <li class="parent"> <a href="@Url.Action("ScheduleFor", "Schedule")">Розклад</a> 
+                          <ul>
+                            <li> @Html.ActionLink("Для студентів", "ScheduleFor", "Schedule", new { scheduleFor = "student" },null) </li>
+                            <li> @Html.ActionLink("Для викладачів", "ScheduleFor", "Schedule", new { scheduleFor = "teacher" }, null) </li>                           
+                        </ul>
+                      </li>
+                      <li> @Html.ActionLink("Про нас", "About", "Home") </li>
+                      <li> @Html.ActionLink("Увійти", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+                      <li> @Html.ActionLink("Контакти", "Contact", "Home") </li>
                     </ul>
                   </div>
                 </nav>

@@ -128,6 +128,7 @@ namespace CourseProject.Controllers
             bool alternative1 = true;
             bool alternative2 = true;
             string roomNotFreeMessage = String.Empty;
+            string alternativeMessage = String.Empty;
             string roomNumber = String.Empty;
             string alternativeLessonNumber1 = String.Empty;
             string alternativeLessonNumber2 = String.Empty;
@@ -177,7 +178,7 @@ namespace CourseProject.Controllers
 
                                 roomFree = false;
                                 //write message about occupied;
-                                roomNotFreeMessage = roomNotFreeMessage + "Classroom " + roomNumber + " is occupied on " + date.ToString("yyyy-MM-dd") + " in the " + sch.LessonNumber + " lesson<br/>";
+                                roomNotFreeMessage = roomNotFreeMessage + "Аудиторія " + roomNumber + " зайнята " + date.ToString("yyyy-MM-dd") + " на " + sch.LessonNumber + " парі<br/>";
 
                                 //propose another lessonNumber
                                 foreach (var alternativeRoom in db.Schedules.ToList())
@@ -208,9 +209,9 @@ namespace CourseProject.Controllers
                                         alternative2 = false;
                                     }
                                 }
-                                    
-                                if (alternative1) roomNotFreeMessage = roomNotFreeMessage + "Classroom " + roomNumber + " is free on " + date.ToString("yyyy-MM-dd") + " in the " + alternativeLessonNumber1 + " lesson<br/>";
-                                if (alternative2) roomNotFreeMessage = roomNotFreeMessage + "Classroom " + roomNumber + " is free on " + date.ToString("yyyy-MM-dd") + " in the " + alternativeLessonNumber2 + " lesson<br/>";
+
+                                if (alternative1) alternativeMessage = alternativeMessage + "Аудиторія " + roomNumber + " вільна " + date.ToString("yyyy-MM-dd") + " на " + alternativeLessonNumber1 + " парі<br/>";
+                                if (alternative2) alternativeMessage = alternativeMessage + "Аудиторія " + roomNumber + " вільна " + date.ToString("yyyy-MM-dd") + " на " + alternativeLessonNumber2 + " парі<br/>";
 
                                 
                             }
@@ -236,6 +237,7 @@ namespace CourseProject.Controllers
 
         leaveOnCreate:
             ViewBag.roomNotFreeMessage = roomNotFreeMessage;
+            ViewBag.alternativeMessage = alternativeMessage;
             ViewBag.Room_ID = new SelectList(db.Classrooms, "Room_ID", "Number", schedule.Room_ID);
             ViewBag.Group_ID = new SelectList((from s in db.Groups
                                                select new
@@ -253,6 +255,7 @@ namespace CourseProject.Controllers
                                                  }), "Teacher_ID", "FullName", schedule.Teacher_ID);
 
 
+            
             return View(schedule);
 
         }
@@ -327,7 +330,7 @@ namespace CourseProject.Controllers
                         //if ID didn't change - show message.
                         else
                         {
-                            ViewBag.NotFounded = "Group " + one.Group.Name + " with EnrollmentYear " + enrYear + " is not founded. Create it to copy.";
+                            ViewBag.NotFounded = "Група " + one.Group.Name + " з роком вступу " + enrYear + " не знайдена. Створіть таку групу, щоб копіювати.";
                             return AddFuctionForCopy();
                         }
 
@@ -335,7 +338,7 @@ namespace CourseProject.Controllers
                     //if we don't find records to copy - show message
                     if (notHaveRecords)
                     {
-                        ViewBag.NotFounded = "Schedule doesn't have such records";
+                        ViewBag.NotFounded = "Таких пар не знайдено";
                         return AddFuctionForCopy();
                     }
                     db.SaveChanges();
@@ -430,7 +433,7 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
 
                         roomFree = false;
                         //write message about occupied;
-                        roomNotFreeMessage = roomNotFreeMessage + "Classroom " + roomNumber + " is occupied on " + date.ToString("yyyy-MM-dd") + " in the " + schedule.LessonNumber + " lesson<br/>";
+                        roomNotFreeMessage = roomNotFreeMessage + "Аудиторія " + roomNumber + " зайнята " + date.ToString("yyyy-MM-dd") + " на " + schedule.LessonNumber + " парі<br/>";
 
                         //propose another lessonNumber
                         foreach (var alternativeRoom in db.Schedules.ToList())
@@ -460,8 +463,8 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
                             }
                         }
 
-                        if (alternative1) roomNotFreeMessage = roomNotFreeMessage + "Classroom " + roomNumber + " is free on " + date.ToString("yyyy-MM-dd") + " in the " + alternativeLessonNumber1 + " lesson<br/>";
-                        if (alternative2) roomNotFreeMessage = roomNotFreeMessage + "Classroom " + roomNumber + " is free on " + date.ToString("yyyy-MM-dd") + " in the " + alternativeLessonNumber2 + " lesson<br/>";
+                        if (alternative1) roomNotFreeMessage = roomNotFreeMessage + "Аудиторія " + roomNumber + " вільна " + date.ToString("yyyy-MM-dd") + " на " + alternativeLessonNumber1 + " парі<br/>";
+                        if (alternative2) roomNotFreeMessage = roomNotFreeMessage + "Аудиторія " + roomNumber + " вільна " + date.ToString("yyyy-MM-dd") + " на " + alternativeLessonNumber2 + " парі<br/>";
 
                     }
                 }
@@ -644,7 +647,7 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
 
                         roomFree = false;
                         //write message about occupied;
-                        roomNotFreeMessage = roomNotFreeMessage + "Classroom " + roomNumber + " is occupied on " + date.ToString("yyyy-MM-dd") + " in the " + schedule.LessonNumber + " lesson<br/>";
+                        roomNotFreeMessage = roomNotFreeMessage + "Аудиторія " + roomNumber + " зайнята " + date.ToString("yyyy-MM-dd") + " на " + schedule.LessonNumber + " парі<br/>";
 
                         //propose another lessonNumber
                         foreach (var alternativeRoom in db.Schedules.ToList())
@@ -676,8 +679,8 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
                             }
                         }
 
-                        if (alternative1) roomNotFreeMessage = roomNotFreeMessage + "Classroom " + roomNumber + " is free on " + date.ToString("yyyy-MM-dd") + " in the " + alternativeLessonNumber1 + " lesson<br/>";
-                        if (alternative2) roomNotFreeMessage = roomNotFreeMessage + "Classroom " + roomNumber + " is free on " + date.ToString("yyyy-MM-dd") + " in the " + alternativeLessonNumber2 + " lesson<br/>";
+                        if (alternative1) roomNotFreeMessage = roomNotFreeMessage + "Аудиторія " + roomNumber + " вільна " + date.ToString("yyyy-MM-dd") + " на " + alternativeLessonNumber1 + " парі<br/>";
+                        if (alternative2) roomNotFreeMessage = roomNotFreeMessage + "Аудиторія " + roomNumber + " вільна " + date.ToString("yyyy-MM-dd") + " на " + alternativeLessonNumber2 + " парі<br/>";
                                     
                     }
                 }
@@ -688,7 +691,7 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
                     db.SaveChanges();
                 }
             }
-            else { roomNotFreeMessage = "Form is not correct"; }
+            else { roomNotFreeMessage = "Дата введена неправильно"; }
             return ScheduleData(roomNotFreeMessage);
             
         }
@@ -794,12 +797,12 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
 
                     else
                     {
-                        ViewBag.Feedback = "File format is not correct. It must be .csv";
+                        ViewBag.Feedback = "Розширення файлу неправильне. Файл повинен бути .csv";
                     }
 
                 
             }
-            else { ViewBag.Feedback = "Please select a file"; }
+            else { ViewBag.Feedback = "Виберіть файл"; }
             dt.Dispose();
             //}                       
             var schedules = db.Schedules.Include(s => s.Classroom).Include(s => s.Group).Include(s => s.LessonType).Include(s => s.Subject).Include(s => s.Teacher);
@@ -824,7 +827,7 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
                 sb.AppendLine(string.Format("{0};{1};{2};{3};{4};{5};{6};{7}", line.ItemArray[1], line.ItemArray[2], line.ItemArray[3], line.ItemArray[4], line.ItemArray[5], line.ItemArray[6], line.ItemArray[7], line.ItemArray[8]));
             }
 
-            System.IO.File.AppendAllText(Path.Combine(Server.MapPath("~/Content/csv"), name), sb.ToString());//save csv file
+            System.IO.File.AppendAllText(Path.Combine(Server.MapPath("~/Content/csv"), name), sb.ToString(), System.Text.Encoding.GetEncoding(1251));//save csv file
         }
         
         private string ErrorMassageForBulkCopy;
@@ -855,7 +858,7 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
             // work out where we should split on comma, but not in a sentence
             Regex r = new Regex(";(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))");
             //Set the filename in to our stream
-            StreamReader sr = new StreamReader(fileName);
+            StreamReader sr = new StreamReader(fileName, System.Text.Encoding.GetEncoding(1251));
 
             //Read the first line and split the string at , with our regular expression in to an array
             line = sr.ReadLine();
@@ -1003,17 +1006,17 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
                     //record only first 5 errors
                     if (errorNumber < 6)
                     {
-                        Feedback = "Error in line " + lineNumber + ":";
-                        if (!teachers) Feedback = Feedback + " teacher " + row.ItemArray[6].ToString() + " isn't founded;";
-                        if (!groups) Feedback = Feedback + " group " + row.ItemArray[5].ToString() + " isn't founded;";
-                        if (!lessontypes) Feedback = Feedback + " lesson's type " + row.ItemArray[3].ToString() + " isn't founded;";
-                        if (!classrooms) Feedback = Feedback + " room " + row.ItemArray[2].ToString() + " isn't founded;";
-                        if (!subjects) Feedback = Feedback + " subject " + row.ItemArray[1].ToString() + " isn't founded;";
-                        if (!roomFree) Feedback = Feedback + " classroom " + row.ItemArray[2].ToString() + " is occupied on " + row.ItemArray[4].ToString() + " in the " + row.ItemArray[8].ToString() + " lesson";
-                        if (!date) Feedback = Feedback + " field Date is not correct;";
-                        if (!enrollment) Feedback = Feedback + " field EnrollmentYear is not correct;";
-                        if (!lessonNumber) Feedback = Feedback + " field LessonNumber is not correct;";
-                        Feedback = Feedback + "<button class='correct' id='modal-opener"+errorNumber+"'>Edit and save</button> <br/>";
+                        Feedback = "Помилка в стрічці " + lineNumber + ":";
+                        if (!teachers) Feedback = Feedback + " викладач " + row.ItemArray[6].ToString() + " не знайдений в базі;";
+                        if (!groups) Feedback = Feedback + " група " + row.ItemArray[5].ToString() + " не знайдена в базі;";
+                        if (!lessontypes) Feedback = Feedback + " тип заняття " + row.ItemArray[3].ToString() + " не знайдений в базі;";
+                        if (!classrooms) Feedback = Feedback + " аудиторія " + row.ItemArray[2].ToString() + " не знайдена в базі;";
+                        if (!subjects) Feedback = Feedback + " предмет " + row.ItemArray[1].ToString() + " не знайдений в базі;";
+                        if (!roomFree) Feedback = Feedback + " аудиторія " + row.ItemArray[2].ToString() + " зайнята " + row.ItemArray[4].ToString() + " на " + row.ItemArray[8].ToString() + " парі";
+                        if (!date) Feedback = Feedback + " поле Дата заповнено неправилно;";
+                        if (!enrollment) Feedback = Feedback + " поле Навчальний Рік заповнене неправильно;";
+                        if (!lessonNumber) Feedback = Feedback + " поле № пари заповнене неправильно;";
+                        Feedback = Feedback + "<button class='correct' id='modal-opener"+errorNumber+"'>Редагувати</button> <br/>";
                         ErrorMassage = ErrorMassage + Feedback;
                     }
                 }
@@ -1023,11 +1026,11 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
             if (errorNumber < 5)
             {
                 if (errorNumber == 0) ErrorMassage = string.Empty;
-                else ErrorMassage = "Show " + errorNumber + " errors:<br/>" + ErrorMassage;
+                else ErrorMassage = "Покаано " + errorNumber + " помилки:<br/>" + ErrorMassage;
             }
             else//if number of errors are 5 and more
             {
-                ErrorMassage = "Show 5 of " + errorNumber + " errors:<br/>" + ErrorMassage;
+                ErrorMassage = "Показано 5 з " + errorNumber + " помилок:<br/>" + ErrorMassage;
             } 
             ErrorMassageForBulkCopy = ErrorMassage;//record error's message to global field
             NumberOfErrorMassage = errorNumber;
@@ -1064,7 +1067,7 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
                     {
                         //Send it to the server
                         copy.WriteToServer(dt);
-                        Feedback = "Upload complete";
+                        Feedback = "Завантаження завершено";
                     }
                     catch (Exception ex)
                     {

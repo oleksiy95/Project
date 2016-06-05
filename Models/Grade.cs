@@ -17,6 +17,7 @@ namespace CourseProject.Models
         public int Schedule_ID { get; set; }
         public string Visiting { get; set; }
         public string Mark { get; set; }
+        public string Comment { get; set; }
 
         public virtual Student Student { get; set; }
         public virtual Schedule Schedule { get; set; }

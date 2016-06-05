@@ -84,6 +84,7 @@
     <EntitySetMapping Name="Grade">
       <EntityTypeMapping TypeName="ScheduleModel.Grade">
         <MappingFragment StoreEntitySet="Grade">
+          <ScalarProperty Name="Comment" ColumnName="Comment" />
           <ScalarProperty Name="Mark" ColumnName="Mark" />
           <ScalarProperty Name="Visiting" ColumnName="Visiting" />
           <ScalarProperty Name="Student_ID" ColumnName="Student_ID" />

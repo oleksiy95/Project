@@ -3,14 +3,17 @@
 <tr>
        
         <th>
-            @Html.DisplayNameFor(model => model.Student)
+            <label>Студент</label>
         </th>
         
         <th>
-            @Html.DisplayNameFor(model => model.Visiting)
+            <label>Відвідування</label>
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Mark)
+            <label>Оцінка</label>
+        </th>
+        <th>
+            <label>Коментар</label>
         </th>
         <th></th>
     </tr>
@@ -31,10 +34,13 @@
             @Html.DisplayFor(modelItem => item.Mark)
         </td>
         <td>
-            <div class="modalGrade" id="dialog" title="Correct record">
+            @Html.DisplayFor(modelItem => item.Comment)
+        </td>
+        <td>
+            <div class="modalGrade" id="dialog" title="Редагувати">
     @Html.Action("_Correct", new { id=item.Grade_ID})
     </div>  
-            <button class='correct' id='modal-opener'>Edit and save</button>
+            <button class='correct' id='modal-opener'>Редагувати</button>
                       
         </td>
     </tr>
@@ -49,7 +55,7 @@
         $(".modalGrade").dialog({
             autoOpen: false,
             width: 300,
-            height: 300,
+            height: 400,
             show: {
                 effect: "blind",
                 duration: 1000

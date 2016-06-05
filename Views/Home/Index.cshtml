@@ -1,44 +1,46 @@
 ﻿@{
-    ViewBag.Title = "Домашняя страница";
+    ViewBag.Title = "Дипломний проект";
 }
 @section featured {
     <div id="intro">
   <div class="inner">
     <div class="wrap clearFix">
-      <h1><strong>Now it is easy</strong></h1>
-      <p style="font-size:20px; text-align:justify; color:#FF5656" >The project has been developed with purpose to make comfortable service for scheduling. Our main goal is to save more time for people, which make schedule. Our service is clear and easy to use for everybody.</p>
-        <a href="@Url.Action("Index", "Schedule")" class="button">TRY IT</a>
+      <h1><strong>Тепер простіше</strong></h1>
+      <p style="font-size:20px; text-align:justify; color:#FF5656" >Проект розроблений з метою створення зручного сервісу для заповнення бази даних,
+          необхідної для навчального процесу, та складання розкладу зокрема. Даний сервіс є зручним та лекгим у використанні для будь-кого, що допоможе зберегти велику кількість часу.
+      </p>
+        <a href="@Url.Action("Index", "Schedule")" class="button">СПРОБУЙ</a>
    </div>
   </div>
 </div>
 }
 
 
-<h3>Possibilities:</h3>
+<h3>Можливості:</h3>
 <ol class="round">
     <li class="one">
-        <h4><strong>Upload schedule from .CSV file</strong></h4>
+        <h4><strong>Завантаження розкладу з .CSV файлу</strong></h4>
         <p style="font-size:18px">
-        Now you haven't to create separate each lesson, you just can upload file with schedule and it will automatically be added to database.
+        Тепер нема необхідності заповнювати кожну пару окремо, ви можете просто завантажити файл з рокладом і система автоматично додасть його в базу даних.
         </p>
     </li>
 
     <li class="two">
-        <h4>Copy schedule</h4>
+        <h4>Копіювання розкладу</h4>
         <p style="font-size:18px">
-        If you have the schedule from the last year, you can copy it for the next year and just correct some records.
+        Якщо ви маєте розклад з попереднього року, ви можете його скопіювати на наступний і просто внести необхідні корекції.
         </p>
     </li>
 
     <li class="three">
-        <h4>Checking all records</h4>
+        <h4>Перевірка всіх записів</h4>
         <p style="font-size:18px">
-        Our service checks all records you have added, and notify about errors.
+        Даний сервіс перевіряє всі записи, які ви додаєте, і сповіщає про наявні помилки.
         </p>
     </li>
 
     <li class="four">
-        <h4>And many others...</h4>
+        <h4>Та багато іншого...</h4>
         <p></p>        
     </li>
 </ol>

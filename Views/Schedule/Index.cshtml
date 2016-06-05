@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<CourseProject.Models.Schedule>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Пари";
 
     var options = new AjaxOptions()
     {
@@ -13,10 +13,10 @@
     };
 }
 
-<h2>Schedule</h2>
+<h2>Пари</h2>
 <p>
-        @Html.ActionLink("Create New", "Create")
-        @Html.ActionLink("Copy Schedule", "Copy")
+        @Html.ActionLink("Додати запис", "Create")
+        @Html.ActionLink("Копіювати розклад", "Copy")
     </p>
 @using (Ajax.BeginForm(options))
 {
@@ -25,24 +25,24 @@
     <div id="scheduledata">
         @Html.Action("ScheduleData")
     </div>
-    <input type="submit" name="update" value="Update Data" />
+    <input type="submit" name="update" value="Обновити дані" />
     <img id="loadingIndicator" style="display:none;" src="@Url.Content("~/Content/loading.gif")" />
 }
 
 @* message about occupied classroom *@
 
-<h2>Schedule Upload</h2>
+<h2>Завантаження пар</h2>
 
 @using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data" }))
 {        
      <input type="file" name="Files" id="Files" />
      <br />
-     <input type="submit" name="submit" value="Upload" /> 
+     <input type="submit" name="submit" value="Завантажити" /> 
 }
 
 
 @* Error message *@
-@if (ViewBag.Feedback == "Upload complete")
+@if (ViewBag.Feedback == "Завантаження завершено")
 {
 <p style="color:green">@ViewBag.Feedback</p>
 }
@@ -57,34 +57,34 @@ else
 @if (ViewBag.ErrorsInCSV == "true")
 {
     if(ViewBag.ErrorNumber > 0) {
-    <div class="modal" id="dialog1" title="Correct record">
+    <div class="modal" id="dialog1" title="Коректувати запис">
     @Html.Action("CorrectRecord1")
     </div>  }
     
     if(ViewBag.ErrorNumber > 1) {
-    <div class="modal" id="dialog2" title="Correct record">
+    <div class="modal" id="dialog2" title="Коректувати запис">
     @Html.Action("CorrectRecord2")
     </div>  }
     
     if(ViewBag.ErrorNumber > 2) {
-    <div class="modal" id="dialog3" title="Correct record">
+    <div class="modal" id="dialog3" title="Коректувати запис">
     @Html.Action("CorrectRecord3")
     </div>  }
     
     if(ViewBag.ErrorNumber > 3) {
-    <div class="modal" id="dialog4" title="Correct record">
+    <div class="modal" id="dialog4" title="Коректувати запис">
     @Html.Action("CorrectRecord4")
     </div>  }
     
     if(ViewBag.ErrorNumber > 4) {
-    <div class="modal" id="dialog5" title="Correct record">
+    <div class="modal" id="dialog5" title="Коректувати запис">
     @Html.Action("CorrectRecord5")
     </div>  }
 } 
 
 @if (ViewBag.ErrorsInCSV == "true")
 {
-    @Html.ActionLink("Download file with wrong data", "DownloadFile");
+    @Html.ActionLink("Завантажити файл з неправильними записами", "DownloadFile");
 }
 
 @section scripts

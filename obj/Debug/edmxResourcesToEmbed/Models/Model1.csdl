@@ -123,7 +123,7 @@
     <Key>
       <PropertyRef Name="Teacher_ID" />
     </Key>
-    <Property Name="Teacher_ID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Computed" />
+    <Property Name="Teacher_ID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
     <Property Name="Name" Type="String" Nullable="false" MaxLength="20" Unicode="true" FixedLength="false" />
     <Property Name="Surname" Type="String" Nullable="false" MaxLength="20" Unicode="true" FixedLength="false" />
     <Property Name="LastName" Type="String" Nullable="false" MaxLength="20" Unicode="true" FixedLength="false" />
@@ -212,6 +212,7 @@
     <Property Type="String" Name="Mark" MaxLength="10" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="Schedule" Relationship="ScheduleModel.FK_Grade_Schedule" FromRole="Grade" ToRole="Schedule" />
     <NavigationProperty Name="Student" Relationship="ScheduleModel.FK_Grade_Student" FromRole="Grade" ToRole="Student" />
+    <Property Type="String" Name="Comment" MaxLength="100" FixedLength="false" Unicode="true" />
   </EntityType>
   <Association Name="FK_Grade_Schedule">
     <End Type="ScheduleModel.Schedule" Role="Schedule" Multiplicity="1" />

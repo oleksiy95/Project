@@ -59,6 +59,7 @@
     <Property Name="Student_ID" Type="int" Nullable="false" />
     <Property Name="Visiting" Type="nvarchar" MaxLength="10" />
     <Property Name="Mark" Type="nvarchar" MaxLength="10" />
+    <Property Name="Comment" Type="nvarchar" MaxLength="100" />
   </EntityType>
   <EntityType Name="Group">
     <Key>
@@ -120,7 +121,7 @@
     <Key>
       <PropertyRef Name="Teacher_ID" />
     </Key>
-    <Property Name="Teacher_ID" Type="int" Nullable="false" StoreGeneratedPattern="Computed" />
+    <Property Name="Teacher_ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
     <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="20" />
     <Property Name="Surname" Type="nvarchar" Nullable="false" MaxLength="20" />
     <Property Name="LastName" Type="nvarchar" Nullable="false" MaxLength="20" />

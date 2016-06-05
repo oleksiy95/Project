@@ -1,10 +1,10 @@
 ﻿@model CourseProject.Models.Schedule
 
 @{
-    ViewBag.Title = "Copy";
+    ViewBag.Title = "Копіювати";
 }
 
-<h2>Copy</h2>
+<h2>Копіювати</h2>
 
 @using (Html.BeginForm()) {
     @Html.ValidationSummary(true)
@@ -13,7 +13,7 @@
         <legend>Schedule</legend>
                 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Teacher_ID, "Teacher")
+            @Html.LabelFor(model => model.Teacher_ID, "Викладач")
         </div>
         <div class="editor-field">
             @Html.DropDownList("Teacher_ID", String.Empty)
@@ -21,7 +21,7 @@
         </div>
 
          <div class="editor-label">
-            @Html.LabelFor(model => model.Group_ID, "Group")
+            @Html.LabelFor(model => model.Group_ID, "Група")
         </div>
         <div class="editor-field">
             @Html.DropDownList("Group_ID", String.Empty)
@@ -29,14 +29,14 @@
         </div>             
         
          <p>
-            <input type="submit" value="Copy Schedule" />
+            <input type="submit" value="Копіювати розклад" />
         </p>
         <p style="color:red">@ViewBag.NotFounded</p>
     </fieldset>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Назад до списку", "Index")
 </div>
 
 @section Scripts {

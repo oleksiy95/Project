@@ -60,8 +60,9 @@ namespace CourseProject.Controllers
             var grade = db.Grades.Include(g => g.Schedule).Include(g => g.Student);
             grade = from s in grade
                     where s.Schedule_ID == scheduleID
-                    orderby s.Student_ID
+                    orderby s.Student.Surname
                     select s;
+            
 
             
             return View(grade.ToList());
