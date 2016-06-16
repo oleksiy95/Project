@@ -1,24 +1,24 @@
 ﻿@model CourseProject.Models.Classroom
 
 @{
-    ViewBag.Title = "Delete";
+    ViewBag.Title = "Видалити";
 }
 
-<h2>Delete</h2>
+<h2>Видалити</h2>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>Ви впевнені, що хочете видали запис?</h3>
 <fieldset>
-    <legend>Classroom</legend>
+    <legend>Аудиторія</legend>
 
     <div class="display-label">
-         <h3>@Html.DisplayNameFor(model => model.Room_ID)</h3>
+         <h3><label>ID аудиторії</label></h3>
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Room_ID)
     </div>
 
     <div class="display-label">
-         <h3>@Html.DisplayNameFor(model => model.Number)</h3>
+         <h3><label>Номер</label></h3>
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Number)
@@ -26,7 +26,7 @@
 </fieldset>
 @using (Html.BeginForm()) {
     <p>
-        <input type="submit" value="Delete" /> |
-        @Html.ActionLink("Back to List", "Index")
+        <input type="submit" value="Видалити" /> |
+        @Html.ActionLink("Назад до списку", "Index")
     </p>
 }

@@ -77,7 +77,7 @@ namespace CourseProject.Controllers
                     return RedirectToAction("Index");
                 }
             }
-            error = "Lesson type " + lessontype.Type + " is in data base";
+            error = "Тип заняття " + lessontype.Type + " є в базі даних";
             ModelState.AddModelError(string.Empty, error);
             return View(lessontype);
         }
@@ -119,7 +119,7 @@ namespace CourseProject.Controllers
                     return RedirectToAction("Index");
                 }
             }
-            error = "Lesson type " + lessontype.Type + " is in data base";
+            error = "Тип заняття " + lessontype.Type + " є в базі даних";
             ModelState.AddModelError(string.Empty, error);
             return View(lessontype);
         }

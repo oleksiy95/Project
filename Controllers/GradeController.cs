@@ -137,6 +137,7 @@ namespace CourseProject.Controllers
             var gr = db.Grades.Include(g => g.Schedule).Include(g => g.Student);
             gr = from s in gr
                      where s.Schedule_ID == grade.Schedule_ID
+                 orderby s.Student.Surname
                      select s;
 
             return PartialView("_Grades",gr);

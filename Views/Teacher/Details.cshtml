@@ -10,34 +10,34 @@
     <legend>Teacher</legend>
 
     <div class="display-label">
-         <h3>@Html.DisplayNameFor(model => model.Teacher_ID)</h3>
+         <h3><label>ID викладача</label></h3>
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Teacher_ID)
     </div>
 
     <div class="display-label">
-         <h3>@Html.DisplayNameFor(model => model.Name)</h3>
+         <h3><label>Ім'я</label></h3>
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Name)
     </div>
 
     <div class="display-label">
-         <h3>@Html.DisplayNameFor(model => model.Surname)</h3>
+         <h3><label>Прізвище</label></h3>
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Surname)
     </div>
 
     <div class="display-label">
-         <h3>@Html.DisplayNameFor(model => model.LastName)</h3>
+         <h3><label>По батькові</label></h3>
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.LastName)
     </div>
 </fieldset>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { /* id=Model.PrimaryKey */ }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Редагувати", "Edit", new { id=Model.Teacher_ID }) |
+    @Html.ActionLink("Назад до списку", "Index")
 </p>

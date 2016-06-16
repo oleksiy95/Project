@@ -10,41 +10,41 @@
     <legend>Student</legend>
 
     <div class="display-label">
-         <h3>@Html.DisplayNameFor(model => model.Student_ID)</h3>
+         <h3><label>ID студента</label></h3>
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Student_ID)
     </div>
 
     <div class="display-label">
-         <h3>@Html.DisplayNameFor(model => model.Name)</h3>
+         <h3><label>Ім'я</label></h3>
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Name)
     </div>
 
     <div class="display-label">
-         <h3>@Html.DisplayNameFor(model => model.Surname)</h3>
+         <h3><label>Прізвище</label></h3>
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Surname)
     </div>
 
     <div class="display-label">
-         <h3>@Html.DisplayNameFor(model => model.LastName)</h3>
+         <h3><label>По батькові</label></h3>
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.LastName)
     </div>
 
     <div class="display-label">
-         <h3>@Html.DisplayNameFor(model => model.Group.Name)</h3>
+         <h3><label>Група</label></h3>
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Group.Name)
     </div>
 </fieldset>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { /* id=Model.PrimaryKey */ }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Редагувати", "Edit", new { id=Model.Student_ID }) |
+    @Html.ActionLink("Назад до списку", "Index")
 </p>

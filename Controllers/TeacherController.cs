@@ -77,7 +77,7 @@ namespace CourseProject.Controllers
                     return RedirectToAction("Index");
                 }
             }
-            error = "Teacher " + teacher.Surname + " " + teacher.Name + " " + teacher.LastName + " is in data base";
+            error = "Викладач " + teacher.Surname + " " + teacher.Name + " " + teacher.LastName + " є в базі даних";
             ModelState.AddModelError(string.Empty, error);
             return View(teacher);
         }
@@ -118,7 +118,7 @@ namespace CourseProject.Controllers
                     return RedirectToAction("Index");
                 }
             }
-            error = "Teacher " + teacher.Surname + " " + teacher.Name + " " + teacher.LastName + " is in data base";
+            error = "Викладач " + teacher.Surname + " " + teacher.Name + " " + teacher.LastName + " є в базі даних";
             ModelState.AddModelError(string.Empty, error);
             return View(teacher);
         }

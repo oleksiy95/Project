@@ -1,29 +1,29 @@
 ﻿@model CourseProject.Models.LessonType
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Деталі";
 }
 
-<h2>Details</h2>
+<h2>Деталі</h2>
 
 <fieldset>
     <legend>LessonType</legend>
 
     <div class="display-label">
-         <h3>@Html.DisplayNameFor(model => model.Lesson_ID)</h3>
+         <h3><label>ID типу заняття</label></h3>
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Lesson_ID)
     </div>
 
     <div class="display-label">
-         <h3>@Html.DisplayNameFor(model => model.Type)</h3>
+         <h3><label>Тип</label></h3>
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Type)
     </div>
 </fieldset>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { /* id=Model.PrimaryKey */ }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Редагувати", "Edit", new { id=Model.Lesson_ID }) |
+    @Html.ActionLink("Назад до списку", "Index")
 </p>

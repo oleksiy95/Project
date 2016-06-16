@@ -1,22 +1,22 @@
 ﻿@model IEnumerable<CourseProject.Models.Group>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Групи";
 }
 
-<h2>Index</h2>
+<h2>Групи</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Додати запис", "Create")
 </p>
 <table>
     <tr>
        
         <th>
-            @Html.DisplayNameFor(model => model.Name)
+            <label class="labelForSchedule">Назва</label>
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.EnrollmentYear)
+            <label class="labelForSchedule">Навчальний рік</label>
         </th>
         <th></th>
     </tr>
@@ -30,9 +30,9 @@
             @Html.DisplayFor(modelItem => item.EnrollmentYear)
         </td>
        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Group_ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Group_ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Group_ID })
+            @Html.ActionLink("Редагувати", "Edit", new { id=item.Group_ID }) |
+            @Html.ActionLink("Деталі", "Details", new { id=item.Group_ID }) |
+            @Html.ActionLink("Видалити", "Delete", new { id=item.Group_ID })
         </td>
     </tr>
 }

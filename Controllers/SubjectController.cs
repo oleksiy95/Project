@@ -78,7 +78,7 @@ namespace CourseProject.Controllers
                     return RedirectToAction("Index");
                 }
             }
-            error = "Subject " + subject.Name + " is in data base";
+            error = "Предмет " + subject.Name + " є в базі даних";
             ModelState.AddModelError(string.Empty, error);
             return View(subject);
         }
@@ -120,7 +120,7 @@ namespace CourseProject.Controllers
                      return RedirectToAction("Index");
                  }
             }
-            error = "Subject " + subject.Name + " is in data base";
+            error = "Предмет " + subject.Name + " є в базі даних";
             ModelState.AddModelError(string.Empty, error);
             return View(subject);
         }

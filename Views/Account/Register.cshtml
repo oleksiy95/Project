@@ -1,11 +1,11 @@
 ﻿@model CourseProject.Models.RegisterModel
 @{
-    ViewBag.Title = "Регистрация";
+    ViewBag.Title = "Реєстрація";
 }
 
 <hgroup class="title">
     <h2>@ViewBag.Title.</h2>
-    <h2>Создание новой учетной записи.</h2>
+    <h2>Створення нового облікового запису.</h2>
 </hgroup>
 
 @using (Html.BeginForm()) {
@@ -16,7 +16,7 @@
         <legend>Форма регистрации</legend>
         <ol>
             <li>
-                @Html.LabelFor(m => m.UserName)
+                @Html.LabelFor(m => m.UserName,"Ім'я користувача")
                 @Html.TextBoxFor(m => m.UserName)
             </li>
             <li>
@@ -24,11 +24,11 @@
                 @Html.PasswordFor(m => m.Password)
             </li>
             <li>
-                @Html.LabelFor(m => m.ConfirmPassword)
+                @Html.LabelFor(m => m.ConfirmPassword,"Підтвердження паролю")
                 @Html.PasswordFor(m => m.ConfirmPassword)
             </li>
         </ol>
-        <input type="submit" value="Регистрация" />
+        <input type="submit" value="Реєстрація" />
     </fieldset>
 }
 

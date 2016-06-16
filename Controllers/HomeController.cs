@@ -10,21 +10,21 @@ namespace CourseProject.Controllers
     {
         public ActionResult Index()
         {
-            ViewBag.Message = "Измените этот шаблон, чтобы быстро приступить к работе над приложением ASP.NET MVC.";
+            ViewBag.Message = "";
 
             return View();
         }
 
         public ActionResult About()
         {
-            ViewBag.Message = "Страница описания приложения.";
+            ViewBag.Message = "Сторінка описання програми.";
 
             return View();
         }
 
         public ActionResult Contact()
         {
-            ViewBag.Message = "Страница контактов.";
+            ViewBag.Message = "Сторінка контактів.";
 
             return View();
         }

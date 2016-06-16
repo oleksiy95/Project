@@ -79,7 +79,7 @@ namespace CourseProject.Controllers
                     return RedirectToAction("Index");
                 }
             }
-            errorMessage = "Group " + group.Name + " " + group.EnrollmentYear + " is in data base";
+            errorMessage = "Група " + group.Name + " " + group.EnrollmentYear + " є базі даних";
             ModelState.AddModelError(string.Empty, errorMessage);
             return View(group);
         }
@@ -121,7 +121,7 @@ namespace CourseProject.Controllers
                     return RedirectToAction("Index");
                 }
             }
-            errorMessage = "Group " + group.Name + " " + group.EnrollmentYear + " is in data base";
+            errorMessage = "Група " + group.Name + " " + group.EnrollmentYear + " є в базі даних";
             ModelState.AddModelError(string.Empty, errorMessage);
             return View(group);
         }

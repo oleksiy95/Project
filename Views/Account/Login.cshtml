@@ -1,7 +1,7 @@
 ﻿@model CourseProject.Models.LoginModel
 
 @{
-    ViewBag.Title = "Выполнить вход";
+    ViewBag.Title = "Виконати вхід";
 }
 
 <hgroup class="title">
@@ -9,7 +9,7 @@
 </hgroup>
 
 
-<h2>Используйте для входа локальную учетную запись.</h2>
+
 @using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl })) {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
@@ -18,7 +18,7 @@
         <legend>Форма входа</legend>
         <ol>
             <li>
-                @Html.LabelFor(m => m.UserName)
+                @Html.LabelFor(m => m.UserName,"Ім'я користувача")
                 @Html.TextBoxFor(m => m.UserName)
                 @Html.ValidationMessageFor(m => m.UserName)
             </li>
@@ -29,13 +29,13 @@
             </li>
             <li>
                 @Html.CheckBoxFor(m => m.RememberMe)
-                @Html.LabelFor(m => m.RememberMe, new { @class = "checkbox" })
+                @Html.LabelFor(m => m.RememberMe, "Запам'ятати мене",new { @class = "checkbox" })
             </li>
         </ol>
-        <input type="submit" value="Выполнить вход" />
+        <input type="submit" value="Увійти" />
     </fieldset>
     <p>
-        @Html.ActionLink("Register", "Register"), если у вас нет учетной записи.
+        @Html.ActionLink("Реєстрація", "Register"), якщо у вас нема облікового запису.
     </p>
 }
 

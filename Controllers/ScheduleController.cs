@@ -70,6 +70,7 @@ namespace CourseProject.Controllers
             }
 
             schedules = from s in schedules
+                        where s.EnrollmentYear == "2015"
                         orderby s.Date, s.LessonNumber
                         select s;
             
@@ -125,6 +126,7 @@ namespace CourseProject.Controllers
         public ActionResult Create(Schedule schedule, DateTime[] Date, int[] Lesson_ID, int[] Room_ID)
         {
             bool roomFree = true;
+            
             bool alternative1 = true;
             bool alternative2 = true;
             string roomNotFreeMessage = String.Empty;
@@ -160,7 +162,34 @@ namespace CourseProject.Controllers
                         //check if classroom is free
                         foreach (var checkRoom in db.Schedules.ToList())
                         {
-                            if (checkRoom.Room_ID == sch.Room_ID && checkRoom.LessonNumber == sch.LessonNumber && checkRoom.Date == sch.Date)
+                            if (checkRoom.Room_ID == sch.Room_ID && checkRoom.Subject_ID == sch.Subject_ID && checkRoom.Teacher_ID == sch.Teacher_ID
+                                && checkRoom.Room_ID == sch.Room_ID && checkRoom.Group_ID == sch.Group_ID && checkRoom.Lesson_ID == sch.Lesson_ID
+                                && checkRoom.LessonNumber == sch.LessonNumber && checkRoom.LessonType == sch.LessonType && checkRoom.Date == sch.Date)
+                            {
+                                roomNotFreeMessage = roomNotFreeMessage + "Пара вже є в базі даних<br/>";
+                                roomFree = false;
+
+                                continue;
+                            }
+
+                            if (checkRoom.Teacher_ID == sch.Teacher_ID && checkRoom.Date == sch.Date && checkRoom.LessonNumber == sch.LessonNumber
+                                && checkRoom.EnrollmentYear == sch.EnrollmentYear)
+                            {
+                                roomNotFreeMessage = roomNotFreeMessage + "Викладач має іншу пару " + Convert.ToDateTime(sch.Date).ToString("yyyy-MM-dd") + " на " + sch.LessonNumber + " парі<br/>";
+                                roomFree = false;
+                                continue;
+                            }
+
+                            if (checkRoom.Group_ID == sch.Group_ID && checkRoom.Date == sch.Date && checkRoom.LessonNumber == sch.LessonNumber
+                                && checkRoom.EnrollmentYear == sch.EnrollmentYear)
+                            {
+                                roomNotFreeMessage = roomNotFreeMessage + "Група має іншу пару " + Convert.ToDateTime(sch.Date).ToString("yyyy-MM-dd") + " на " + sch.LessonNumber + " парі<br/>";
+                                roomFree = false;
+                                continue;
+                            }
+                            
+                            if (checkRoom.Room_ID == sch.Room_ID && checkRoom.LessonNumber == sch.LessonNumber && checkRoom.Date == sch.Date
+                                && checkRoom.EnrollmentYear == sch.EnrollmentYear)
                             {
                                 alternative1 = true;
                                 alternative2 = true;
@@ -415,7 +444,34 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
                 //check if classroom is free
                 foreach (var checkRoom in db.Schedules.ToList())
                 {
-                    if (checkRoom.Room_ID == schedule.Room_ID && checkRoom.LessonNumber == schedule.LessonNumber && checkRoom.Date == schedule.Date)
+                    if (checkRoom.Room_ID == schedule.Room_ID && checkRoom.Subject_ID == schedule.Subject_ID && checkRoom.Teacher_ID == schedule.Teacher_ID
+                                && checkRoom.Room_ID == schedule.Room_ID && checkRoom.Group_ID == schedule.Group_ID && checkRoom.Lesson_ID == schedule.Lesson_ID
+                                && checkRoom.LessonNumber == schedule.LessonNumber && checkRoom.LessonType == schedule.LessonType && checkRoom.Date == schedule.Date)
+                    {
+                        roomNotFreeMessage = roomNotFreeMessage + "Пара вже є в базі даних<br/>";
+                        roomFree = false;
+
+                        continue;
+                    }
+
+                    if (checkRoom.Teacher_ID == schedule.Teacher_ID && checkRoom.Date == schedule.Date && checkRoom.LessonNumber == schedule.LessonNumber
+                        && checkRoom.EnrollmentYear == schedule.EnrollmentYear)
+                    {
+                        roomNotFreeMessage = roomNotFreeMessage + "Викладач має іншу пару " + Convert.ToDateTime(schedule.Date).ToString("yyyy-MM-dd") + " на " + schedule.LessonNumber + " парі<br/>";
+                        roomFree = false;
+                        continue;
+                    }
+
+                    if (checkRoom.Group_ID == schedule.Group_ID && checkRoom.Date == schedule.Date && checkRoom.LessonNumber == schedule.LessonNumber
+                        && checkRoom.EnrollmentYear == schedule.EnrollmentYear)
+                    {
+                        roomNotFreeMessage = roomNotFreeMessage + "Група має іншу пару " + Convert.ToDateTime(schedule.Date).ToString("yyyy-MM-dd") + " на " + schedule.LessonNumber + " парі<br/>";
+                        roomFree = false;
+                        continue;
+                    }
+
+                    if (checkRoom.Room_ID == schedule.Room_ID && checkRoom.LessonNumber == schedule.LessonNumber && checkRoom.Date == schedule.Date
+                        && checkRoom.EnrollmentYear == schedule.EnrollmentYear)
                     {
                         alternative1 = true;
                         alternative2 = true;
@@ -629,6 +685,33 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
             {
                 foreach (var checkRoom in db.Schedules.ToList())
                 {
+                    if (checkRoom.Room_ID == schedule.Room_ID && checkRoom.Subject_ID == schedule.Subject_ID && checkRoom.Teacher_ID == schedule.Teacher_ID
+                               && checkRoom.Room_ID == schedule.Room_ID && checkRoom.Group_ID == schedule.Group_ID && checkRoom.Lesson_ID == schedule.Lesson_ID
+                               && checkRoom.LessonNumber == schedule.LessonNumber && checkRoom.LessonType == schedule.LessonType && checkRoom.Date == schedule.Date)
+                    {
+                        roomNotFreeMessage = roomNotFreeMessage + "Пара вже є в базі даних<br/>";
+                        roomFree = false;
+
+                        continue;
+                    }
+
+                    if (checkRoom.Teacher_ID == schedule.Teacher_ID && checkRoom.Date == schedule.Date && checkRoom.LessonNumber == schedule.LessonNumber
+                        && checkRoom.EnrollmentYear == schedule.EnrollmentYear)
+                    {
+                        roomNotFreeMessage = roomNotFreeMessage + "Викладач має іншу пару " + Convert.ToDateTime(schedule.Date).ToString("yyyy-MM-dd") + " на " + schedule.LessonNumber + " парі<br/>";
+                        roomFree = false;
+                        continue;
+                    }
+
+                    if (checkRoom.Group_ID == schedule.Group_ID && checkRoom.Date == schedule.Date && checkRoom.LessonNumber == schedule.LessonNumber
+                        && checkRoom.EnrollmentYear == schedule.EnrollmentYear)
+                    {
+                        roomNotFreeMessage = roomNotFreeMessage + "Група має іншу пару " + Convert.ToDateTime(schedule.Date).ToString("yyyy-MM-dd") + " на " + schedule.LessonNumber + " парі<br/>";
+                        roomFree = false;
+                        continue;
+                    }
+
+
                     if (checkRoom.Room_ID == schedule.Room_ID && checkRoom.LessonNumber == schedule.LessonNumber && checkRoom.Date == schedule.Date)
                     {
                         alternative1 = true;
@@ -845,7 +928,7 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
             DataTable dtErrorsName = new DataTable();
             
             List<DataTable> dtList = new List<DataTable>();
-            bool subjects, classrooms, lessontypes, groups, teachers, roomFree, date, enrollment, lessonNumber;
+            bool subjects, classrooms, lessontypes, groups, teachers, roomFree, date, enrollment, lessonNumber, notExist, teacherFree, groupFree;
             int lineNumber = 1;
             int errorNumber = 0;
 
@@ -886,6 +969,9 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
                 enrollment = false;
                 lessonNumber = false;
                 roomFree = true;
+                notExist = true;
+                teacherFree = true;
+                groupFree = true;
                 data_id = new object[9];
                 
                 //ID values
@@ -981,15 +1067,56 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
                 //checking if classroom is occupied
                 foreach (var checkRoom in db.Schedules.ToList())
                 {
-                    if (checkRoom.Room_ID == Convert.ToInt32(row.ItemArray[2]) && checkRoom.LessonNumber == row.ItemArray[8].ToString() && checkRoom.Date == Convert.ToDateTime(row.ItemArray[4]))
+                    if (checkRoom.Room_ID == Convert.ToInt32(data_id[2]) 
+                        && checkRoom.LessonNumber == data_id[8].ToString() 
+                        && checkRoom.Date == Convert.ToDateTime(data_id[4])
+                        && checkRoom.Group_ID == Convert.ToInt32(data_id[5])
+                        && checkRoom.Lesson_ID == Convert.ToInt32(data_id[3])
+                        && checkRoom.Subject_ID == Convert.ToInt32(data_id[1])
+                        && checkRoom.Teacher_ID == Convert.ToInt32(data_id[6])
+                        && checkRoom.EnrollmentYear == data_id[7].ToString())
+                    {
+                        notExist = false;
+                        goto alreadyExist;
+                    }
+                }
+
+                foreach (var checkRoom in db.Schedules.ToList())
+                {
+                    if (checkRoom.LessonNumber == data_id[8].ToString()
+                        && checkRoom.Date == Convert.ToDateTime(data_id[4])
+                        && checkRoom.Group_ID == Convert.ToInt32(data_id[5])
+                        && checkRoom.EnrollmentYear == data_id[7].ToString())
+                    {
+                        groupFree = false;
+                    }
+                }
+
+                foreach (var checkRoom in db.Schedules.ToList())
+                {
+                    if (checkRoom.LessonNumber == data_id[8].ToString()
+                        && checkRoom.Date == Convert.ToDateTime(data_id[4])
+                        && checkRoom.Teacher_ID == Convert.ToInt32(data_id[6])
+                        && checkRoom.EnrollmentYear == data_id[7].ToString())
+                    {
+                        teacherFree = false;
+                    }
+                }
+
+                
+
+                foreach (var checkRoom in db.Schedules.ToList())
+                {
+                    if (checkRoom.Room_ID == Convert.ToInt32(data_id[2]) && checkRoom.LessonNumber == data_id[8].ToString() && checkRoom.Date == Convert.ToDateTime(data_id[4]))
                     {
                         roomFree = false;
                     }
                 }
 
+            alreadyExist:
                 lineNumber++;
                 //if all names are founded, add row in dt, else add row in dtErrors
-                if (teachers && groups && lessontypes && classrooms && subjects && roomFree && date && enrollment && lessonNumber)
+                if (teachers && groups && lessontypes && classrooms && subjects && roomFree && date && enrollment && lessonNumber && notExist && groupFree && teacherFree)
                 {
                     row.ItemArray = data_id;
                     dt.Rows.Add(row);
@@ -1012,7 +1139,10 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
                         if (!lessontypes) Feedback = Feedback + " тип заняття " + row.ItemArray[3].ToString() + " не знайдений в базі;";
                         if (!classrooms) Feedback = Feedback + " аудиторія " + row.ItemArray[2].ToString() + " не знайдена в базі;";
                         if (!subjects) Feedback = Feedback + " предмет " + row.ItemArray[1].ToString() + " не знайдений в базі;";
-                        if (!roomFree) Feedback = Feedback + " аудиторія " + row.ItemArray[2].ToString() + " зайнята " + row.ItemArray[4].ToString() + " на " + row.ItemArray[8].ToString() + " парі";
+                        if (!roomFree) Feedback = Feedback + " аудиторія " + row.ItemArray[2].ToString() + " зайнята " + row.ItemArray[4].ToString() + " на " + row.ItemArray[8].ToString() + " парі;";
+                        if (!notExist) Feedback = Feedback + " пара вже є базі даних;";
+                        if (!teacherFree) Feedback = Feedback + " викладач " + row.ItemArray[6].ToString() + " зайнятий " + row.ItemArray[4].ToString() + " на " + row.ItemArray[8].ToString() + " парі;";
+                        if (!groupFree) Feedback = Feedback + " група " + row.ItemArray[5].ToString() + " зайнята " + row.ItemArray[4].ToString() + " на " + row.ItemArray[8].ToString() + " парі;";
                         if (!date) Feedback = Feedback + " поле Дата заповнено неправилно;";
                         if (!enrollment) Feedback = Feedback + " поле Навчальний Рік заповнене неправильно;";
                         if (!lessonNumber) Feedback = Feedback + " поле № пари заповнене неправильно;";
@@ -1026,7 +1156,7 @@ FullName = s.Name + " " + s.Surname + " " + s.LastName}), "Teacher_ID", "FullNam
             if (errorNumber < 5)
             {
                 if (errorNumber == 0) ErrorMassage = string.Empty;
-                else ErrorMassage = "Покаано " + errorNumber + " помилки:<br/>" + ErrorMassage;
+                else ErrorMassage = "Показано " + errorNumber + " помилки:<br/>" + ErrorMassage;
             }
             else//if number of errors are 5 and more
             {

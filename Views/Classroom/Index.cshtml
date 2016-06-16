@@ -1,19 +1,19 @@
 ﻿@model IEnumerable<CourseProject.Models.Classroom>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Аудиторії";
 }
 
-<h2>Index</h2>
+<h2>Аудиторії</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Додати запис", "Create")
 </p>
 <table>
     <tr>
        
         <th>
-            @Html.DisplayNameFor(model => model.Number)
+            <label class="labelForSchedule">Номер</label>
         </th>
         <th></th>
     </tr>
@@ -25,9 +25,9 @@
             @Html.DisplayFor(modelItem => item.Number)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Room_ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Room_ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Room_ID })
+            @Html.ActionLink("Редагувати", "Edit", new { id=item.Room_ID }) |
+            @Html.ActionLink("Деталі", "Details", new { id=item.Room_ID }) |
+            @Html.ActionLink("Видалити", "Delete", new { id=item.Room_ID })
         </td>
     </tr>
 }

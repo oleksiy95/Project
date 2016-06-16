@@ -1,31 +1,31 @@
 ﻿@model CourseProject.Models.Group
 
 @{
-    ViewBag.Title = "Delete";
+    ViewBag.Title = "Видалити";
 }
 
-<h2>Delete</h2>
+<h2>Видалити</h2>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>Ви впевнені, що хочете видалити запис?</h3>
 <fieldset>
     <legend>Group</legend>
 
     <div class="display-label">
-         <h3>@Html.DisplayNameFor(model => model.Group_ID)</h3>
+         <h3><label>ID групи</label></h3>
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Group_ID)
     </div>
 
     <div class="display-label">
-         <h3>@Html.DisplayNameFor(model => model.Name)</h3>
+         <h3><label>Назва</label></h3>
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Name)
     </div>
 
     <div class="display-label">
-         <h3>@Html.DisplayNameFor(model => model.EnrollmentYear)</h3>
+         <h3><label>Навчальний рік</label></h3>
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.EnrollmentYear)
@@ -33,7 +33,7 @@
 </fieldset>
 @using (Html.BeginForm()) {
     <p>
-        <input type="submit" value="Delete" /> |
-        @Html.ActionLink("Back to List", "Index")
+        <input type="submit" value="Видалити" /> |
+        @Html.ActionLink("Назад до списку", "Index")
     </p>
 }

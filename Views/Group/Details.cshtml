@@ -1,29 +1,29 @@
 ﻿@model CourseProject.Models.Group
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Деталі";
 }
 
-<h2>Details</h2>
+<h2>Деталі</h2>
 
 <fieldset>
     <legend>Group</legend>
 
    <div class="display-label">
-         <h3>@Html.DisplayNameFor(model => model.Group_ID)</h3>
+         <h3><label>ID групи</label></h3>
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Group_ID)
     </div>
 
     <div class="display-label">
-         <h3>@Html.DisplayNameFor(model => model.Name)</h3>
+         <h3><label>Назва</label></h3>
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Name)
     </div>
     <div class="display-label">
-         <h3>@Html.DisplayNameFor(model => model.EnrollmentYear)</h3>
+         <h3><label>Навчальний рік</label></h3>
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.EnrollmentYear)
@@ -31,6 +31,6 @@
 
 </fieldset>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { /* id=Model.PrimaryKey */ }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Редагувати", "Edit", new { id=Model.Group_ID }) |
+    @Html.ActionLink("Назад до списку", "Index")
 </p>

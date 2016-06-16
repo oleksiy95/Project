@@ -1,10 +1,10 @@
 ﻿@model CourseProject.Models.LessonType
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Редагувати";
 }
 
-<h2>Edit</h2>
+<h2>Редагувати</h2>
 
 @using (Html.BeginForm()) {
     @Html.ValidationSummary(true)
@@ -17,7 +17,7 @@
         </div>
         
         <div class="editor-label">
-            @Html.LabelFor(model => model.Type)
+            @Html.LabelFor(model => model.Type,"Тип")
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.Type)
@@ -25,13 +25,13 @@
         </div>
 
         <p>
-            <input type="submit" value="Save" />
+            <input type="submit" value="Зберегти" />
         </p>
     </fieldset>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Назад до списку", "Index")
 </div>
 
 @section Scripts {

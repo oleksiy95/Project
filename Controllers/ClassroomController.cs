@@ -81,7 +81,7 @@ namespace CourseProject.Controllers
                 }
                 
             }
-            errorMessage = "Classroom " + classroom.Number + " is in data base";
+            errorMessage = "Аудиторія " + classroom.Number + " є в базі даних";
             ModelState.AddModelError(string.Empty, errorMessage);
             return View(classroom);
         }
@@ -124,7 +124,7 @@ namespace CourseProject.Controllers
                 }
             }
               
-            errorMessage = "Classroom " + classroom.Number + " is in data base";
+            errorMessage = "Аудиторія " + classroom.Number + " є в базі даних";
             ModelState.AddModelError(string.Empty, errorMessage);
             return View(classroom);
         }

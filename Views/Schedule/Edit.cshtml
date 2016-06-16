@@ -1,14 +1,14 @@
 ﻿@model CourseProject.Models.Schedule
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Редагувати";
 }
 @{
     
     SelectList listForYear = new SelectList(new[] { "2015", "2016", "2017", "2018", "2019", "2020" });
     SelectList listForNumber = new SelectList(new[] { "1", "2", "3", "4", "5", "6" });
     }
-<h2>Edit</h2>
+<h2>Редагувати</h2>
 @* message about occupied classroom *@
 
 <p style="color:red">@Html.Raw(ViewBag.roomNotFreeMessage)</p>
@@ -24,7 +24,7 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Subject_ID, "Subject")
+            @Html.LabelFor(model => model.Subject_ID, "Предмет")
         </div>
         <div class="editor-field">
             @Html.DropDownList("Subject_ID", String.Empty)
@@ -32,7 +32,7 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Room_ID, "Classroom")
+            @Html.LabelFor(model => model.Room_ID, "Аудиторія")
         </div>
         <div class="editor-field">
             @Html.DropDownList("Room_ID", String.Empty)
@@ -40,7 +40,7 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Lesson_ID, "LessonType")
+            @Html.LabelFor(model => model.Lesson_ID, "Тип заняття")
         </div>
         <div class="editor-field">
             @Html.DropDownList("Lesson_ID", String.Empty)
@@ -48,7 +48,7 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Date)
+            @Html.LabelFor(model => model.Date,"Дата")
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.Date)
@@ -56,7 +56,7 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Group_ID, "Group")
+            @Html.LabelFor(model => model.Group_ID, "Група")
         </div>
         <div class="editor-field">
             @Html.DropDownList("Group_ID", String.Empty)
@@ -64,14 +64,14 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Teacher_ID, "Teacher")
+            @Html.LabelFor(model => model.Teacher_ID, "Викладач")
         </div>
         <div class="editor-field">
             @Html.DropDownList("Teacher_ID", String.Empty)            
             @Html.ValidationMessageFor(model => model.Teacher_ID)            
         </div>
         <div class="editor-label">
-            @Html.LabelFor(model => model.EnrollmentYear)
+            @Html.LabelFor(model => model.EnrollmentYear,"Навчальний рік")
         </div>
         <div class="editor-field">
             @Html.DropDownList("EnrollmentYear", listForYear, String.Empty)
@@ -79,7 +79,7 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.LessonNumber)
+            @Html.LabelFor(model => model.LessonNumber,"№ пари")
         </div>
         <div class="editor-field">
             @Html.DropDownList("LessonNumber", listForNumber, String.Empty)
@@ -87,13 +87,13 @@
         </div>
 
         <p>
-            <input type="submit" value="Save" />
+            <input type="submit" value="Зберегти" />
         </p>
     </fieldset>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Назад до спику", "Index")
 </div>
 
 @section Scripts {

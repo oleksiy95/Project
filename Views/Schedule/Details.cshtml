@@ -10,49 +10,49 @@
     <legend>Schedule</legend>
 
     <div class="display-label">
-         <h3>@Html.DisplayNameFor(model => model.Schedule_ID)</h3>
+         <h3><label>ID пари</label></h3>
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Schedule_ID)
     </div>
 
     <div class="display-label">
-         <h3>@Html.DisplayNameFor(model => model.Subject)</h3>
+         <h3><label>Предмет</label></h3>
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Subject.Name)
     </div>
 
     <div class="display-label">
-         <h3>@Html.DisplayNameFor(model => model.Classroom)</h3>
+         <h3><label>Аудиторія</label></h3>
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Classroom.Number)
     </div>
 
     <div class="display-label">
-         <h3>@Html.DisplayNameFor(model => model.LessonType)</h3>
+         <h3><label>Тип заняття</label></h3>
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.LessonType.Type)
     </div>
 
     <div class="display-label">
-         <h3>@Html.DisplayNameFor(model => model.Date)</h3>
+         <h3><label>Дата</label></h3>
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Date)
     </div>
 
     <div class="display-label">
-         <h3>@Html.DisplayNameFor(model => model.Group)</h3>
+         <h3><label>Група</label></h3>
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Group.Name)
     </div>
 
     <div class="display-label">
-         <h3>@Html.DisplayNameFor(model => model.Teacher)</h3>
+         <h3><label>Викладач</label></h3>
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Teacher.Name)
@@ -61,20 +61,20 @@
     </div>
 
     <div class="display-label">
-         <h3>@Html.DisplayNameFor(model => model.EnrollmentYear)</h3>
+         <h3><label>Навчальний рік</label></h3>
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.EnrollmentYear)
     </div>
 
     <div class="display-label">
-         <h3>@Html.DisplayNameFor(model => model.LessonNumber)</h3>
+         <h3><label>№ пари</label></h3>
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.LessonNumber)
     </div>
 </fieldset>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { /* id=Model.PrimaryKey */ }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Редагувати", "Edit", new { id=Model.Schedule_ID }) |
+    @Html.ActionLink("Назад до списку", "Index")
 </p>

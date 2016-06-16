@@ -1,25 +1,25 @@
 ﻿@model IEnumerable<CourseProject.Models.Teacher>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Викладачі";
 }
 
-<h2>Index</h2>
+<h2>Викладачі</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Додати запис", "Create")
 </p>
 <table>
     <tr>
         
         <th>
-            @Html.DisplayNameFor(model => model.Name)
+            <label class="labelForSchedule">Ім'я</label>
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Surname)
+            <label class="labelForSchedule">Прізвище</label>
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.LastName)
+            <label class="labelForSchedule">По батькові</label>
         </th>
         <th></th>
     </tr>
@@ -37,9 +37,9 @@
             @Html.DisplayFor(modelItem => item.LastName)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Teacher_ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Teacher_ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Teacher_ID })
+            @Html.ActionLink("Редагувати", "Edit", new { id=item.Teacher_ID }) |
+            @Html.ActionLink("Деталі", "Details", new { id=item.Teacher_ID }) |
+            @Html.ActionLink("Видалити", "Delete", new { id=item.Teacher_ID })
         </td>
     </tr>
 }

@@ -1,28 +1,28 @@
 ﻿@model IEnumerable<CourseProject.Models.Student>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Студенти";
 }
 
-<h2>Index</h2>
+<h2>Студенти</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Додати запис", "Create")
 </p>
 <table>
     <tr>
         
         <th>
-            @Html.DisplayNameFor(model => model.Name)
+            <label class="labelForSchedule">Ім'я</label>
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Surname)
+            <label class="labelForSchedule">Прізвище</label>
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.LastName)
+            <label class="labelForSchedule">По батькові</label>
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Group)
+            <label class="labelForSchedule">Група</label>
         </th>
         <th></th>
     </tr>
@@ -44,9 +44,9 @@
             @Html.DisplayFor(modelItem => item.Group.EnrollmentYear)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Student_ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Student_ID } ) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Student_ID } )
+            @Html.ActionLink("Редагувати", "Edit", new { id=item.Student_ID }) |
+            @Html.ActionLink("Деталі", "Details", new { id=item.Student_ID } ) |
+            @Html.ActionLink("Видалити", "Delete", new { id=item.Student_ID } )
         </td>
     </tr>
 }
@@ -54,16 +54,16 @@
 </table>
 
 
-<h2>Student Upload</h2>
+<h2>Завантаження студентів</h2>
 @using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data" }))
 {        
      <input type="file" name="Files" id="Files" />
      <br />
-     <input type="submit" name="submit" value="Upload" /> 
+     <input type="submit" name="submit" value="Завантажити" /> 
 }
 
 @* Error message *@
-@if (ViewBag.Feedback == "Upload complete")
+@if (ViewBag.Feedback == "Завантаження завершено")
 {
 <p style="color:green">@ViewBag.Feedback</p>
 }
@@ -75,5 +75,5 @@ else
 
 @if (ViewBag.ErrorsInCSV == "true")
 {
-    @Html.ActionLink("Download file with wrong data", "DownloadFile");
+    @Html.ActionLink("Завантажити файл з неправильними записами", "DownloadFile");
 }

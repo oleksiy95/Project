@@ -89,9 +89,14 @@ namespace CourseProject.Controllers
                     return RedirectToAction("Index");
                 }
             }
-            error = "Student " + student.Surname + " " + student.Name + " " + student.LastName + " is in data base";
+            error = "Студент " + student.Surname + " " + student.Name + " " + student.LastName + " є в базі даних";
             ModelState.AddModelError(string.Empty, error);
-            ViewBag.Group_ID = new SelectList(db.Groups, "Group_ID", "Name", student.Group_ID);
+            ViewBag.Group_ID = new SelectList((from s in db.Groups
+                                               select new
+                                               {
+                                                   Group_ID = s.Group_ID,
+                                                   FullGroup = s.Name + " " + s.EnrollmentYear
+                                               }), "Group_ID", "FullGroup", student.Group_ID);
             return View(student);
         }
 
@@ -137,7 +142,7 @@ namespace CourseProject.Controllers
                     return RedirectToAction("Index");
                 }
             }
-            error = "Student " + student.Surname + " " + student.Name + " " + student.LastName + " is in data base";
+            error = "Студент " + student.Surname + " " + student.Name + " " + student.LastName + " є в базі даних";
             ModelState.AddModelError(string.Empty, error);
             ViewBag.Group_ID = new SelectList(db.Groups, "Group_ID", "Name", student.Group_ID);
             return View(student);
@@ -234,12 +239,12 @@ namespace CourseProject.Controllers
 
                 else
                 {
-                    ViewBag.Feedback = "File format is not correct. It must be .csv";
+                    ViewBag.Feedback = "Формат файлу некоректний. Розширення файлу повинно бути .csv";
                 }
 
 
             }
-            else { ViewBag.Feedback = "Please select a file"; }
+            else { ViewBag.Feedback = "Будь ласка виберіть файл"; }
             dt.Dispose();
             //}                       
             var students = db.Students.Include(s => s.Group);
@@ -263,7 +268,7 @@ namespace CourseProject.Controllers
                 sb.AppendLine(string.Format("{0};{1};{2};{3}", line.ItemArray[1], line.ItemArray[2], line.ItemArray[3], line.ItemArray[4]));
             }
 
-            System.IO.File.AppendAllText(Path.Combine(Server.MapPath("~/Content/csv"), name), sb.ToString());//save csv file
+            System.IO.File.AppendAllText(Path.Combine(Server.MapPath("~/Content/csv"), name), sb.ToString(), System.Text.Encoding.GetEncoding(1251));//save csv file
         }
 
         private string ErrorMassageForBulkCopy;
@@ -281,7 +286,7 @@ namespace CourseProject.Controllers
             DataTable dtErrorsName = new DataTable();
 
             List<DataTable> dtList = new List<DataTable>();
-            bool name, surname, lastname, groups;
+            bool name, surname, lastname, groups, notExist;
             int lineNumber = 1;
             int errorNumber = 0;
 
@@ -294,7 +299,7 @@ namespace CourseProject.Controllers
             // work out where we should split on comma, but not in a sentence
             Regex r = new Regex(";(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))");
             //Set the filename in to our stream
-            StreamReader sr = new StreamReader(fileName);
+            StreamReader sr = new StreamReader(fileName, System.Text.Encoding.GetEncoding(1251));
 
             //Read the first line and split the string at , with our regular expression in to an array
             line = sr.ReadLine();
@@ -317,6 +322,7 @@ namespace CourseProject.Controllers
                 surname = false;
                 lastname = false;
                 groups = false;
+                notExist = true;
                 data_id = new object[5];
 
                 //ID values
@@ -362,10 +368,21 @@ namespace CourseProject.Controllers
                     lastname = true;
                     data_id[3] = row.ItemArray[3];
                 }
-                
+
+                foreach (var checkStudent in db.Students.ToList())
+                {
+                    if (checkStudent.Name == data_id[1].ToString()
+                        && checkStudent.Surname == data_id[2].ToString()
+                        && checkStudent.LastName == data_id[3].ToString()
+                        && checkStudent.Group_ID == Convert.ToInt32(data_id[4]))
+                    {
+                        notExist = false;
+                    }
+                }
+
                 lineNumber++;
                 //if all names are founded, add row in dt, else add row in dtErrors
-                if (name && groups && surname && lastname)
+                if (name && groups && surname && lastname && notExist)
                 {
                     row.ItemArray = data_id;
                     dt.Rows.Add(row);
@@ -382,11 +399,12 @@ namespace CourseProject.Controllers
                     //record only first 5 errors
                     if (errorNumber < 6)
                     {
-                        Feedback = "Error in line " + lineNumber + ":";
-                        if (!name) Feedback = Feedback + " field Name can't be emty;";
-                        if (!groups) Feedback = Feedback + " group " + row.ItemArray[4].ToString() + " isn't founded;";
-                        if (!surname) Feedback = Feedback + " field SurName can't be empty;";
-                        if (!lastname) Feedback = Feedback + " field LastName can't be empty;";
+                        Feedback = "Помилка в стрічці " + lineNumber + ":";
+                        if (!name) Feedback = Feedback + " поле Ім'я не може бути пустим;";
+                        if (!groups) Feedback = Feedback + " група " + row.ItemArray[4].ToString() + " не знайдена в базі даих;";
+                        if (!surname) Feedback = Feedback + " поле Прізвище не може бути пустим;";
+                        if (!lastname) Feedback = Feedback + " поле По батькові не може бути пустим;";
+                        if (!notExist) Feedback = Feedback + " студент " + " " +row.ItemArray[1].ToString() +" " + row.ItemArray[2].ToString() +" "+ row.ItemArray[3].ToString() + " вже є в базі даних;";
                         Feedback = Feedback + "<br/>";
                         //Feedback = Feedback + "<button class='correct' id='modal-opener" + errorNumber + "'>Edit and save</button> <br/>";
                         ErrorMassage = ErrorMassage + Feedback;
@@ -398,11 +416,11 @@ namespace CourseProject.Controllers
             if (errorNumber < 5)
             {
                 if (errorNumber == 0) ErrorMassage = string.Empty;
-                else ErrorMassage = "Show " + errorNumber + " errors:<br/>" + ErrorMassage;
+                else ErrorMassage = "Показано " + errorNumber + " помилки:<br/>" + ErrorMassage;
             }
             else//if number of errors are 5 and more
             {
-                ErrorMassage = "Show 5 of " + errorNumber + " errors:<br/>" + ErrorMassage;
+                ErrorMassage = "Показано 5 з " + errorNumber + " помилок:<br/>" + ErrorMassage;
             }
             ErrorMassageForBulkCopy = ErrorMassage;//record error's message to global field
             NumberOfErrorMassage = errorNumber;
@@ -438,7 +456,7 @@ namespace CourseProject.Controllers
                     {
                         //Send it to the server
                         copy.WriteToServer(dt);
-                        Feedback = "Upload complete";
+                        Feedback = "Завантаження завершено";
                     }
                     catch (Exception ex)
                     {

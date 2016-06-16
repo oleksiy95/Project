@@ -1,10 +1,10 @@
 ﻿@model CourseProject.Models.Teacher
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Редагувати";
 }
 
-<h2>Edit</h2>
+<h2>Редагувати</h2>
 
 @using (Html.BeginForm()) {
     @Html.ValidationSummary(true)
@@ -17,7 +17,7 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Name)
+            @Html.LabelFor(model => model.Name,"Ім'я")
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.Name)
@@ -25,7 +25,7 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Surname)
+            @Html.LabelFor(model => model.Surname,"Прізвище")
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.Surname)
@@ -33,7 +33,7 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.LastName)
+            @Html.LabelFor(model => model.LastName,"По батькові")
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.LastName)
@@ -41,13 +41,13 @@
         </div>
 
         <p>
-            <input type="submit" value="Save" />
+            <input type="submit" value="Зберегти" />
         </p>
     </fieldset>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Назад до списку", "Index")
 </div>
 
 @section Scripts {

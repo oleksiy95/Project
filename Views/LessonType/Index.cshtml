@@ -1,35 +1,33 @@
 ﻿@model IEnumerable<CourseProject.Models.LessonType>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Тип заняття";
 }
 
-<h2>Index</h2>
+<h2>Тип заняття</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Додати запис", "Create")
 </p>
 <table>
     <tr>
        
         <th>
-            @Html.DisplayNameFor(model => model.Type)
+            <label class="labelForSchedule">Тип заняття</label>
         </th>
         <th></th>
     </tr>
 
 @foreach (var item in Model) {
     <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Lesson_ID)
-        </td>
+       
         <td>
             @Html.DisplayFor(modelItem => item.Type)
         </td>
        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Lesson_ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Lesson_ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Lesson_ID })
+            @Html.ActionLink("Редагувати", "Edit", new { id=item.Lesson_ID }) |
+            @Html.ActionLink("Деталі", "Details", new { id=item.Lesson_ID }) |
+            @Html.ActionLink("Видалити", "Delete", new { id=item.Lesson_ID })
         </td>
     </tr>
 }

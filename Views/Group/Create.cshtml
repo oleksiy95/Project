@@ -1,13 +1,13 @@
 ﻿@model CourseProject.Models.Group
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Додати";
 }
 @{
     
     SelectList list = new SelectList(new[] {"2011","2012","2013","2014","2015","2016","2017","2018","2019","2020"});
     }
-<h2>Create</h2>
+<h2>Додати</h2>
 <p style="color:red">@Html.Raw(ViewBag.Error)</p>
 @using (Html.BeginForm()) {
     @Html.ValidationSummary(true)
@@ -16,7 +16,7 @@
         <legend>Group</legend>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Name)
+            @Html.LabelFor(model => model.Name,"Назва")
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.Name)
@@ -24,7 +24,7 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.EnrollmentYear)
+            @Html.LabelFor(model => model.EnrollmentYear,"Навчальний рік")
         </div>
         <div class="editor-field">
             @Html.DropDownList("EnrollmentYear", list, String.Empty)
@@ -32,13 +32,13 @@
         </div>
 
         <p>
-            <input type="submit" value="Create" />
+            <input type="submit" value="Додати" />
         </p>
     </fieldset>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Назад до списку", "Index")
 </div>
 
 @section Scripts {
