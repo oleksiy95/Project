@@ -143,6 +143,7 @@ namespace CourseProject.Controllers
                     {
                         if (Lesson_ID.Length > 1 && Room_ID.Length > 1)
                         {
+                            
                             schedule.Lesson_ID = Lesson_ID[i];
                             schedule.Room_ID = Room_ID[i];
                         }
